@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+		"allowJs": true,
+		"target": "ES2020",
+		"module": "ES2020",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+    	"experimentalDecorators": true,
+    	"allowSyntheticDefaultImports": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"lib": ["dom", "es6", "ESNext"],
+		"baseUrl": "."
+	},
+	"exclude": [
+		"node_modules",
+	],
+	"include": [
+		"**/*.ts"
+	]
+}

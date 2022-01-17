@@ -20,5 +20,12 @@
   "bugs": {
     "url": "https://github.com/owlsdepartment/owlsdepartment-components/issues"
   },
-  "homepage": "https://github.com/owlsdepartment/owlsdepartment-components#readme"
+  "homepage": "https://github.com/owlsdepartment/owlsdepartment-components#readme",
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "ovee.js": "^2.1.8"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.178"
+  }
 }

@@ -1,0 +1,24 @@
+{
+  "name": "owlsdepartment-components",
+  "version": "1.0.0",
+  "description": "Owls Department components library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owlsdepartment/owlsdepartment-components.git"
+  },
+  "keywords": [
+    "ui",
+    "ovee.js",
+    "components"
+  ],
+  "author": "Owls Department",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/owlsdepartment/owlsdepartment-components/issues"
+  },
+  "homepage": "https://github.com/owlsdepartment/owlsdepartment-components#readme"
+}

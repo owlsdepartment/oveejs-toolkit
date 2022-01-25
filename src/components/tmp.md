@@ -12,5 +12,6 @@
 # TODO
 
 1. Husky // done
-2. Conventional Commits Linter
-3. Conventional Changelog
+2. Conventional Commits Linter // done
+3. Secure master branch
+4. Conventional Changelog

@@ -42,17 +42,19 @@ Folder can contain other script or style files, but they need to be imported ins
 
 You should always work with your components on seperate branch, forked from `master` branch, which will be protected. New changes will be done only via reviewed pull requests.
 
-Commits has to meet [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification in [Angular](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format) format. Read those links for in depth information.
+Commits has to meet [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification with [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional) specification. It's similar to [Angular](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format) format. Read those links for in depth information.
 
-Angular flavour specifies for us certain types of commits:
-
- - __build__: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
- - __ci__: Changes to our CI configuration files and scripts (examples: CircleCi, SauceLabs)
+possible types of commits:
+ - __build__: Changes that affect the build system or external dependencies (f.ex.: `yarn`, `npm`)
+ - __chore__: Changes, that don't affect source code, but repository configuration and development expierience (f.ex: adding new linter or new IDE config)
+ - __ci__: Changes to our CI configuration files and scripts (f.ex.: `Gihub Actions`)
  - __docs__: Documentation only changes
  - __feat__: A new feature
  - __fix__: A bug fix
  - __perf__: A code change that improves performance
  - __refactor__: A code change that neither fixes a bug nor adds a feature
+ - __revert__: A commit that reverts other commits
+ - __style__: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
  - __test__: Adding missing tests or correcting existing tests
 
 You should also include what scope you are working on. In case of components, it should be component name, f.ex.:
@@ -65,8 +67,4 @@ git commit -m "feat(in-viewport): init InViewport component"
 git commit -m "fix(in-viewport): fixed bug where InViewport was called only once"
 ```
 
-Don't worry tho, there will be a commit message linter, that will warn you, if your commit message won't meet the specification.
-
-
-
-
+Don't worry tho, there is a commit message linter, that will stop you, if your commit message won't meet the specification.

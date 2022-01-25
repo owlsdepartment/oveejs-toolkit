@@ -11,6 +11,6 @@
 
 # TODO
 
-1. Husky
+1. Husky // done
 2. Conventional Commits Linter
 3. Conventional Changelog

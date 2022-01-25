@@ -1,0 +1,35 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": false,
+        "eslint.format.enable": true,
+        "eslint.packageManager": "yarn",
+        "eslint.workingDirectories": [
+            "./"
+        ],
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": true,
+            "source.fixAll.stylelint": true
+        },
+        "stylelint.packageManager": "yarn",
+        "stylelint.validate": [
+            "css",
+            "scss",
+            "postcss"
+        ],
+        "css.validate": false,
+        "less.validate": false,
+        "scss.validate": false
+    },
+    "extensions": {
+        "recommendations": [
+            "stylelint.vscode-stylelint",
+            "dbaeumer.vscode-eslint"
+        ]
+    }
+}

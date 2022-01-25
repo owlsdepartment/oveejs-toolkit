@@ -1,21 +1,21 @@
 import { TemplateResult } from 'lit-html';
-import { reactive, TemplateComponent, Logger } from 'ovee.js';
+import { Logger, reactive, TemplateComponent } from 'ovee.js';
 
 export interface WithBaseDialog {
 	_dialogInstance?: BaseDialog;
 }
 
 export interface BaseDialogConfig {
-    dialogRoot: string;
+	dialogRoot: string;
 }
 
 const logger = new Logger('BaseDialog');
 const DEFAULT_CONFIG: BaseDialogConfig = {
-    dialogRoot: '.dialog-root'
-}
+	dialogRoot: '.dialog-root',
+};
 
 export class BaseDialog extends TemplateComponent {
-    static config: BaseDialogConfig = DEFAULT_CONFIG;
+	static config: BaseDialogConfig = DEFAULT_CONFIG;
 
 	rootClass = '';
 	dialogTarget: HTMLElement;
@@ -32,15 +32,17 @@ export class BaseDialog extends TemplateComponent {
 		const target = document.createElement('div');
 
 		(target as WithBaseDialog)._dialogInstance = this;
-        this.dialogTarget = target;
+		this.dialogTarget = target;
 
-        if (!this.dialogRoot) {
-            logger.warn(`Dialog root wasn't found. Element with selector '${BaseDialog.config.dialogRoot}' does not exist.`);
+		if (!this.dialogRoot) {
+			logger.warn(
+				`Dialog root wasn't found. Element with selector '${BaseDialog.config.dialogRoot}' does not exist.`
+			);
 
-            return;
-        }
+			return;
+		}
 
-        this.dialogRoot.append(target);
+		this.dialogRoot.append(target);
 	}
 
 	open() {
@@ -50,7 +52,7 @@ export class BaseDialog extends TemplateComponent {
 	}
 
 	close() {
-        this.$emit('dialog:before-close', null);
+		this.$emit('dialog:before-close', null);
 		this.isOpen = false;
 		this.$emit('dialog:close', null);
 	}

@@ -1,2 +1,2 @@
-export { updateConfig } from './utils'
 export * from './components';
+export { updateConfig } from './utils';

@@ -2,16 +2,16 @@ import { isNumber } from 'lodash';
 import { Component, dataParam, register } from 'ovee.js';
 
 export interface InViewportConfig {
-    threshold: number;
+	threshold: number;
 }
 
 export const DEFAULT_CONFIG: InViewportConfig = {
-    threshold: 0.5
-}
+	threshold: 0.5,
+};
 
 @register('in-viewport')
 export class InViewport extends Component {
-    static config: InViewportConfig = DEFAULT_CONFIG;
+	static config: InViewportConfig = DEFAULT_CONFIG;
 
 	observer: IntersectionObserver;
 
@@ -44,6 +44,6 @@ export class InViewport extends Component {
 	}
 
 	showTarget(target: Element) {
-        target.classList.add('is-in-viewport');
+		target.classList.add('is-in-viewport');
 	}
 }

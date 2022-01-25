@@ -30,10 +30,6 @@
     "url": "https://github.com/owlsdepartment/owlsdepartment-components/issues"
   },
   "homepage": "https://github.com/owlsdepartment/owlsdepartment-components#readme",
-  "dependencies": {
-    "lodash": "^4.17.21",
-    "ovee.js": "~2.1.8"
-  },
   "devDependencies": {
     "@types/lodash": "^4.14.178",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
@@ -44,6 +40,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "husky": "^7.0.0",
+    "ovee.js": "~2.1.8",
     "pinst": "^2.0.0",
     "prettier": "^2.4.1",
     "stylelint": "^14.2.0",

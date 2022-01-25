@@ -19,8 +19,7 @@ export class InViewport extends Component {
 	_threshold = `${InViewport.config.threshold}`;
 
 	get threshold(): number | number[] {
-		const parsed = JSON.parse(
-			this._threshold);
+		const parsed = JSON.parse(this._threshold);
 
 		return Array.isArray(parsed) || isNumber(parsed) ? parsed : InViewport.config.threshold;
 	}

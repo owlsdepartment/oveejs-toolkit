@@ -4,7 +4,13 @@
   "description": "Owls Department components library",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "yarn eslint && yarn stylelint",
+    "lint:no-fix": "yarn eslint:no-fix && yarn stylelint:no-fix",
+    "eslint": "eslint _/js/src --fix",
+    "eslint:no-fix": "eslint _/js/src",
+    "stylelint": "stylelint _/sass/**/*.{html,css,sass,scss} --fix",
+    "stylelint:no-fix": "stylelint _/sass/**/*.{html,css,sass,scss}"
   },
   "repository": {
     "type": "git",
@@ -23,9 +29,24 @@
   "homepage": "https://github.com/owlsdepartment/owlsdepartment-components#readme",
   "dependencies": {
     "lodash": "^4.17.21",
-    "ovee.js": "^2.1.8"
+    "ovee.js": "~2.1.8"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.178"
+    "@types/lodash": "^4.14.178",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
+    "eslint": "^8.2.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-lit": "^1.2.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "prettier": "^2.4.1",
+    "stylelint": "^13.13.1",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.19.0"
+  },
+  "peerDependencies": {
+    "lodash": "^4.17.21",
+    "ovee.js": "~2.1.8"
   }
 }

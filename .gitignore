@@ -105,3 +105,6 @@ dist
 
 # Platform Specific
 .DS_Store
+
+# Bit
+public/

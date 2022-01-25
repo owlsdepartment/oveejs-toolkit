@@ -9,17 +9,29 @@
  */
 
 {
-    "generator/ovee-template": {
+    "env/ovee": {
         "scope": "",
         "version": "",
         "mainFile": "index.ts",
-        "rootDir": "my-scope/generator/ovee-template",
+        "rootDir": "owls/env/ovee"
+    },
+    "generator/ovee": {
+        "scope": "",
+        "version": "",
+        "mainFile": "index.ts",
+        "rootDir": "owls/generator/ovee",
         "config": {
             "teambit.harmony/aspect": {},
             "teambit.envs/envs": {
                 "env": "teambit.harmony/aspect"
             }
         }
+    },
+    "ui/base-button": {
+        "scope": "",
+        "version": "",
+        "mainFile": "index.ts",
+        "rootDir": "owls/ui/base-button"
     },
     "$schema-version": "14.9.0"
 }

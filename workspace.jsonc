@@ -36,12 +36,17 @@
     /**
      * choose the package manager for Bit to use. you can choose between 'yarn', 'pnpm'
      */
-    "packageManager": "teambit.dependencies/pnpm",
+    "packageManager": "teambit.dependencies/yarn",
     "policy": {
       "dependencies": {},
       "peerDependencies": {}
     }
   },
+
+  "teambit.generator/generator": {
+    "aspects": ["owls/generator/ovee"]
+  },
+  "owls/generator/ovee": {},
   /**
    * workspace variants allow to set different subsets of configuration for components in your
    * workspace. this is extremely useful for upgrading, aligning and building components with a new
@@ -58,6 +63,10 @@
        * uncomment to apply the chosen environment on all components.
        **/
       // "teambit.react/react": { }
+    },
+    
+    "{generator/*}": {
+      "teambit.harmony/aspect": {}
     }
   }
 }

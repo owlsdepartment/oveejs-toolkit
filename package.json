@@ -10,7 +10,10 @@
     "eslint": "eslint _/js/src --fix",
     "eslint:no-fix": "eslint _/js/src",
     "stylelint": "stylelint _/sass/**/*.{html,css,sass,scss} --fix",
-    "stylelint:no-fix": "stylelint _/sass/**/*.{html,css,sass,scss}"
+    "stylelint:no-fix": "stylelint _/sass/**/*.{html,css,sass,scss}",
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
   },
   "repository": {
     "type": "git",
@@ -40,6 +43,8 @@
     "eslint-plugin-lit": "^1.2.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "husky": "^7.0.0",
+    "pinst": "^2.0.0",
     "prettier": "^2.4.1",
     "stylelint": "^13.13.1",
     "stylelint-order": "^4.1.0",

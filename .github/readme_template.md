@@ -2,7 +2,7 @@
 
 ## Requirements
 <!-- TODO: fill dependencies (maybe automatic in future) -->
-<!-- TODO: add `yarn add ...` for all dependencies -->
+<!-- TODO: add `yarn add ...` with all dependencies -->
 
 ## Installation and configuration
 

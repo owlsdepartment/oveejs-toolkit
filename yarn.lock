@@ -2103,6 +2103,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lottie-web@npm:^5.8.1":
+  version: 5.8.1
+  resolution: "lottie-web@npm:5.8.1"
+  checksum: 48c19ea7863310150dc9e46855b0f85179f3768ac0c0cf4f3ffb18944819079d3046c31ca04f2748291f3c413a855329a12ce9c3faae056a1a869776b6ed12a9
+  languageName: node
+  linkType: hard
+
 "lru-cache@npm:^6.0.0":
   version: 6.0.0
   resolution: "lru-cache@npm:6.0.0"
@@ -2370,6 +2377,7 @@ __metadata:
     eslint-plugin-simple-import-sort: ^7.0.0
     husky: ^7.0.0
     lodash: ^4.17.21
+    lottie-web: ^5.8.1
     ovee.js: ~2.1.8
     pinst: ^2.0.0
     prettier: ^2.4.1

@@ -1,0 +1,132 @@
+/* reset */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+	margin: 0;
+	padding: 0;
+	font: inherit;
+	font-size: 100%;
+	vertical-align: baseline;
+	border: 0;
+}
+
+html {
+	font-size: 10px;
+}
+
+h1 {
+	font-size: 5rem;
+}
+
+h2 {
+	font-size: 4rem;
+}
+
+h3 {
+	font-size: 3.2rem;
+}
+
+h4 {
+	font-size: 2.4rem;
+}
+
+body {
+	font-size: 1.6rem;
+}
+
+#app {
+	color: #2c3e50;
+	font-family: Avenir, Helvetica, Arial, sans-serif;
+	text-align: center;
+	background-color: #f0f0f0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	padding: 8rem 6rem;
+	box-sizing: border-box;
+}

@@ -1,6 +1,14 @@
 # Ovee UI Playground
 
-To first time initialize a playground, run this command in root folder:
+All commands are run from root folder.
+
+To first time initialize a playground, make sure all dependencies are installed with:
+
+```bash
+yarn
+```
+
+Then run this command:
 
 ```bash
 yarn playground
@@ -39,7 +47,7 @@ const components: Class<Component, typeof Component>[] = [TestComponent];
 export default components;
 ```
 
-Use then in `index.html` like this:
+Use it then in `index.html` like this:
 ```html
 <!-- some code ... -->
 <test-component></test-component>

@@ -1,3 +1,4 @@
+import { Command } from 'commander';
 import { copyFileSync, existsSync, unlinkSync } from 'fs';
 import path from 'path';
 
@@ -6,29 +7,25 @@ const INDEX = path.resolve(PLAYGROUND_PATH, 'index.html');
 const COMPONENTS = path.resolve(PLAYGROUND_PATH, 'src/components.ts');
 const TEMPLATES = path.resolve(__dirname, 'templates/playground');
 
-const COMMAND_MAP: Record<string, () => void> = {
-	init: init,
-	reset: reset,
-	clear: clear,
-};
+const program = new Command();
+
+program
+	.command('init')
+	.description('initialize playground')
+	.action(() => init());
+
+program
+	.command('reset')
+	.description('reset playground')
+	.action(() => reset());
+
+program
+	.command('clear')
+	.description('clear playground')
+	.action(() => clear());
 
 function main() {
-	const args = process.argv.slice(2);
-	const commandName = args[0] || 'init';
-	const command = COMMAND_MAP[commandName];
-
-	if (!command) {
-		const allowedCommands = Object.keys(COMMAND_MAP)
-			.map(k => `'${k}'`)
-			.join(', ');
-
-		console.error(
-			`[playground] Unrecognized command. Received: '${commandName}', expected one of: ${allowedCommands}`
-		);
-		return;
-	}
-
-	command();
+	program.parse();
 }
 
 function init(silent = false) {

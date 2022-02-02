@@ -1,74 +1,44 @@
+import { Command } from 'commander';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { camelCase, kebabCase, last, trimEnd, trimStart, upperFirst } from 'lodash';
-import path from 'path';
+import _path from 'path';
 
 const COMPONENTS_DIR = 'src/components';
 const OTHER_COMPONENTS_DIR = `${COMPONENTS_DIR}/other`;
-const ROOT_DIR = path.resolve(__dirname, '..');
+const ROOT_DIR = _path.resolve(__dirname, '..');
 
-enum GeneratedType {
-	component = 'component',
-	c = 'c',
-}
+const program = new Command();
 
-const generatorMap: Record<`${GeneratedType}`, (args: string[]) => void> = {
-	component: generateComponent,
-	c: generateComponent,
-};
+program
+	.command('component')
+	.alias('c')
+	.description('generate boilerplate for new component')
+	.argument('<path>', 'component path. If used alone, component name will be infered')
+	.argument('[name]', 'component name')
+	.option('-s, --styles', 'generate styles file', false)
+	.action((path: string, name: string | undefined, options: { styles: boolean }) => {
+		generateComponent(path, name ?? '', options.styles);
+	});
 
 /**
  * Format:
- * yarn run create <what> <name>
- * yarn run create <what> <path> <name>
+ * yarn run generate <what> <path> [name]
  */
 
 function init() {
-	const possibleTypes = Object.values(GeneratedType);
-	const args = process.argv.slice(2);
-	const type = args[0];
-
-	if (!type) {
-		console.error(
-			` -- Missing first required argument 'type'. Possible values: ${possibleTypes.join(', ')}.`
-		);
-		return;
-	}
-
-	if (!possibleTypes.includes(type as any)) {
-		console.error(
-			` -- Wrong value for first argument 'type'. Received: '${type}', expected one of: ${possibleTypes.join(
-				', '
-			)}.`
-		);
-		return;
-	}
-
-	generatorMap[type as GeneratedType](args.slice(1));
+	program.parse();
 }
 
-function generateComponent(args: string[]) {
-	if (!args.length) {
-		console.error(
-			`[generate ~ component] Component generator requires from 1 to 2 arguments. Received 0.`
-		);
-		return;
-	}
-
-	const readmeTemplatePath = path.resolve(ROOT_DIR, '.github/readme_template.md');
+function generateComponent(path: string, name: string, withStyles: boolean) {
+	const readmeTemplatePath = _path.resolve(ROOT_DIR, '.github/readme_template.md');
 	let dirPath: string;
 	let componentName: string;
 
-	const withStyles = args.includes('--styles');
-
-	if (withStyles) {
-		args.splice(args.indexOf('--styles'), 1);
-	}
-
-	if (args.length === 1) {
-		const splitted = trimStart(trimEnd(args[0], '/'), '/').split('/');
+	if (!name) {
+		const splitted = trimStart(trimEnd(path, '/'), '/').split('/');
 
 		if (splitted.length === 1) {
-			componentName = args[0];
+			componentName = path;
 			dirPath = `${OTHER_COMPONENTS_DIR}/${componentName}`;
 		} else {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -76,9 +46,9 @@ function generateComponent(args: string[]) {
 			dirPath = `${COMPONENTS_DIR}/${splitted.join('/')}`;
 		}
 	} else {
-		const trimmedPath = trimStart(trimEnd(args[0], '/'), '/');
+		const trimmedPath = trimStart(trimEnd(path, '/'), '/');
 
-		componentName = args[1];
+		componentName = name;
 		dirPath = `${COMPONENTS_DIR}/${trimmedPath}`;
 	}
 
@@ -86,7 +56,7 @@ function generateComponent(args: string[]) {
 	const camelCaseName = camelCase(componentName);
 	const pascalCaseName = upperFirst(camelCaseName);
 
-	const fullPath = path.resolve(ROOT_DIR, dirPath);
+	const fullPath = _path.resolve(ROOT_DIR, dirPath);
 
 	if (existsSync(fullPath)) {
 		console.error(
@@ -109,14 +79,14 @@ function generateComponent(args: string[]) {
 	mkdirSync(fullPath, { recursive: true });
 
 	writeFileSync(
-		path.resolve(fullPath, 'index.ts'),
+		_path.resolve(fullPath, 'index.ts'),
 		`// export all code you want to be available on the outside
 export * from './${pascalCaseName}';
 `
 	);
 
 	writeFileSync(
-		path.resolve(fullPath, `${pascalCaseName}.ts`),
+		_path.resolve(fullPath, `${pascalCaseName}.ts`),
 		`import { Component, register } from 'ovee.js';
 
 @register('${kebabCaseName}')
@@ -131,17 +101,17 @@ export class ${pascalCaseName} extends Component {
 		pascalCaseName
 	);
 
-	writeFileSync(path.resolve(fullPath, 'README.md'), readmeContent);
+	writeFileSync(_path.resolve(fullPath, 'README.md'), readmeContent);
 
 	if (withStyles) {
 		writeFileSync(
-			path.resolve(fullPath, 'styles.scss'),
+			_path.resolve(fullPath, 'styles.scss'),
 			`// write and import all your styles here';
 `
 		);
 
 		appendFileSync(
-			path.resolve(fullPath, 'README.md'),
+			_path.resolve(fullPath, 'README.md'),
 			`## Styling
 <!-- TODO: add notes about styling you component -->
 `

@@ -101,4 +101,4 @@ export class SomeComponent extends Component {
 
 `lazy-load:update` - Make LazyLoad to re-check the DOM. You should update LazyLoad after added/removed DOM elements.
 
-`lazy-load:global-update` - Like above, but it will trigger update on every element with this component.
+`lazy-load:global-update` - Like above, but you should trigger event on `window` object, it will trigger update on every element with this component.

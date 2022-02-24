@@ -1,0 +1,7 @@
+[data-accordion-trigger] {
+	cursor: pointer;
+
+	& > * {
+		pointer-events: none;
+	}
+}

@@ -1,4 +1,4 @@
-import { AccordionElement } from '../BaseAccordion';
+import { AccordionElement } from '../types';
 
 export const calcHeights = (items: AccordionElement[], resize: boolean) => {
 	if (!items) {

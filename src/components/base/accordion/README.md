@@ -10,7 +10,7 @@ yarn add gsap
 
 ## Installation and configuration
 
-See [Components instalation](/docs/components_instalation.md)
+See [Components installation](/docs/components_installation.md)
 
 | Option          | Type              | Default     	| Description                        							|
 | ---             | ---               | ---         	| ---                                							|

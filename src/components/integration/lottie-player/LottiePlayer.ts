@@ -69,5 +69,11 @@ export class LottiePlayer extends Component {
 
 			renderer: renderer as any,
 		});
+
+		this.$emit('lottiePlayer:created', this.$element);
+
+		this.player.addEventListener('DOMLoaded', () => {
+			this.$emit('lottiePlayer:loaded', this.$element);
+		});
 	}
 }

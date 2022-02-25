@@ -1,7 +1,7 @@
 # LazyLoad
 
 ## Requirements
- - `vanilla-lazyload`
+ - [`vanilla-lazyload`](https://github.com/verlok/vanilla-lazyload)
 
 ## Installation and configuration
 
@@ -92,7 +92,7 @@ export class SomeComponent extends Component {
     lazyImage;
 
     init() {
-        emitEvent(this.lazyImage, {
+        emitEvent(this.lazyImage, 'lazy-load:load', {
             threshold: 500
         })
     }

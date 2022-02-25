@@ -50,14 +50,10 @@ export class LazyLoad extends Component {
 
 	destroy() {
 		this.destroyInterval = window.setInterval(() => {
-			if (!this.lazyLoad) {
+			if (!this.lazyLoad || this.lazyLoad.loadingCount > 0) {
 				return;
 			}
-
-			if (this.lazyLoad.loadingCount > 0) {
-				return;
-			}
-
+			
 			if (this.destroyInterval) {
 				clearInterval(this.destroyInterval);
 			}

@@ -11,7 +11,7 @@ module.exports = {
 		ecmaVersion: 2020,
 	},
 
-	plugins: ['@typescript-eslint', 'simple-import-sort', 'lit'],
+	plugins: ['@typescript-eslint', 'simple-import-sort', 'lit', 'html'],
 
 	extends: [
 		'eslint:recommended',

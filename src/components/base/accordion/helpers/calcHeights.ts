@@ -1,25 +1,29 @@
 import { AccordionElement } from '../types';
 
 export const calcHeights = (items: AccordionElement[], resize: boolean) => {
-	if (!items) {
+	if (!items.length) {
 		return;
 	}
 
-	items.forEach(obj => {
-		const btn = obj.querySelector('[data-accordion-trigger]') as HTMLElement;
-		const btnHeight = btn.offsetHeight;
-		const content = obj.querySelector('[data-accordion-content]') as HTMLElement;
+	items.forEach(item => {
+		const { _trigger: trigger, _content: content } = item;
+
+		if (!trigger || !content) {
+			return;
+		}
+
+		const triggerHeight = trigger.offsetHeight;
 		const contentHeight = content.offsetHeight;
-		const objData = obj.dataset;
+		const itemData = item.dataset;
 
-		objData.reducedHeight = `${btnHeight}`;
-		objData.activeHeight = `${btnHeight + contentHeight}`;
+		itemData.reducedHeight = `${triggerHeight}`;
+		itemData.activeHeight = `${triggerHeight + contentHeight}`;
 
-		if (resize === true) {
-			if (btn.getAttribute('aria-expanded') === 'true') {
-				obj.style.height = `${objData.activeHeight}px`;
+		if (resize) {
+			if (trigger.getAttribute('aria-expanded') === 'true') {
+				item.style.height = `${itemData.activeHeight}px`;
 			} else {
-				obj.style.height = `${objData.reducedHeight}px`;
+				item.style.height = `${itemData.reducedHeight}px`;
 			}
 		}
 	});

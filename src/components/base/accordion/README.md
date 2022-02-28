@@ -55,4 +55,4 @@ You can access the accordion item which emitted this event by using `event.detai
 
 ## Styling
 
-This component comes with only a few basic lines of CSS, which fix some accessibility issues. You can import them by following the steps in the **Installation and configuration** section.
+This component comes with only a few basic lines of CSS, which should fix functionality and accessibility issues. It's recommended to import them by following the steps in the **Installation and configuration** section. 

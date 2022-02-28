@@ -2,7 +2,7 @@ import { Component, el, Logger, register } from 'ovee.js';
 
 import { CONFIG_DEFAULTS } from './constants';
 import { calcHeights, hideAnimation, showAnimation } from './helpers';
-import { AccordionElement, BaseAccordionConfig } from './types';
+import { AccordionElement, AnimationArguments, BaseAccordionConfig } from './types';
 
 const logger = new Logger('BaseAccordion');
 
@@ -29,16 +29,18 @@ export class BaseAccordion extends Component {
 	initAttributes() {
 		this.items.forEach(item => {
 			const trigger = item.querySelector<HTMLElement>('[data-accordion-trigger]');
-			const content = item.querySelector('[data-accordion-content]') as HTMLElement;
+			const content = item.querySelector<HTMLElement>('[data-accordion-content]');
 			const timestamp = Date.now();
 			const id = `accordion-${timestamp + Math.floor(Math.random() * (timestamp - 0)) + 0}`;
 
 			if (!trigger) {
-				return logger.warn(
+				return logger.error(
 					'Missing trigger element. You should specify it with data-accordion-trigger attribute'
 				);
-			} else if (!content) {
-				return logger.warn(
+			}
+
+			if (!content) {
+				return logger.error(
 					'Missing content element. You should specify it with data-accordion-content attribute'
 				);
 			}
@@ -71,68 +73,67 @@ export class BaseAccordion extends Component {
 	setInitHeights() {
 		const { config: options } = BaseAccordion;
 
-		this.items.forEach((obj, i) => {
-			const { _trigger: btn, _content: cnt } = obj;
+		this.items.forEach((item, i) => {
+			const animationConfig = {
+				item,
+				immediate: options.immediate,
+				speed: options.speed,
+				ease: options.ease,
+			};
 
-			if (!btn || !cnt) {
-				return;
-			}
-
-			if (options.firstActive === true && i === 0) {
-				this.show(btn, obj, cnt, options.immediate, options.speed, options.ease);
+			if (options.firstActive && i === 0) {
+				this.show(animationConfig);
 			} else {
-				this.hide(btn, obj, cnt, options.immediate, options.speed, options.ease);
+				this.hide(animationConfig);
 			}
 		});
 	}
 
-	show(
-		trigger: HTMLElement,
-		item: HTMLElement,
-		content: HTMLElement,
-		immediate = false,
-		speed: number,
-		ease: string
-	) {
-		showAnimation({ trigger, item, content, immediate, speed, ease });
-		this.$emit('base-accordion:show', item);
+	show(args: AnimationArguments) {
+		showAnimation(args);
+		this.$emit('base-accordion:show', args.item);
 	}
 
-	hide(
-		trigger: HTMLElement,
-		item: HTMLElement,
-		content: HTMLElement,
-		immediate = false,
-		speed: number,
-		ease: string
-	) {
-		hideAnimation({ trigger, item, content, immediate, speed, ease });
-		this.$emit('base-accordion:hide', item);
+	hide(args: AnimationArguments) {
+		hideAnimation(args);
+		this.$emit('base-accordion:hide', args.item);
 	}
 
 	handleTriggerEvent(e: Event) {
 		const trigger = e.target as HTMLElement;
-		const item = trigger.closest('[data-accordion-item]') as AccordionElement;
-		const content = item._content as HTMLElement;
+		const item = trigger.closest<AccordionElement>('[data-accordion-item]');
 		const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
 		const { config: options } = BaseAccordion;
 
-		if (options.autoCollapse == true) {
-			this.items.forEach(obj => {
-				const { _trigger: button, _content: content } = obj;
+		if (!item) {
+			return logger.error('Failed to handle triggered event. Missing item element');
+		}
 
-				if (!button || !content) {
-					logger.warn('Missing trigger or content');
-				} else if (button.getAttribute('aria-expanded') === 'true') {
-					this.hide(button, obj, content, false, options.speed, options.ease);
+		const animationConfig = {
+			item,
+			immediate: options.immediate,
+			speed: options.speed,
+			ease: options.ease,
+		};
+
+		if (options.autoCollapse) {
+			this.items.forEach(item => {
+				const { _trigger: trigger, _content: content } = item;
+
+				if (!trigger || !content) {
+					return logger.error('Missing trigger or content element');
+				}
+
+				if (trigger.getAttribute('aria-expanded') === 'true') {
+					this.hide(animationConfig);
 				}
 			});
 		}
 
 		if (!isExpanded) {
-			this.show(trigger, item, content, false, options.speed, options.ease);
+			this.show(animationConfig);
 		} else {
-			this.hide(trigger, item, content, false, options.speed, options.ease);
+			this.hide(animationConfig);
 		}
 	}
 
@@ -151,7 +152,7 @@ export class BaseAccordion extends Component {
 
 		this.items.forEach(({ _trigger: trigger }) => {
 			if (!trigger) {
-				return logger.warn('Failed to bind event listener. Missing trigger element.');
+				return logger.error('Failed to bind event listener. Missing trigger element');
 			}
 
 			this.$on('click', trigger, this.clickHandler);
@@ -166,7 +167,7 @@ export class BaseAccordion extends Component {
 			}
 
 			this.$off('click', trigger, this.clickHandler);
-			this.$on('keydown', trigger, this.keyDownHandler);
+			this.$off('keydown', trigger, this.keyDownHandler);
 		});
 	}
 }

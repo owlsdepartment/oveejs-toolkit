@@ -1,7 +1,7 @@
+import { AccordionElement } from './accordion';
+
 export interface AnimationArguments {
-	trigger: HTMLElement;
-	item: HTMLElement;
-	content: HTMLElement;
+	item: AccordionElement;
 	height?: number;
 	immediate: boolean;
 	speed: number;

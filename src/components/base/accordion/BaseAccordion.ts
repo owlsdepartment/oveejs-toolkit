@@ -95,6 +95,7 @@ export class BaseAccordion extends Component {
 		ease: string
 	) {
 		showAnimation({ trigger, item, content, immediate, speed, ease });
+		this.$emit('base-accordion:show', item);
 	}
 
 	hide(
@@ -106,6 +107,7 @@ export class BaseAccordion extends Component {
 		ease: string
 	) {
 		hideAnimation({ trigger, item, content, immediate, speed, ease });
+		this.$emit('base-accordion:hide', item);
 	}
 
 	handleTriggerEvent(e: Event) {

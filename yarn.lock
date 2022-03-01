@@ -3162,11 +3162,13 @@ __metadata:
     stylelint-config-standard-scss: ^3.0.0
     stylelint-order: ^5.0.0
     typescript: ^4.5.5
+    vanilla-lazyload: ^17.5.1
     vite: ^2.7.13
   peerDependencies:
     lodash: ^4.17.21
     lottie-web: ^5.8.1
     ovee.js: ~2.1.8
+    vanilla-lazyload: ^17.5.1
   languageName: unknown
   linkType: soft
 
@@ -4350,6 +4352,13 @@ __metadata:
     spdx-correct: ^3.0.0
     spdx-expression-parse: ^3.0.0
   checksum: 35703ac889d419cf2aceef63daeadbe4e77227c39ab6287eeb6c1b36a746b364f50ba22e88591f5d017bc54685d8137bc2d328d0a896e4d3fd22093c0f32a9ad
+  languageName: node
+  linkType: hard
+
+"vanilla-lazyload@npm:^17.5.1":
+  version: 17.5.1
+  resolution: "vanilla-lazyload@npm:17.5.1"
+  checksum: 6156331d392f3b05bacfeb1efcc53c71f5041842d45db924e21b399f42bc9fcdeddde554e684d607c1819d9d1f2ce7223d665353654410dff582e18606f76127
   languageName: node
   linkType: hard
 

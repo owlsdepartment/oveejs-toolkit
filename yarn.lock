@@ -2229,6 +2229,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gsap@npm:^3.9.1":
+  version: 3.9.1
+  resolution: "gsap@npm:3.9.1"
+  checksum: 4ea20b134bb00419286842f6e57ea7cb132b5b738d2aca2eecd6f423804ca3a4ac531c76aee63aad9d8b40a0f16e6a50b78bc201fd53f5fa3ca18be51b89f6bb
+  languageName: node
+  linkType: hard
+
 "hard-rejection@npm:^2.1.0":
   version: 2.1.0
   resolution: "hard-rejection@npm:2.1.0"
@@ -3150,6 +3157,7 @@ __metadata:
     eslint-plugin-lit: ^1.2.0
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-simple-import-sort: ^7.0.0
+    gsap: ^3.9.1
     husky: ^7.0.0
     lodash: ^4.17.21
     lottie-web: ^5.8.1

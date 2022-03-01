@@ -2,7 +2,6 @@
 
 ## Requirements
  - `lodash`
- - `ovee.js`
 
 ## Installation and configuration
 

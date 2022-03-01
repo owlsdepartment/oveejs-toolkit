@@ -1,4 +1,4 @@
-# Components instalation and configuration
+# Components installation and configuration
 
 ```ts
 // Import component from library

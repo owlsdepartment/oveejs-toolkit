@@ -50,7 +50,7 @@ Main methods used in this component are:
 
 ## Events
 
-Events which the component emit are:
+Events which the component emits are:
 
 - `'nav-toggle:visible'` on component element
 

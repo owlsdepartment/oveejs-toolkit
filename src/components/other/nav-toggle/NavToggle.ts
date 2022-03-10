@@ -1,4 +1,4 @@
-import { bind, Component, dataParam, Logger, register } from 'ovee.js';
+import { bind, Component, dataParam, emitEvent, Logger, register } from 'ovee.js';
 
 type toggleEvent = CustomEvent<boolean>;
 
@@ -9,6 +9,7 @@ const DEFAULT_NAV_NAME = 'menu';
 export class NavToggle extends Component {
 	nav: HTMLElement;
 	animStarted: boolean;
+	html = document.documentElement;
 
 	@dataParam('navToggle')
 	navName: string;
@@ -23,10 +24,6 @@ export class NavToggle extends Component {
 	protected _hideImmediately: string;
 
 	isOpen = false;
-
-	get html() {
-		return document.documentElement;
-	}
 
 	get showImmediately() {
 		return this._showImmediately === 'true';
@@ -59,8 +56,8 @@ export class NavToggle extends Component {
 	}
 
 	bind() {
-		this.$on('nav-toggle:show', this.onNavShow.bind(this));
-		this.$on('nav-toggle:hide', this.onNavHide.bind(this));
+		this.$on('nav-toggle:show', this.onNavShow);
+		this.$on('nav-toggle:hide', this.onNavHide);
 		this.$on('transitionstart', this.nav, this.animStart);
 		this.$on('transitionend', this.nav, this.animEnd);
 	}
@@ -128,7 +125,10 @@ export class NavToggle extends Component {
 		this.$element.setAttribute('aria-expanded', 'true');
 
 		this.$emit('nav-toggle:visible', this.$element);
-		this.$emit(`${this.navName}-toggle:visible`, this.html);
+		emitEvent(window as any, 'nav-toggle:visible', {
+			element: this.$element,
+			navName: this.navName,
+		});
 	}
 
 	hide(immediately = false) {
@@ -146,6 +146,9 @@ export class NavToggle extends Component {
 		this.$element.setAttribute('aria-expanded', 'false');
 
 		this.$emit('nav-toggle:hidden', this.$element);
-		this.$emit(`${this.navName}-toggle:hidden`, this.html);
+		emitEvent(window as any, 'nav-toggle:hidden', {
+			element: this.$element,
+			navName: this.navName,
+		});
 	}
 }

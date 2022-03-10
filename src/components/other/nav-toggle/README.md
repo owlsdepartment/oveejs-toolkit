@@ -17,7 +17,7 @@ export default [
 
 ### Basic usage
 
-`NavToggle` is a component mainly built to toggle menu/navigation but it can trigger any behaviour on any element of the website. It's based on adding global classes to `HTML document` describing statements of element you toggle.
+`NavToggle` is a component mainly built to toggle menu/navigation but it can trigger any behaviour on any element of a website. It's based on adding global classes to `HTML document` describing statements of element you toggle.
 
 Example:
 
@@ -50,15 +50,15 @@ Main methods used in this component are:
 
 ## Events
 
-Events which emits the component are:
+Events which the component emit are:
 
 - `'nav-toggle:visible'` on component element
 
-- `'`*navName*`-toggle:visible'` on document element
+- global `'nav-toggle:visible'` on window with component element as detail
 
 - `'nav-toggle:hidden'` on component element
 
-- `'`*navName*`-toggle:hidden'` on document element
+- global `'nav-toggle:hidden'` on window with component element as detail
 
 
 ## Styling

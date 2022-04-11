@@ -10,12 +10,12 @@ export interface BaseDialogConfig {
 }
 
 const logger = new Logger('BaseDialog');
-const DEFAULT_CONFIG: BaseDialogConfig = {
+export const BASE_DIALOG_DEFAULT_CONFIG: BaseDialogConfig = {
 	dialogRoot: '.dialog-root',
 };
 
 export class BaseDialog extends TemplateComponent {
-	static config: BaseDialogConfig = DEFAULT_CONFIG;
+	static config: BaseDialogConfig = BASE_DIALOG_DEFAULT_CONFIG;
 
 	rootClass = '';
 	dialogTarget: HTMLElement;

@@ -5,13 +5,13 @@ export interface InViewportConfig {
 	threshold: number;
 }
 
-export const DEFAULT_CONFIG: InViewportConfig = {
+export const IN_VIEWPORT_DEFAULT_CONFIG: InViewportConfig = {
 	threshold: 0.5,
 };
 
 @register('in-viewport')
 export class InViewport extends Component {
-	static config: InViewportConfig = DEFAULT_CONFIG;
+	static config: InViewportConfig = IN_VIEWPORT_DEFAULT_CONFIG;
 
 	observer: IntersectionObserver;
 

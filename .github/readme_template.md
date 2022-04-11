@@ -7,7 +7,7 @@
 ## Installation and configuration
 
 <!-- TODO: if something is special or unusual, update this section, else just leave this  -->
-See [Components instalation](/docs/components_instalation.md)
+See [Components installation](/docs/components_installation.md)
 
 ## Usage example
 

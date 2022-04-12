@@ -15,12 +15,7 @@ const calcOffsetMap: Record<
 		return self.headerHeight * self.multiplier;
 	},
 	none: self => {
-		let offset = 0;
-		if (self.collapsingHeader === 'sticky') {
-			offset = self.headerHeight;
-		}
-
-		return offset;
+		return self.collapsingHeader === 'sticky' ? self.headerHeight : 0;
 	},
 	default: self => {
 		return self.numberOffset;
@@ -71,12 +66,12 @@ export class CollapsingHeader extends Component {
 	isScrollingDown = true;
 	pastTrigger = false;
 
-	scrollListener: any;
+	scrollListener: () => void;
 
 	get throttleValue(): number {
 		const parsed = JSON.parse(this._throttleValue);
 
-		return isNumber(parsed) ? parsed : CollapsingHeader.config.throttle;
+		return isNumber(parsed) && !isNaN(parsed) ? parsed : CollapsingHeader.config.throttle;
 	}
 
 	get isShown() {
@@ -218,10 +213,5 @@ export class CollapsingHeader extends Component {
 	bind() {
 		this.$on('scroll load ajaxload', window as any, this.scrollListener);
 		this.$on('resize', window as any, this.calcOffsets);
-	}
-
-	destroy() {
-		this.$off('scroll load ajaxload', window as any, this.scrollListener);
-		this.$off('resize', window as any, this.calcOffsets);
 	}
 }

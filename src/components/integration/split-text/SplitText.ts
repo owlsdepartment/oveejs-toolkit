@@ -19,7 +19,7 @@ export class SplitText extends Component {
 	charsClass: string;
 
 	text: ST;
-	type: string;
+	type = '';
 	allowedTypes = ['lines', 'words', 'chars'];
 	recievedTypes: string[];
 
@@ -29,28 +29,18 @@ export class SplitText extends Component {
 		}
 
 		this.recievedTypes = this.splitText.split(/[, ]+/);
-		this.recievedTypes.forEach(el => {
-			if (this.allowedTypes.includes(el)) {
-				this.type += el + ' ';
-			}
-		});
+		this.type = this.recievedTypes.filter(el => this.allowedTypes.includes(el)).join(' ');
 
 		if (!this.type) {
 			this.type = 'lines';
 		}
 
-		this.text = new ST(this.$element, {
-			type: this.type,
-			linesClass: this.linesClass ? this.linesClass : '',
-			wordsClass: this.wordsClass ? this.wordsClass : '',
-			charsClass: this.charsClass ? this.charsClass : '',
-		});
+		this.initSplitText();
 
 		this.bind();
 	}
 
-	resizeHandler() {
-		this.text.revert();
+	initSplitText() {
 		this.text = new ST(this.$element, {
 			type: this.type,
 			linesClass: this.linesClass ? this.linesClass : '',
@@ -59,11 +49,12 @@ export class SplitText extends Component {
 		});
 	}
 
-	bind() {
-		this.$on('resize', window as any, this.resizeHandler);
+	resizeHandler() {
+		this.text.revert();
+		this.initSplitText();
 	}
 
-	destroy() {
-		this.$off('resize', window as any, this.resizeHandler);
+	bind() {
+		this.$on('resize', window as any, this.resizeHandler);
 	}
 }

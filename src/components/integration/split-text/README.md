@@ -33,9 +33,9 @@ export default [
 ### Parameters
 
 Available `data-split-text` values:
-- chars
-- words
-- lines
+- `chars`
+- `words`
+- `lines`
 
 The default split type is `lines`.
 
@@ -57,9 +57,9 @@ You can also combine those values by separating them with spaces and/or commas.
 ### CSS Classes
 
 You can specify `CSS classes` for characters, words and lines using the parameters below:
-- data-chars-class
-- data-words-class
-- data-lines-class
+- `data-chars-class`
+- `data-words-class`
+- `data-lines-class`
 
 ```html
 <p

@@ -84,14 +84,14 @@ You can also modify the trigger using `data-trigger-offset` and `data-offset-mul
 The config above will set trigger position to an offset equal to 2.5 heights of the `CollapsingHeader` element.
 
 Available `data-trigger-offset` values:
-- window - offset set to `window.innerHeight`
-- header - offset set to `CollapsingHeader` clientHeight
-- none - offset set to `0`
-- default
+- `window` - offset set to `window.innerHeight`
+- `header` - offset set to `CollapsingHeader` clientHeight
+- `none` - offset set to `0`
+- `default`
 	- for 'collapsing/default' -> none
 	- for 'fixed' -> none
 	- for 'sticky' -> window
-- element
+- `element`
 
 `data-offset-multiplier` is only applied if `data-trigger-offset` is set to `window` or `header`.
 

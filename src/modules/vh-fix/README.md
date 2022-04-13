@@ -2,7 +2,23 @@
 
 ## Installation and configuration
 
-See [Components installation](/docs/components_installation.md)
+```ts
+import { VhFix } from '@owlsdepartment/modules';
+```
+
+```ts
+const app = new App({
+    modules: [
+        VhFix,
+    ]
+});
+```
+
+or
+
+```ts
+app.use(VhFix);
+```
 
 ## Requirements
 
@@ -17,3 +33,5 @@ Don't forget to import scss function which calcs vh.
 	min-height: vh(100);
 }
 ```
+
+Also this module adds to `this.$app` reactive computed $vh which means in each component you can take the vh value with `this.$app.$vh.value`.

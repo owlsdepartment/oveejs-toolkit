@@ -15,26 +15,22 @@ export interface ParallaxConfig extends ScrollTrigger.StaticVars {
 	trigger: gsap.DOMTarget;
 	disableOnMobile: boolean;
 	disableOnTablet: boolean;
-	tweenProps: ParallaxTweenVars;
-}
-
-export interface ParallaxObject {
-	scrollTrigger: ScrollTrigger;
-	timeline: gsap.core.Timeline;
+	tweenVars: ParallaxTweenVars;
 }
 
 const logger = new Logger('ParallaxEffect');
 
 @register('parallax-effect')
 export class ParallaxEffect extends Component {
-	parallax: ParallaxObject;
+	tl: gsap.core.Timeline;
+	st: ScrollTrigger;
 
 	defaultParallaxConfig: ParallaxConfig = {
 		trigger: this.$element,
 		disableOnMobile: true,
 		disableOnTablet: true,
-		tweenProps: {
-			x: 100,
+		tweenVars: {
+			y: 100,
 		},
 	};
 
@@ -53,7 +49,7 @@ export class ParallaxEffect extends Component {
 		try {
 			jsonConfig = JSON.parse(this._parallaxConfig);
 		} catch (e) {
-			logger.error(`Invalid JSON Config: ${this._parallaxConfig}`);
+			logger.error('Invalid JSON Config:', this._parallaxConfig);
 
 			return {
 				...this.defaultParallaxConfig,
@@ -66,72 +62,79 @@ export class ParallaxEffect extends Component {
 		};
 	}
 
-	get isTablet() {
-		return window.matchMedia('(max-width: 1024px)').matches;
+	get desktopBreakpoint() {
+		return '(min-width: 1200px)';
 	}
 
-	get isMobile() {
-		return (
-			window.matchMedia('(max-width: 767px)').matches ||
-			window.matchMedia('(max-width: 1023px) and (orientation: landscape)').matches
-		);
+	get tabletBreakpoint() {
+		return '(max-width: 1199px)';
+	}
+
+	get mobileBreakpoint() {
+		return '(max-width: 767px), (max-width: 1023px) and (orientation: landscape)';
 	}
 
 	init() {
-		this.parallax = this.createParallax();
+		this.createParallax();
 	}
 
-	createParallax(): any {
-		const { parallaxConfig, isMobile, isTablet } = this;
-		const { disableOnMobile, disableOnTablet, tweenProps, trigger } = parallaxConfig;
+	createParallax(): void {
+		const { parallaxConfig, desktopBreakpoint, tabletBreakpoint, mobileBreakpoint } = this;
+		const { disableOnMobile, disableOnTablet, tweenVars, trigger } = parallaxConfig;
 
-		if ((disableOnTablet && isTablet) || (disableOnMobile && isMobile)) {
+		let breakpoint = desktopBreakpoint;
+
+		if (!disableOnTablet) {
+			breakpoint += `, ${tabletBreakpoint}`;
+		}
+
+		if (!disableOnMobile) {
+			breakpoint += `, ${mobileBreakpoint}`;
+		}
+
+		if (!Object.keys(tweenVars).length) {
+			logger.error(`Property "tweenVars" is empty`);
+
 			return;
 		}
 
-		if (!Object.keys(tweenProps).length) {
-			logger.error(`Property "tweenProps" is empty`);
-
-			return;
-		}
-
-		const tl = gsap.timeline({
-			paused: true,
-		});
 		const to: gsap.TweenVars = {};
 
-		for (const prop in tweenProps) {
-			if (!Object.prototype.hasOwnProperty.call(tweenProps, prop)) {
+		for (const prop in tweenVars) {
+			if (!Object.prototype.hasOwnProperty.call(tweenVars, prop)) {
 				return;
 			}
 
-			const value = tweenProps[prop as keyof ParallaxTweenVars];
+			const value = tweenVars[prop as keyof ParallaxTweenVars];
 
 			to[prop] = () => {
 				return value;
 			};
 		}
 
-		tl.to(trigger, to);
+		ScrollTrigger.matchMedia({
+			[breakpoint]: () => {
+				this.tl = gsap.timeline({
+					paused: true,
+				});
 
-		const st = ScrollTrigger.create({
-			...parallaxConfig,
-			scrub: true,
-			animation: tl,
+				this.tl.to(trigger, to);
+
+				this.st = ScrollTrigger.create({
+					...parallaxConfig,
+					scrub: true,
+					animation: this.tl,
+				});
+
+				return () => {
+					this.tl.kill();
+				};
+			},
 		});
-
-		return {
-			scrollTrigger: st,
-			timeline: tl,
-		};
 	}
 
 	destroy() {
-		if (!this.parallax) {
-			return;
-		}
-
-		this.parallax.timeline.kill();
-		this.parallax.scrollTrigger.kill();
+		this.tl?.kill();
+		this.st?.kill();
 	}
 }

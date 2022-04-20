@@ -107,9 +107,7 @@ export class ParallaxEffect extends Component {
 
 			const value = tweenVars[prop as keyof ParallaxTweenVars];
 
-			to[prop] = () => {
-				return value;
-			};
+			to[prop] = value;
 		}
 
 		ScrollTrigger.matchMedia({

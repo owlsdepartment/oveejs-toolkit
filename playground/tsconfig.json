@@ -12,6 +12,7 @@
         "paths": {
             "@/*": ["playground/src/*"],
             "@components": ["src"],
+            "@modules": ["src"],
             "~/*": ["playground/*"]
         }
     },

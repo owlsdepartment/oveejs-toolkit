@@ -37,7 +37,7 @@ To change options you can extend component and override `get parallaxConfig` pro
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `trigger` | `Element \| string \| null | ArrayLike<Element \| string \| null>` | `this.$element` | The element whose properties you want to animate |
+| `trigger` | `Element \| string \| null \| ArrayLike<Element \| string \| null>` | `this.$element` | The element whose properties you want to animate |
 | `disableOnMobile` | `boolean` | `true` | Disable parallax on mobile |
 | `disableOnTable` | `boolean` | `true` | Disable parallax on tablet |
 | `tweenVars` | `Object` | `{ y: 100 }` | An object containing properties you want to animate (`y`, `x`, `yPercent`, `xPercent` - [gsap vars](https://greensock.com/docs/v3/GSAP/gsap.to())) |

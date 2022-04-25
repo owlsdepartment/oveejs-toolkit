@@ -37,28 +37,35 @@ export class ParallaxEffect extends Component {
 	@dataParam('parallaxConfig')
 	_parallaxConfig = '';
 
+	get componentParallaxConfig() {
+		return this.$options as ParallaxConfig;
+	}
+
 	get parallaxConfig(): ParallaxConfig {
 		if (!this._parallaxConfig) {
-			return this.defaultParallaxConfig;
+			return {
+				...this.defaultParallaxConfig,
+				...this.componentParallaxConfig,
+			};
 		}
 
-		let jsonConfig: ParallaxConfig = {
-			...this.defaultParallaxConfig,
-		};
+		let config: ParallaxConfig = this.defaultParallaxConfig;
 
 		try {
-			jsonConfig = JSON.parse(this._parallaxConfig);
+			config = JSON.parse(this._parallaxConfig);
 		} catch (e) {
 			logger.error('Invalid JSON Config:', this._parallaxConfig);
 
 			return {
 				...this.defaultParallaxConfig,
+				...this.componentParallaxConfig,
 			};
 		}
 
 		return {
 			...this.defaultParallaxConfig,
-			...jsonConfig,
+			...this.componentParallaxConfig,
+			...config,
 		};
 	}
 

@@ -31,7 +31,57 @@ Basic usage
 
 Parallax Effect is based on [ScrollTrigger](https://greensock.com/docs/v3/Plugins/ScrollTrigger).
 
-To change options you can extend component and override `get parallaxConfig` property (remember to call `super.init()` and `super.destroy()` when overriding `init` and `destroy` hooks), or you can add `data-parallax-config` to element with config as JSON.
+To change options you can extend component and override `get parallaxConfig` property (remember to call `super.init()` and `super.destroy()` when overriding `init` and `destroy` hooks):
+
+```ts
+export class CustomParallax extends ParallaxEffect {
+    get parallaxConfig(): ParallaxConfig {
+		trigger: this.$element.querySelector('div'),
+        disableOnTablet: false,
+        disableOnMobile: false,
+        tweenVars: {
+			y: () => {
+				return this.$element.offsetHeight;
+			}
+		}
+    }
+}
+
+```
+
+or you can add `data-parallax-config` to element with config as JSON:
+
+```html
+<div 
+	data-parallax-effect 
+	data-parallax-config='{
+		"tweenVars": {
+			"yPercent": 100 
+		},
+		"top": "top center",
+		"end": "bottom top"
+	}'
+>
+	Hello World!
+</div>
+```
+
+You can also pass global options while registering a component:
+
+```ts
+const app = new App({
+    ...
+});
+
+app.registerComponent(ParallaxEffect, {
+    disableOnTablet: false,
+	tweenVars: {
+		y: -300,
+		end: "bottom-=300 top"
+	}
+});
+```
+
 
 ## Config
 

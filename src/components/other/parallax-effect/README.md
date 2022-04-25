@@ -29,7 +29,7 @@ Basic usage
 </div>
 ```
 
-Parallax Effect based on [ScrollTrigger](https://greensock.com/docs/v3/Plugins/ScrollTrigger).
+Parallax Effect is based on [ScrollTrigger](https://greensock.com/docs/v3/Plugins/ScrollTrigger).
 
 To change options you can extend component and override `get parallaxConfig` property (remember to call `super.init()` and `super.destroy()` when overriding `init` and `destroy` hooks), or you can add `data-parallax-config` to element with config as JSON.
 

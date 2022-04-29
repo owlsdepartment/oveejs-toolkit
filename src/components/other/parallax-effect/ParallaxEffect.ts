@@ -9,10 +9,11 @@ export interface ParallaxTweenVars {
 	y?: gsap.TweenValue;
 	xPercent?: gsap.TweenValue;
 	yPercent?: gsap.TweenValue;
+	ease?: string | gsap.EaseFunction;
 }
 
 export interface ParallaxConfig extends ScrollTrigger.StaticVars {
-	trigger: gsap.DOMTarget;
+	target: gsap.DOMTarget;
 	disableOnMobile: boolean;
 	disableOnTablet: boolean;
 	tweenVars: ParallaxTweenVars;
@@ -26,7 +27,8 @@ export class ParallaxEffect extends Component {
 	st: ScrollTrigger;
 
 	defaultParallaxConfig: ParallaxConfig = {
-		trigger: this.$element,
+		scrub: true,
+		target: this.$element,
 		disableOnMobile: true,
 		disableOnTablet: true,
 		tweenVars: {
@@ -42,30 +44,28 @@ export class ParallaxEffect extends Component {
 	}
 
 	get parallaxConfig(): ParallaxConfig {
+		const baseConfig = {
+			...this.defaultParallaxConfig,
+			...this.componentParallaxConfig,
+		};
+
 		if (!this._parallaxConfig) {
-			return {
-				...this.defaultParallaxConfig,
-				...this.componentParallaxConfig,
-			};
+			return baseConfig;
 		}
 
-		let config: ParallaxConfig = this.defaultParallaxConfig;
+		let elementConfig: ParallaxConfig = this.defaultParallaxConfig;
 
 		try {
-			config = JSON.parse(this._parallaxConfig);
+			elementConfig = JSON.parse(this._parallaxConfig);
 		} catch (e) {
 			logger.error('Invalid JSON Config:', this._parallaxConfig);
 
-			return {
-				...this.defaultParallaxConfig,
-				...this.componentParallaxConfig,
-			};
+			return baseConfig;
 		}
 
 		return {
-			...this.defaultParallaxConfig,
-			...this.componentParallaxConfig,
-			...config,
+			...baseConfig,
+			...elementConfig,
 		};
 	}
 
@@ -87,7 +87,7 @@ export class ParallaxEffect extends Component {
 
 	createParallax(): void {
 		const { parallaxConfig, desktopBreakpoint, tabletBreakpoint, mobileBreakpoint } = this;
-		const { disableOnMobile, disableOnTablet, tweenVars, trigger } = parallaxConfig;
+		const { disableOnMobile, disableOnTablet, tweenVars, target, trigger } = parallaxConfig;
 
 		let breakpoint = desktopBreakpoint;
 
@@ -123,11 +123,14 @@ export class ParallaxEffect extends Component {
 					paused: true,
 				});
 
-				this.tl.to(trigger, to);
+				this.tl.to(target, to);
+
+				if (!trigger) {
+					parallaxConfig.trigger = target;
+				}
 
 				this.st = ScrollTrigger.create({
 					...parallaxConfig,
-					scrub: true,
 					animation: this.tl,
 				});
 

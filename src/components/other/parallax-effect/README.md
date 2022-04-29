@@ -36,7 +36,8 @@ To change options you can extend component and override `get parallaxConfig` pro
 ```ts
 export class CustomParallax extends ParallaxEffect {
     get parallaxConfig(): ParallaxConfig {
-		trigger: this.$element.querySelector('div'),
+		target: this.$element.querySelector('div'),
+		trigger: this.$element,
         disableOnTablet: false,
         disableOnMobile: false,
         tweenVars: {
@@ -58,7 +59,7 @@ or you can add `data-parallax-config` to element with config as JSON:
 		"tweenVars": {
 			"yPercent": 100 
 		},
-		"top": "top center",
+		"start": "top center",
 		"end": "bottom top"
 	}'
 >
@@ -87,8 +88,8 @@ app.registerComponent(ParallaxEffect, {
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
-| `trigger` | `Element \| string \| null \| ArrayLike<Element \| string \| null>` | `this.$element` | The element whose properties you want to animate |
+| `target` | `Element \| string \| null \| ArrayLike<Element \| string \| null>` | `this.$element` | The element whose properties you want to animate |
 | `disableOnMobile` | `boolean` | `true` | Disable parallax on mobile |
 | `disableOnTable` | `boolean` | `true` | Disable parallax on tablet |
-| `tweenVars` | `Object` | `{ y: 100 }` | An object containing properties you want to animate (`y`, `x`, `yPercent`, `xPercent` - [gsap vars](https://greensock.com/docs/v3/GSAP/gsap.to())) |
+| `tweenVars` | `Object` | `{ y: 100 }` | An object containing properties you want to animate (`y`, `x`, `yPercent`, `xPercent`, `ease` - [gsap vars](https://greensock.com/docs/v3/GSAP/gsap.to())) |
 | ScrollTrigger Options |  |  | You can pass any property of [ScrollTrigger](https://greensock.com/docs/v3/Plugins/ScrollTrigger/static.create()). |

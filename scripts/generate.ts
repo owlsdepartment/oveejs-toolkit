@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 
 import { generateComponent } from './generate/component';
+import { generateMixin } from './generate/mixin';
 import { generateModule } from './generate/module';
 import { generateTool } from './generate/tool';
 
@@ -25,6 +26,16 @@ program
 	.argument('[name]', 'module name')
 	.action(async (path: string, name: string | undefined) => {
 		await generateModule(path, name ?? '');
+	});
+
+program
+	.command('mixin')
+	.alias('mi')
+	.description('generate boilerplate for new mixin')
+	.argument('<path>', 'mixin path. If used alone, mixin name will be infered')
+	.argument('[name]', 'mixin name')
+	.action(async (path: string, name: string | undefined) => {
+		await generateMixin(path, name ?? '');
 	});
 
 program

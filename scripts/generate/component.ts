@@ -48,12 +48,7 @@ export async function generateComponent(path: string, name: string, withStyles: 
 
 	mkdirSync(fullPath, { recursive: true });
 
-	writeFileSync(
-		_path.resolve(fullPath, 'index.ts'),
-		`// export all code you want to be available on the outside
-export * from './${pascalCaseName}';
-`
-	);
+	writeFileSync(_path.resolve(fullPath, 'index.ts'), `export * from './${pascalCaseName}';\n`);
 
 	writeFileSync(
 		_path.resolve(fullPath, `${pascalCaseName}.ts`),

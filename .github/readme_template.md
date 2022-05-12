@@ -12,3 +12,7 @@ See [Components installation](/docs/components_installation.md)
 ## Usage example
 
 <!-- TODO: put here code exmaples with description -->
+
+## API
+
+<!-- TODO: put detailed API specification here -->

@@ -1,65 +1,79 @@
-import { bind, Component, register } from 'ovee.js';
-import VanillaLazyLoad, { ILazyLoadInstance, ILazyLoadOptions } from 'vanilla-lazyload';
+import { defaultsDeep } from 'lodash';
+import { bind, Component, dataParam, register } from 'ovee.js';
+import VanillaLazyLoad, { ILazyLoadOptions } from 'vanilla-lazyload';
 
-export type LazyLoadEvent = CustomEvent<ILazyLoadOptions>;
+import { WithInViewport } from '@/mixins';
+
+export type LazyLoadEvent = CustomEvent<LazyLoadOptions>;
+
+export interface LazyLoadOptions extends ILazyLoadOptions {
+	inViewportClass?: string;
+}
 
 @register('lazy-load')
-export class LazyLoad extends Component {
-	destroyInterval: null | number = null;
-	lazyLoad: ILazyLoadInstance | null;
+export class LazyLoad extends WithInViewport(Component) {
+	isLoadingInitialized = false;
 
-	get lazyLoadOptions(): ILazyLoadOptions {
-		return (this.$options as ILazyLoadOptions) ?? {};
+	$options: LazyLoadOptions = {
+		threshold: 0.5,
+		inViewportClass: 'is-in-viewport',
+	};
+
+	@dataParam()
+	target = '';
+
+	get options(): LazyLoadOptions {
+		return this.$options;
 	}
 
-	get elementsToLoad() {
-		return [this.$element] as unknown as NodeListOf<HTMLElement>;
+	get loadTargets(): HTMLElement[] {
+		const targets = this.target
+			? Array.from(this.$element.querySelectorAll<HTMLElement>(this.target))
+			: [this.$element as HTMLElement];
+
+		if (!targets.length) {
+			console.error(
+				'[LazyLoad] Target not found when attempting to lazy load. Target selector: ',
+				this.target
+			);
+		}
+
+		return targets;
 	}
 
-	init() {
-		const { lazyLoadOptions } = this;
-		const { callback_error, callback_loaded } = lazyLoadOptions;
+	onIntersection({ isIntersecting }: IntersectionObserverEntry) {
+		if (isIntersecting) {
+			this.$element.classList.add(this.options.inViewportClass ?? '');
 
-		lazyLoadOptions.callback_loaded = (el, instance) => {
-			callback_loaded?.(el, instance);
-			this.$emit('lazy-load:loaded', null);
-		};
-
-		lazyLoadOptions.callback_error = (el, instance) => {
-			callback_error?.(el, instance);
-			this.$emit('lazy-load:error', null);
-		};
-
-		this.lazyLoad = new VanillaLazyLoad(lazyLoadOptions, this.elementsToLoad);
+			if (!this.isLoadingInitialized) {
+				this.load();
+			}
+		}
 	}
 
 	@bind('lazy-load:load')
-	onLoad(e: LazyLoadEvent) {
-		VanillaLazyLoad.load(this.$element as HTMLElement, e.detail ?? this.lazyLoadOptions);
-	}
+	load(e?: LazyLoadEvent | LazyLoadOptions) {
+		const { loadTargets } = this;
+		const arg = e instanceof CustomEvent ? e.detail : e;
+		const options = defaultsDeep({}, arg ?? {}, this.options) as LazyLoadOptions;
 
-	@bind('lazy-load:update')
-	@bind('lazy-load:global-update', window as any)
-	onUpdate() {
-		if (!this.lazyLoad) {
-			return;
+		for (const target of loadTargets) {
+			VanillaLazyLoad.load(target, {
+				...options,
+
+				callback_loaded: (el, instance) => {
+					this.$element.classList.add(options.class_loaded ?? this.$options.class_loaded ?? '');
+					options?.callback_loaded?.(el, instance);
+					this.$emit('lazy-load:loaded', null);
+				},
+
+				callback_error: (el, instance) => {
+					options?.callback_error?.(el, instance);
+					this.$emit('lazy-load:error', null);
+				},
+			});
 		}
 
-		this.lazyLoad.update();
-	}
-
-	destroy() {
-		this.destroyInterval = window.setInterval(() => {
-			if (!this.lazyLoad || this.lazyLoad.loadingCount > 0) {
-				return;
-			}
-			
-			if (this.destroyInterval) {
-				clearInterval(this.destroyInterval);
-			}
-
-			this.lazyLoad.destroy();
-			this.lazyLoad = null;
-		}, 250);
+		this.isLoadingInitialized = true;
 	}
 }

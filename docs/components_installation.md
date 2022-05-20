@@ -24,13 +24,13 @@ import { YourComponent } from '@owlsdepartment/components';
 const app = new App({
     components: [
         // ... other components ...
-        [YourComponent, { threshold: 0.3 }],
+        [YourComponent, { customField: 'custom' }],
         // ... other components ...
     ]
 })
 
 // alternatively, register it with `registerComponent` method, to get full typing
-app.registerComponent(YourComponent, { threshold: 0.3 });
+app.registerComponent(YourComponent, { customField: 'custom' });
 ```
 
 
@@ -72,13 +72,13 @@ import { YourModule } from '@owlsdepartment/components';
 const app = new App({
     modules: [
         // ... other modules ...
-        [YourModule, { threshold: 0.3 }],
+        [YourModule, { customField: 'custom' }],
         // ... other modules ...
     ]
 })
 
 // alternatively, use it with `use` method, to get full typing
-app.use(YourModule, { threshold: 0.3 });
+app.use(YourModule, { customField: 'custom' });
 ```
 Some modules have styles, which you can import in `SCSS`:
 
@@ -92,6 +92,20 @@ or in `CSS`:
 @import '@owlsdepartment/components/styles/your-module.css';
 ```
 
+# `updateConfig` helper
+
+Some functions or classes (f.ex.: tools and mixins) can have a field `config`. If so, their default config can be partially or fully overwritten with `updateConfig` helper.
+
+Example:
+
+```ts
+import { MyMixin } from '@owlsdepartment/components';
+
+updateConfig(MyMixin, { customField: 'custom' })
+```
+
+If tool or mixin that are configurable this way, will have it specified in `README`.
+
 # Other
 
-Tools, mixins and others similar don't require any special configuration or installation by default, unless `README` says otherwise
+If tool doesn't use `updateConfig` helper (which should be specified in `README`),  it should not require any special configuration or installation.

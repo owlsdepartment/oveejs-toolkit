@@ -45,11 +45,11 @@ export async function generateMixin(path: string, name: string) {
 		`import { ClassConstructor, Component } from 'ovee.js';
 
 export function ${pascalCaseName}<Base extends ClassConstructor<Component>>(Ctor: Base) {
-	class ${pascalCaseName} extends Ctor {
+	class _${pascalCaseName} extends Ctor {
 		// write your mixin
 	}
 
-	return ${pascalCaseName};
+	return _${pascalCaseName};
 }
 `
 	);

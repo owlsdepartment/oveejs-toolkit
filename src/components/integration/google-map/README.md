@@ -33,7 +33,7 @@ export const getKey = (): string => {
 };
 ```
 
-Besides main `GoogleMap.ts` file you needed to have `get-options.ts` file and `styles.js`.
+Besides main `GoogleMap.ts` file you need to have `get-options.ts` file and `styles.js`.
 
 - `get-options.ts` component gets the exact information about the latitude/longitude, zoom of the map or map markers. Also connects component with map styles file.
 

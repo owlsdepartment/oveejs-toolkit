@@ -36,10 +36,10 @@ yarn playground reset
 
 ## Usage
 
-Import component you would like to test in `src/components.ts` from `@components`. Example:
+Import component you would like to test in `src/components.ts` from `@`. Example:
 
 ```ts
-import { TestComponent } from '@components';
+import { TestComponent } from '@';
 import { Class, Component } from 'ovee.js';
 
 const components: Class<Component, typeof Component>[] = [TestComponent];

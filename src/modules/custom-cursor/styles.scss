@@ -60,13 +60,13 @@
 			transform: background-scale(1.5);
 		}
 
-		.is-over-link.is-pressed & {
-			transform: background-scale(1.25);
-		}
-
 		[data-mode='text'] & {
 			transform: background-scale(5);
 			box-shadow: 0 0 rgb(255 255 255 / 0%);
+		}
+
+		.is-over-link.is-pressed & {
+			transform: background-scale(1.25);
 		}
 
 		[data-mode='text'].is-pressed & {

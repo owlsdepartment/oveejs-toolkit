@@ -10,7 +10,7 @@ export function WithInViewport<Base extends ClassConstructor<Component>>(Ctor: B
 
 		get observerOptions(): IntersectionObserverInit {
 			return {
-				threshold: WithInViewport.config,
+				threshold: WithInViewport.config.threshold,
 			};
 		}
 
@@ -41,4 +41,6 @@ export function WithInViewport<Base extends ClassConstructor<Component>>(Ctor: B
 	return _WithInViewport;
 }
 
-WithInViewport.config = DEFAULT_THRESHOLD as number | number[];
+WithInViewport.config = {
+	threshold: DEFAULT_THRESHOLD as number | number[],
+};

@@ -24,7 +24,7 @@ Example:
 
 ```ts
 export class CustomLazyLoad extends LazyLoad {
-    get lazyLoadOptions() {
+    get options() {
         ...super.options,
 
         threshold: 0

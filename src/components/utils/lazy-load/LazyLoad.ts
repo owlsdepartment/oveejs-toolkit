@@ -7,8 +7,13 @@ import { WithInViewport } from '@/mixins';
 export type LazyLoadEvent = CustomEvent<LazyLoadOptions>;
 
 export interface LazyLoadOptions extends ILazyLoadOptions {
-	inViewportClass?: string;
+	inViewportClass: string;
 }
+
+export const LAZYLOAD_DEFAULT_OPTIONS: LazyLoadOptions = {
+	threshold: 0.5,
+	inViewportClass: 'is-in-viewport',
+};
 
 @register('lazy-load')
 export class LazyLoad extends WithInViewport(Component) {
@@ -18,20 +23,17 @@ export class LazyLoad extends WithInViewport(Component) {
 	target = '';
 
 	get options(): LazyLoadOptions {
-		const defaults = {
-			threshold: 0.5,
-			inViewportClass: 'is-in-viewport',
-		};
-
 		return {
-			...defaults,
+			...LAZYLOAD_DEFAULT_OPTIONS,
 			...(this.$options as LazyLoadOptions),
 		};
 	}
 
 	get observerOptions(): IntersectionObserverInit {
 		return {
-			threshold: isUndefined(this.options?.threshold) ? 0.5 : this.options.threshold,
+			threshold: isUndefined(this.options?.threshold)
+				? LAZYLOAD_DEFAULT_OPTIONS.threshold
+				: this.options.threshold,
 		};
 	}
 
@@ -52,7 +54,9 @@ export class LazyLoad extends WithInViewport(Component) {
 
 	onIntersection({ isIntersecting }: IntersectionObserverEntry) {
 		if (isIntersecting) {
-			this.$element.classList.add(this.options?.inViewportClass ?? 'is-in-viewport');
+			this.$element.classList.add(
+				this.options?.inViewportClass ?? LAZYLOAD_DEFAULT_OPTIONS.inViewportClass
+			);
 
 			if (!this.isLoadingInitialized) {
 				this.load();

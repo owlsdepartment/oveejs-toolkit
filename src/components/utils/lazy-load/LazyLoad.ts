@@ -1,4 +1,4 @@
-import { defaultsDeep } from 'lodash';
+import { defaultsDeep, isUndefined } from 'lodash';
 import { bind, Component, dataParam, register } from 'ovee.js';
 import VanillaLazyLoad, { ILazyLoadOptions } from 'vanilla-lazyload';
 
@@ -14,16 +14,25 @@ export interface LazyLoadOptions extends ILazyLoadOptions {
 export class LazyLoad extends WithInViewport(Component) {
 	isLoadingInitialized = false;
 
-	$options: LazyLoadOptions = {
-		threshold: 0.5,
-		inViewportClass: 'is-in-viewport',
-	};
-
 	@dataParam()
 	target = '';
 
 	get options(): LazyLoadOptions {
-		return this.$options;
+		const defaults = {
+			threshold: 0.5,
+			inViewportClass: 'is-in-viewport',
+		};
+
+		return {
+			...defaults,
+			...(this.$options as LazyLoadOptions),
+		};
+	}
+
+	get observerOptions(): IntersectionObserverInit {
+		return {
+			threshold: isUndefined(this.options?.threshold) ? 0.5 : this.options.threshold,
+		};
 	}
 
 	get loadTargets(): HTMLElement[] {
@@ -43,7 +52,7 @@ export class LazyLoad extends WithInViewport(Component) {
 
 	onIntersection({ isIntersecting }: IntersectionObserverEntry) {
 		if (isIntersecting) {
-			this.$element.classList.add(this.options.inViewportClass ?? '');
+			this.$element.classList.add(this.options?.inViewportClass ?? 'is-in-viewport');
 
 			if (!this.isLoadingInitialized) {
 				this.load();
@@ -62,7 +71,7 @@ export class LazyLoad extends WithInViewport(Component) {
 				...options,
 
 				callback_loaded: (el, instance) => {
-					this.$element.classList.add(options.class_loaded ?? this.$options.class_loaded ?? '');
+					this.$element.classList.add(options?.class_loaded ?? 'loaded');
 					options?.callback_loaded?.(el, instance);
 					this.$emit('lazy-load:loaded', null);
 				},

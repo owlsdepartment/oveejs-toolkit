@@ -1,4 +1,4 @@
-import { defaultsDeep } from 'lodash';
+import { defaultsDeep, isUndefined } from 'lodash';
 
 type AnyObject = Record<string, any>;
 
@@ -8,11 +8,15 @@ export interface ClassWithConfig<Config> extends Function {
 	config: Config;
 }
 
-export function updateConfig<Ctor extends ClassWithConfig<AnyObject>>(
-	ctor: Ctor,
-	config?: Partial<Ctor['config']>
-): void {
-	if (!config) return;
+interface WithConfig {
+	config: any;
+}
 
-	ctor.config = defaultsDeep({}, config, ctor.config);
+export function updateConfig<Base extends WithConfig, Config = Base['config']>(
+	base: Base,
+	config?: Config extends AnyObject ? Partial<Config> : Config
+): void {
+	if (isUndefined(config)) return;
+
+	base.config = defaultsDeep({}, config, base.config);
 }

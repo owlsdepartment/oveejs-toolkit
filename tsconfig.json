@@ -10,7 +10,10 @@
 		"noImplicitAny": true,
 		"strictNullChecks": true,
 		"lib": ["dom", "es6", "ESNext"],
-		"baseUrl": "."
+		"baseUrl": ".",
+		"paths": {
+            "@/*": ["src/*"],
+        }
 	},
 	"exclude": [
 		"node_modules",

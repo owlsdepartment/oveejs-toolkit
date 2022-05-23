@@ -18,19 +18,20 @@ Basic usage
 
 This component is a wrapper for `vanilla-lazyload` library. Here is the full documentation: [https://github.com/verlok/vanilla-lazyload#-getting-started---html]().
 
-To change options or elements to load, you can extend component and override `get lazyLoadOptions`/`get elementsToLoad` property. Remember to call `super.init()` and `super.destroy()` when overriding `init` and `destroy` hooks.
+To change options or elements to load, you can extend component and override `get options` and `get loadTargets` property. Remember to call `super.init()` and `super.destroy()` when overriding `init` and `destroy` hooks.
 
 Example:
 
 ```ts
 export class CustomLazyLoad extends LazyLoad {
     get lazyLoadOptions() {
-        ...super.lazyLoadOptions,
+        ...super.options,
+
         threshold: 0
     }
 
-    get elementsToLoad() {
-        return document.querySelectorAll('video[data-src]')
+    get loadTargets() {
+        return [...document.querySelectorAll('video[data-src]'), ...document.querySelectorAll('.custom-img')]
     }
 }
 
@@ -48,7 +49,27 @@ app.registerComponent(LazyLoad, {
 });
 ```
 
-## Events
+You can change target load elements via `data-target` attribute.
+
+```html
+<div data-lazy-load data-target="img">
+    <img data-src="...">
+</div>
+```
+
+## API
+
+### Options
+
+`inViewportClass: string` - class added when component appears in viewport
+
+Other config options can be found [here](https://github.com/verlok/vanilla-lazyload#options)
+
+### Methods
+
+`load(options?: LazyLoadOptions): void` - method to manually force loading on a component. Accepts custom options, that will override default options. Can also be called through custom event
+
+### Events
 
 All events has effect only on element with this component.
 
@@ -60,8 +81,7 @@ export class SomeComponent extends Component {
     onImageLoad(element) {
         gsap.fromTo(element, {
             opacity: 0
-        },
-        {
+        }, {
             opacity: 1
         });
     }
@@ -75,8 +95,8 @@ export class SomeComponent extends Component {
     @bind('lazy-load:error', 'img')
     onImageError(element) {
         const errorElement = document.createElement('span');
-        errorElement.classList.add('image-error');
 
+        errorElement.classList.add('image-error');
         errorElement.innerText = `[LazyLoad] Cannot load image "${element.dataset.src}"`;
 
         element.parentElement.replaceChild(element, errorElement);
@@ -99,6 +119,6 @@ export class SomeComponent extends Component {
 }
 ```
 
-`lazy-load:update` - Make LazyLoad to re-check the DOM. You should update LazyLoad after added/removed DOM elements.
+### Extends
 
-`lazy-load:global-update` - Like above, but you should trigger event on `window` object, it will trigger update on every element with this component.
+[WithInViewport](/src/mixins/WithInViewport/README)

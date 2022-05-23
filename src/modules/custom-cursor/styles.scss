@@ -1,0 +1,155 @@
+.cursor {
+	$self: &;
+
+	@function background-scale($final_scale) {
+		@return translate(-50%, -50%) scale(calc(#{$final_scale} / 5));
+	}
+
+	width: auto;
+	height: auto;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10000;
+	overflow: visible;
+	transition: opacity 500ms ease;
+	pointer-events: none;
+	opacity: 0;
+	will-change: transform;
+
+	&.is-visible {
+		opacity: 1;
+	}
+
+	&__content {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 10rem;
+		height: 10rem;
+		position: relative;
+		transform: translate(-50%, -50%);
+
+		[data-mode='text'] & {
+			width: 10rem;
+			height: 10rem;
+		}
+	}
+
+	&__background {
+		width: 10rem;
+		height: 10rem;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		z-index: 0;
+		transition: all 0.6s ease;
+		transition-property: transform, background-color;
+		transform: background-scale(1);
+		border-radius: 100%;
+		background-color: #000;
+		will-change: background-color;
+		backface-visibility: hidden;
+
+		.is-pressed & {
+			transition: all 0.2s ease;
+			transform: background-scale(0.7);
+		}
+
+		.is-over-link & {
+			transform: background-scale(1.5);
+		}
+
+		.is-over-link.is-pressed & {
+			transform: background-scale(1.25);
+		}
+
+		[data-mode='text'] & {
+			transform: background-scale(5);
+			box-shadow: 0 0 rgb(255 255 255 / 0%);
+		}
+
+		[data-mode='text'].is-pressed & {
+			transform: background-scale(4.2);
+		}
+	}
+
+	&__text {
+		z-index: 1;
+		color: #fff;
+		visibility: hidden;
+		transition: all 0.6s ease;
+		transition-property: opacity, visibility, transform;
+		transform: scale(0.35);
+		opacity: 0;
+		will-change: transform;
+
+		[data-mode='text'] & {
+			visibility: visible;
+			transform: scale(1);
+			opacity: 1;
+		}
+
+		[data-mode='text'].is-pressed & {
+			transition: all 0.2s ease;
+			transform: scale(0.8);
+		}
+	}
+
+	&--shadow {
+		z-index: 9999;
+
+		#{$self}__background {
+			transform: background-scale(3);
+			background-color: rgba(#000, 0.1);
+		}
+
+		&.is-pressed {
+			#{$self}__background {
+				transform: background-scale(2);
+			}
+		}
+
+		&[data-mode='text'] {
+			#{$self}__background {
+				transform: background-scale(4);
+			}
+		}
+
+		&.is-over-link {
+			opacity: 0;
+		}
+	}
+
+	&--ripple {
+		z-index: 9998;
+		opacity: 1;
+
+		@keyframes cursor-ripple {
+			0% {
+				transform: background-scale(0);
+				opacity: 1;
+			}
+
+			100% {
+				transform: background-scale(5);
+				opacity: 0;
+			}
+		}
+
+		#{$self}__background {
+			animation-name: cursor-ripple;
+			animation-duration: 1s;
+			animation-timing-function: ease-out;
+			animation-iteration-count: 1;
+			animation-fill-mode: both;
+		}
+	}
+}
+
+.no-cursor {
+	&,
+	* {
+		cursor: none !important;
+	}
+}

@@ -1,4 +1,4 @@
-import { defaultsDeep } from 'lodash';
+import { defaultsDeep, isUndefined } from 'lodash';
 import { bind, Component, dataParam, register } from 'ovee.js';
 import VanillaLazyLoad, { ILazyLoadOptions } from 'vanilla-lazyload';
 
@@ -7,23 +7,34 @@ import { WithInViewport } from '@/mixins';
 export type LazyLoadEvent = CustomEvent<LazyLoadOptions>;
 
 export interface LazyLoadOptions extends ILazyLoadOptions {
-	inViewportClass?: string;
+	inViewportClass: string;
 }
+
+export const LAZYLOAD_DEFAULT_OPTIONS: LazyLoadOptions = {
+	threshold: 0.5,
+	inViewportClass: 'is-in-viewport',
+};
 
 @register('lazy-load')
 export class LazyLoad extends WithInViewport(Component) {
 	isLoadingInitialized = false;
 
-	$options: LazyLoadOptions = {
-		threshold: 0.5,
-		inViewportClass: 'is-in-viewport',
-	};
-
 	@dataParam()
 	target = '';
 
 	get options(): LazyLoadOptions {
-		return this.$options;
+		return {
+			...LAZYLOAD_DEFAULT_OPTIONS,
+			...(this.$options as LazyLoadOptions),
+		};
+	}
+
+	get observerOptions(): IntersectionObserverInit {
+		return {
+			threshold: isUndefined(this.options?.threshold)
+				? LAZYLOAD_DEFAULT_OPTIONS.threshold
+				: this.options.threshold,
+		};
 	}
 
 	get loadTargets(): HTMLElement[] {
@@ -43,7 +54,9 @@ export class LazyLoad extends WithInViewport(Component) {
 
 	onIntersection({ isIntersecting }: IntersectionObserverEntry) {
 		if (isIntersecting) {
-			this.$element.classList.add(this.options.inViewportClass ?? '');
+			this.$element.classList.add(
+				this.options?.inViewportClass ?? LAZYLOAD_DEFAULT_OPTIONS.inViewportClass
+			);
 
 			if (!this.isLoadingInitialized) {
 				this.load();
@@ -62,7 +75,7 @@ export class LazyLoad extends WithInViewport(Component) {
 				...options,
 
 				callback_loaded: (el, instance) => {
-					this.$element.classList.add(options.class_loaded ?? this.$options.class_loaded ?? '');
+					this.$element.classList.add(options?.class_loaded ?? 'loaded');
 					options?.callback_loaded?.(el, instance);
 					this.$emit('lazy-load:loaded', null);
 				},

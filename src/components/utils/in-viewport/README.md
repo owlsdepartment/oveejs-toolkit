@@ -1,7 +1,11 @@
 # InViewport
 
 ## Requirements
- - `lodash`
+ - [lodash](https://lodash.com/)
+
+```bash
+yarn add lodash
+```
 
 ## Installation and configuration
 

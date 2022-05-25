@@ -12,7 +12,7 @@ yarn add swiper
 
 See [Components installation](/docs/components_installation.md)
 
-## Structure
+## Usage example
 
 1. Basic structure of the slider
 ```html

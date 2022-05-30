@@ -7,26 +7,9 @@
 
 ## Installation and configuration
 
-See [Components installation](/docs/components_installation.md)
+See [Components installation](/docs/components_installation.md#modules)
 
-```ts
-import { CustomCursor, updateConfig } from '@owlsdepartment/modules';
-updateConfig(CollapsingHeader, { hideDefault: true, shadow: false, ripple: true });
-```
-
-```ts
-const app = new App({
-    modules: [
-        CustomCursor,
-    ]
-});
-```
-
-or
-
-```ts
-app.use(CustomCursor);
-```
+Styles
 
 ```scss
 @import '@owlsdepartment/modules/custom-cursor/styles/';
@@ -38,9 +21,8 @@ app.use(CustomCursor);
 
 You can overwrite default config by setting your values using `updateConfig` after importing the module.
 
-## Module options
+### Module options
 
-### Defaults
 ```ts
 {
 	hideDefault: false, 

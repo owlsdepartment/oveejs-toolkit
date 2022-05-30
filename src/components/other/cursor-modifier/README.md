@@ -4,15 +4,6 @@
 
 See [Components installation](/docs/components_installation.md)
 
-```ts
-import { CursorModifier } from '@owlsdepartment/components';
-
-export default [
-    // ... other components ...
-    CursorModifier
-];
-```
-
 ## Usage example
 
 `CursorModifer` component extends the functionality of the `CustomCursor` module.

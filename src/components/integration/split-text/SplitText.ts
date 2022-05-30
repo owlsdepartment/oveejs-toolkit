@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import { SplitText as ST } from 'gsap/SplitText';
-import { Component, dataParam, register } from 'ovee.js';
+import { bind, Component, dataParam, register } from 'ovee.js';
 
 gsap.registerPlugin(ST);
 
@@ -36,8 +36,6 @@ export class SplitText extends Component {
 		}
 
 		this.initSplitText();
-
-		this.bind();
 	}
 
 	initSplitText() {
@@ -49,12 +47,9 @@ export class SplitText extends Component {
 		});
 	}
 
+	@bind('resize', window as any)
 	resizeHandler() {
 		this.text.revert();
 		this.initSplitText();
-	}
-
-	bind() {
-		this.$on('resize', window as any, this.resizeHandler);
 	}
 }

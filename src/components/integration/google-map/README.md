@@ -9,8 +9,6 @@
 
 ## Usage example
 
-### Basic usage
-
 This component allows to share google map on the website with your own parameters and google map styles.
 
 HTML Markup:
@@ -19,27 +17,31 @@ HTML Markup:
 	<div 
 		class="map__wrapper"
 		data-google-map
-		data-lat="latitude"
-		data-lng="longitude"
-		data-pin="pin-url"
+		data-lat="50.0"
+		data-lng="25.0"
+		data-pin="assets/custom-pin.svg"
 	></div>
 ```
 
-Basically, this component connects to the wordpress function to download API key from the admin panel, but you can also complete the API key by yourself in the code.
+To specify google maps API key for all components, you can do this when registering component.
 
-```js
-export const getKey = (): string => {
-	return window.gmaps_key || '';
-};
+```ts
+app.registerComponent(GoogleMap, { gmapsKey: 'MY_KEY' });
 ```
 
-Besides main `GoogleMap.ts` file you need to have `get-options.ts` file and `styles.js`.
+You can also do this for specific component.
 
-- `get-options.ts` component gets the exact information about the latitude/longitude, zoom of the map or map markers. Also connects component with map styles file.
+```html
+	<div 
+		class="map__wrapper"
+		data-google-map
+		data-key="MY_KEY"
+	></div>
+```
 
-- `styles.js` contains and export the styles we want to apply on the map, for example:
+You can also change other map configs, like this.
 
-```js
+```ts
 const MAP_STYLES = [
 	{
 		featureType: 'all',
@@ -54,14 +56,57 @@ const MAP_STYLES = [
 		],
 	}
 ];
-export default MAP_STYLES;
+
+app.registerComponent(GoogleMap, { styles: MAP_STYLES });
 ```
 
-## Attributes
+All component options can be found [here](#options).
+
+## API
+
+### Attributes
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `data-lat` | `string` | - | pass latitude value to map component |
 | `data-lng` | `string` | - | pass longitude value to map component |
 | `data-pin` | `string` | - | set a pin icon (url) |
+| `data-key` | `string` | - | set api key |
 
+All of this params can be set via default component options during registration
+
+### Options
+
+All options are the same as official [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) with addition of `gmapsKey`, where you can pass API key for google maps.
+
+```ts
+interface GoogleMapOptions extends google.maps.MapOptions {
+	gmapsKey?: string;
+}
+```
+
+### Fields and Methods
+
+When extending `GoogleMaps`, you can specify your options overriding `get options` getter
+
+```ts
+class MyMap extends GoogleMaps {
+	get options() {
+		return {
+			...super.options,
+
+			zoomControl: false,
+		}
+	}
+}
+```
+
+To add custom behaviour after map is initialized, like adding markers, you can override method `onMapInitialized`, that adds center marker by default.
+
+```ts
+class MyMap extends GoogleMaps {
+	onMapInitialized() {
+		// add markers
+	}
+}
+```

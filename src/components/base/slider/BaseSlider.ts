@@ -1,8 +1,25 @@
-import { Component, el, Logger, emitEvent, register } from 'ovee.js';
-import { Swiper, Keyboard, EffectFade, Lazy, Navigation, Pagination, Autoplay, Virtual } from 'swiper';
-import { SwiperEvents, SwiperOptions, NavigationOptions, LazyOptions, PaginationOptions } from 'swiper/types';
+import { Component, emitEvent, Logger, register } from 'ovee.js';
+import {
+	Autoplay,
+	EffectFade,
+	Keyboard,
+	Lazy,
+	Navigation,
+	Pagination,
+	Swiper,
+	Virtual,
+} from 'swiper';
+import {
+	LazyOptions,
+	NavigationOptions,
+	PaginationOptions,
+	SwiperEvents,
+	SwiperOptions,
+} from 'swiper/types';
 
-interface SliderElement extends Element { swiperInstance?: Swiper }
+interface SliderElement extends Element {
+	swiperInstance?: Swiper;
+}
 
 const logger = new Logger('BaseSlider');
 
@@ -12,15 +29,13 @@ export class BaseSlider extends Component {
 	count: number;
 	curr: number;
 	swiperContainer: HTMLElement | null;
-	
+
 	init() {
 		this.count = this.$element.querySelectorAll('.slider__slide').length;
 		this.curr = 1;
 
 		if (this.count < 1) {
-			return logger.warn(
-				'No slider items were found.'
-			);
+			return logger.warn('No slider items were found.');
 		}
 
 		this.prepareDom();
@@ -35,39 +50,41 @@ export class BaseSlider extends Component {
 			const container = document.createElement('div');
 			container.className = 'swiper-container';
 			container.innerHTML = '<div class="swiper-wrapper"></div>';
-	
+
 			this.$element.appendChild(container);
 
 			// if ( !container ) return;
-	
+
 			const slides = Array.from(this.$element.querySelectorAll('.slider__slide'));
 
 			(container.querySelector('.swiper-wrapper') as HTMLElement).append(...slides);
-			container.querySelectorAll('.slider__slide').forEach((slide : HTMLElement, index) => {
+			container.querySelectorAll('.slider__slide').forEach((slide: HTMLElement, index) => {
 				slide.classList.add('swiper-slide');
 				slide.dataset.slideNumber = `${index}`;
 			});
-	
+
 			this.swiperContainer = container;
 		}
 	}
 
-	get swiperOptions() : SwiperOptions {
+	get swiperOptions(): SwiperOptions {
 		const keyboard = true;
 		const effect = 'slide';
 		const speed = 600;
 		const lazyload = !!(this.swiperContainer && this.swiperContainer.querySelector('.swiper-lazy'));
-		const lazy : LazyOptions | boolean = lazyload ? {
-			loadPrevNext: lazyload,
-			loadPrevNextAmount: 2,
-			checkInView: true
-		} : false;
+		const lazy: LazyOptions | boolean = lazyload
+			? {
+					loadPrevNext: lazyload,
+					loadPrevNextAmount: 2,
+					checkInView: true,
+			  }
+			: false;
 
-		const on : Partial<SwiperEvents> = {
-			lazyImageReady: (swiper, slideEl, imageEl)  => {
+		const on: Partial<SwiperEvents> = {
+			lazyImageReady: (swiper, slideEl, imageEl) => {
 				imageEl.setAttribute('data-ll-status', 'loaded');
 
-				if ( imageEl.parentElement ) {
+				if (imageEl.parentElement) {
 					imageEl.parentElement.classList.add('media-loaded');
 				}
 
@@ -77,7 +94,7 @@ export class BaseSlider extends Component {
 					const duplicatedIDs: number[] = [];
 
 					let i = 0;
-					slides.forEach((slide : HTMLElement) => {
+					slides.forEach((slide: HTMLElement) => {
 						if (slide.dataset.swiperSlideIndex === slideIndex) {
 							duplicatedIDs.push(i);
 						}
@@ -85,7 +102,7 @@ export class BaseSlider extends Component {
 					});
 
 					if (duplicatedIDs) {
-						duplicatedIDs.forEach((id) => {
+						duplicatedIDs.forEach(id => {
 							swiper.lazy.loadInSlide(id);
 						});
 					}
@@ -96,15 +113,15 @@ export class BaseSlider extends Component {
 			},
 			sliderFirstMove: () => {
 				emitEvent(window as any, 'slide-drag');
-			}
+			},
 		};
 
-		const navigation : NavigationOptions | boolean = {
+		const navigation: NavigationOptions | boolean = {
 			prevEl: this.$element.querySelector('.button--prev') as HTMLElement,
-			nextEl: this.$element.querySelector('.button--next') as HTMLElement
+			nextEl: this.$element.querySelector('.button--next') as HTMLElement,
 		};
 
-		const pagination : PaginationOptions | boolean  = {
+		const pagination: PaginationOptions | boolean = {
 			el: this.$element.querySelector('.slider__pagination') as HTMLElement,
 			clickable: false,
 			type: 'fraction',
@@ -112,7 +129,7 @@ export class BaseSlider extends Component {
 				return `<span class="${currentClass}"></span><span> OF </span><span class="${totalClass}"></span>`;
 			},
 			modifierClass: 'slider__pagination--',
-			clickableClass: 'is-clickable'
+			clickableClass: 'is-clickable',
 		};
 
 		return {
@@ -123,7 +140,7 @@ export class BaseSlider extends Component {
 			lazy,
 			navigation,
 			pagination,
-			on
+			on,
 		};
 	}
 
@@ -132,7 +149,7 @@ export class BaseSlider extends Component {
 
 		const options = this.swiperOptions;
 
-		if ( this.swiperContainer ) {
+		if (this.swiperContainer) {
 			this.swiper = new Swiper(this.swiperContainer, options);
 		}
 

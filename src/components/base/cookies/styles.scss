@@ -1,20 +1,17 @@
+$base_cookies_z_index: 9000 !default;
+
 .cookies {
 	display: flex;
 	position: fixed;
-	left: 0;
 	bottom: 0;
+	left: 0;
+	z-index: $base_cookies_z_index;
+	visibility: hidden;
 	transition-property: opacity, visibility;
 	opacity: 0;
-	visibility: hidden;
-	z-index: $z_index_modal;
 
-	&__desc { }
-
-	&__btn { }
-
-	.no-js &,
 	&.is-visible {
-		opacity: 1;
 		visibility: visible;
+		opacity: 1;
 	}
 }

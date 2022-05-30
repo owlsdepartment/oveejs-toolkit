@@ -1,19 +1,27 @@
 .slider {
-	&__container {}
+	&__container {
+		//
+	}
 
-	&__wrapper {}
+	&__wrapper {
+		//
+	}
 	
 	&__slide {
 		height: auto;
 		transform: translateZ(0);
 		backface-visibility: hidden;
 		
-		&:not(:first-child):not(.swiper-slide) { display: none; }
+		&:not(:first-child):not(.swiper-slide) {
+			display: none;
+		}
 	}
 
 	.pagination {
 		&__item {
-			&.is-active {}
+			&.is-active {
+				//
+			}
 		}
 	}
 }

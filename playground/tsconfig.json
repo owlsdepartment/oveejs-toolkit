@@ -10,9 +10,9 @@
         "baseUrl": "..",
         "experimentalDecorators": true,
         "paths": {
-            "@/*": ["playground/src/*"],
-            "@components": ["src"],
-            "~/*": ["playground/*"]
+            "@": ["src"],
+            "@playground/*": ["playground/src/*"],
+            "~/*": ["playground/*"],
         }
     },
 }

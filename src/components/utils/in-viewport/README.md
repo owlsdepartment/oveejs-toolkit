@@ -1,7 +1,11 @@
 # InViewport
 
 ## Requirements
- - `lodash`
+ - [lodash](https://lodash.com/)
+
+```bash
+yarn add lodash
+```
 
 ## Installation and configuration
 
@@ -41,6 +45,18 @@ You can change threshold which controls when image will appear.
 
 `data-threshold` param is parsed with JSON parser and passed directly to [IntesectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver), so you can pass there either a number, or an array of numbers. Look official documentation of [IntesectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver) to see how it works.
 
+If you would like to watch over some nested element inside `InViewport`, than you should specify `data-selector` param, which accepts normal `querySelector` values.
+
+```html
+<div class="img-wrapper" data-in-viewport data-selector=".very-big-image">
+    <h1>Some title</h1>
+
+    <img class="very-big-image" />
+</div>
+```
+
+In this example, we would like to animate `img-wrapper` element, but observe `very-big-image`. When our image will appear inn viewport, `img-wrapper` will receive `is-in-viewport` class.
+
 ## Styling
 
 We can style `InViewport` easily with `CSS` attribute selector, no `JS` animations required.
@@ -55,3 +71,12 @@ We can style `InViewport` easily with `CSS` attribute selector, no `JS` animatio
     }
 }
 ```
+
+## API
+
+### Attributes
+
+ - `data-threshold` - optional, accepts number or array of numbers. Similar like `threshold` in [InterectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver)
+ - `data-selector` - optional, accepts query selector for nested element to observe for
+
+<!-- TODO: modes: normal, above, always -->

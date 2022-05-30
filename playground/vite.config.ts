@@ -8,8 +8,8 @@ export default defineConfig({
 		alias: {
 			// pre-configured aliases, change them freely!
 			'~': __dirname,
-			'@': path.resolve(__dirname, 'src'),
-			'@components': path.resolve(__dirname, '../src'),
+			'@playground': path.resolve(__dirname, 'src'),
+			'@': path.resolve(__dirname, '../src'),
 		},
 	},
 });

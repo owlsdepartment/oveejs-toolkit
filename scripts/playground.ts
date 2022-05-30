@@ -5,6 +5,7 @@ import path from 'path';
 const PLAYGROUND_PATH = path.resolve(__dirname, '../playground');
 const INDEX = path.resolve(PLAYGROUND_PATH, 'index.html');
 const COMPONENTS = path.resolve(PLAYGROUND_PATH, 'src/components.ts');
+const MODULES = path.resolve(PLAYGROUND_PATH, 'src/modules.ts');
 const TEMPLATES = path.resolve(__dirname, 'templates/playground');
 
 const program = new Command();
@@ -29,13 +30,9 @@ function main() {
 }
 
 function init(silent = false) {
-	if (!existsSync(INDEX)) {
-		copyFileSync(path.resolve(TEMPLATES, '_index.html'), INDEX);
-	}
-
-	if (!existsSync(COMPONENTS)) {
-		copyFileSync(path.resolve(TEMPLATES, '_components.ts'), COMPONENTS);
-	}
+	createViaTemplate(INDEX, '_index.html');
+	createViaTemplate(COMPONENTS, '_components.ts');
+	createViaTemplate(MODULES, '_modules.ts');
 
 	if (silent) return;
 
@@ -43,9 +40,9 @@ function init(silent = false) {
 }
 
 function clear(silent = false) {
-	if (existsSync(INDEX)) unlinkSync(INDEX);
-
-	if (existsSync(COMPONENTS)) unlinkSync(COMPONENTS);
+	removeFile(INDEX);
+	removeFile(COMPONENTS);
+	removeFile(MODULES);
 
 	if (silent) return;
 
@@ -57,6 +54,16 @@ function reset() {
 	init(true);
 
 	console.error(`[playground] Reset done.`);
+}
+
+function createViaTemplate(target: string, templateName: string) {
+	if (!existsSync(target)) {
+		copyFileSync(path.resolve(TEMPLATES, templateName), target);
+	}
+}
+
+function removeFile(target: string) {
+	if (existsSync(target)) unlinkSync(target);
 }
 
 main();

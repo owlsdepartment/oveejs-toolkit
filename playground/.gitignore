@@ -1,3 +1,5 @@
 /index.html
-/src/components.ts
-/src/modules.ts
+!/src/main.ts
+/src/
+/styles/**/*.scss
+/styles/**/*.css

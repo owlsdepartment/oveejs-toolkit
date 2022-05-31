@@ -5,7 +5,7 @@ __metadata:
   version: 5
   cacheKey: 8
 
-"@babel/code-frame@npm:^7.0.0":
+"@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/code-frame@npm:7.16.7"
   dependencies:
@@ -360,6 +360,126 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ovee.js/toolkit@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@ovee.js/toolkit@workspace:."
+  dependencies:
+    "@commitlint/cli": ^16.1.0
+    "@commitlint/config-conventional": ^16.0.0
+    "@googlemaps/js-api-loader": ^1.14.3
+    "@rollup/plugin-alias": ^3.1.9
+    "@rollup/plugin-node-resolve": ^13.3.0
+    "@rollup/plugin-typescript": ^8.3.2
+    "@types/eslint": ^8.4.1
+    "@types/google.maps": ^3.49.1
+    "@types/lodash": ^4.14.178
+    "@types/node": ^17.0.12
+    "@typescript-eslint/eslint-plugin": ^5.10.1
+    "@typescript-eslint/parser": ^5.10.1
+    commander: ^9.0.0
+    esbuild: ^0.14.14
+    esbuild-plugin-alias: ^0.2.1
+    esbuild-runner: ^2.2.1
+    eslint: ^8.2.0
+    eslint-config-prettier: ^8.3.0
+    eslint-plugin-html: ^6.2.0
+    eslint-plugin-lit: ^1.2.0
+    eslint-plugin-prettier: ^4.0.0
+    eslint-plugin-simple-import-sort: ^7.0.0
+    gsap: ^3.9.1
+    husky: ^7.0.0
+    lodash: ^4.17.21
+    lottie-web: ^5.8.1
+    ovee.js: ~2.1.8
+    pinst: ^2.0.0
+    prettier: ^2.4.1
+    rollup: ^2.74.1
+    rollup-plugin-dts: ^4.2.2
+    rollup-plugin-esbuild: ^4.9.1
+    rollup-plugin-typescript-paths: ^1.3.1
+    sass: ^1.49.0
+    stylelint: ^14.2.0
+    stylelint-config-recommended-vue: ^1.1.0
+    stylelint-config-standard-scss: ^3.0.0
+    stylelint-order: ^5.0.0
+    swiper: ^8.0.7
+    typescript: ^4.5.5
+    vanilla-lazyload: ^17.5.1
+    vite: ^2.7.13
+  peerDependencies:
+    "@googlemaps/js-api-loader": ^1.14.3
+    lodash: ^4.17.21
+    lottie-web: ^5.8.1
+    ovee.js: ~2.1.8
+    swiper: ^8.0.7
+    vanilla-lazyload: ^17.5.1
+  languageName: unknown
+  linkType: soft
+
+"@rollup/plugin-alias@npm:^3.1.9":
+  version: 3.1.9
+  resolution: "@rollup/plugin-alias@npm:3.1.9"
+  dependencies:
+    slash: ^3.0.0
+  peerDependencies:
+    rollup: ^1.20.0||^2.0.0
+  checksum: cefae9dfb7c30f0dc78d24f4ad9ccb8a0878397b313c0fa9d0f519667394941c58a930d968d841e25aee43b0fb892d1e3f7edbb55e8197f191cce7da6a50b882
+  languageName: node
+  linkType: hard
+
+"@rollup/plugin-node-resolve@npm:^13.3.0":
+  version: 13.3.0
+  resolution: "@rollup/plugin-node-resolve@npm:13.3.0"
+  dependencies:
+    "@rollup/pluginutils": ^3.1.0
+    "@types/resolve": 1.17.1
+    deepmerge: ^4.2.2
+    is-builtin-module: ^3.1.0
+    is-module: ^1.0.0
+    resolve: ^1.19.0
+  peerDependencies:
+    rollup: ^2.42.0
+  checksum: ec5418e6b3c23a9e30683056b3010e9d325316dcfae93fbc673ae64dad8e56a2ce761c15c48f5e2dcfe0c822fdc4a4905ee6346e3dcf90603ba2260afef5a5e6
+  languageName: node
+  linkType: hard
+
+"@rollup/plugin-typescript@npm:^8.3.2":
+  version: 8.3.2
+  resolution: "@rollup/plugin-typescript@npm:8.3.2"
+  dependencies:
+    "@rollup/pluginutils": ^3.1.0
+    resolve: ^1.17.0
+  peerDependencies:
+    rollup: ^2.14.0
+    tslib: "*"
+    typescript: ">=3.7.0"
+  checksum: bdbf3c11d26b04244228cbe2bd48dbac66044c16df4ee3658276480b1e050c33f9bc72ef7b6e05a88c4a48db3d5359ab6a3acf7ff288482af29863478d014881
+  languageName: node
+  linkType: hard
+
+"@rollup/pluginutils@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@rollup/pluginutils@npm:3.1.0"
+  dependencies:
+    "@types/estree": 0.0.39
+    estree-walker: ^1.0.1
+    picomatch: ^2.2.2
+  peerDependencies:
+    rollup: ^1.20.0||^2.0.0
+  checksum: 8be16e27863c219edbb25a4e6ec2fe0e1e451d9e917b6a43cf2ae5bc025a6b8faaa40f82a6e53b66d0de37b58ff472c6c3d57a83037ae635041f8df959d6d9aa
+  languageName: node
+  linkType: hard
+
+"@rollup/pluginutils@npm:^4.1.1":
+  version: 4.2.1
+  resolution: "@rollup/pluginutils@npm:4.2.1"
+  dependencies:
+    estree-walker: ^2.0.1
+    picomatch: ^2.2.2
+  checksum: 6bc41f22b1a0f1efec3043899e4d3b6b1497b3dea4d94292d8f83b4cf07a1073ecbaedd562a22d11913ff7659f459677b01b09e9598a98936e746780ecc93a12
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:2":
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
@@ -412,6 +532,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/estree@npm:0.0.39":
+  version: 0.0.39
+  resolution: "@types/estree@npm:0.0.39"
+  checksum: 412fb5b9868f2c418126451821833414189b75cc6bf84361156feed733e3d92ec220b9d74a89e52722e03d5e241b2932732711b7497374a404fad49087adc248
+  languageName: node
+  linkType: hard
+
 "@types/google.maps@npm:^3.49.1":
   version: 3.49.1
   resolution: "@types/google.maps@npm:3.49.1"
@@ -440,7 +567,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:>=12, @types/node@npm:^17.0.12":
+"@types/node@npm:*, @types/node@npm:>=12, @types/node@npm:^17.0.12":
   version: 17.0.36
   resolution: "@types/node@npm:17.0.36"
   checksum: 11055fde0a1e1421113849b5e32c7022911efc0be670729947bf0162970e79962d804b1eb8a9afb291380cac97cf0e684511415d586ae5fe1560322c940fe188
@@ -458,6 +585,15 @@ __metadata:
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
   checksum: fd6bce2b674b6efc3db4c7c3d336bd70c90838e8439de639b909ce22f3720d21344f52427f1d9e57b265fcb7f6c018699b99e5e0c208a1a4823014269a6bf35b
+  languageName: node
+  linkType: hard
+
+"@types/resolve@npm:1.17.1":
+  version: 1.17.1
+  resolution: "@types/resolve@npm:1.17.1"
+  dependencies:
+    "@types/node": "*"
+  checksum: dc6a6df507656004e242dcb02c784479deca516d5f4b58a1707e708022b269ae147e1da0521f3e8ad0d63638869d87e0adc023f0bd5454aa6f72ac66c7525cf5
   languageName: node
   linkType: hard
 
@@ -852,6 +988,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"builtin-modules@npm:^3.0.0":
+  version: 3.3.0
+  resolution: "builtin-modules@npm:3.3.0"
+  checksum: db021755d7ed8be048f25668fe2117620861ef6703ea2c65ed2779c9e3636d5c3b82325bd912244293959ff3ae303afa3471f6a15bf5060c103e4cc3a839749d
+  languageName: node
+  linkType: hard
+
 "cacache@npm:^16.1.0":
   version: 16.1.0
   resolution: "cacache@npm:16.1.0"
@@ -1197,6 +1340,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"deepmerge@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "deepmerge@npm:4.2.2"
+  checksum: a8c43a1ed8d6d1ed2b5bf569fa4c8eb9f0924034baf75d5d406e47e157a451075c4db353efea7b6bcc56ec48116a8ce72fccf867b6e078e7c561904b5897530b
+  languageName: node
+  linkType: hard
+
 "delegates@npm:^1.0.0":
   version: 1.0.0
   resolution: "delegates@npm:1.0.0"
@@ -1345,6 +1495,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"es-module-lexer@npm:^0.9.3":
+  version: 0.9.3
+  resolution: "es-module-lexer@npm:0.9.3"
+  checksum: 84bbab23c396281db2c906c766af58b1ae2a1a2599844a504df10b9e8dc77ec800b3211fdaa133ff700f5703d791198807bba25d9667392d27a5e9feda344da8
+  languageName: node
+  linkType: hard
+
 "esbuild-android-64@npm:0.14.42":
   version: 0.14.42
   resolution: "esbuild-android-64@npm:0.14.42"
@@ -1454,6 +1611,13 @@ __metadata:
   version: 0.14.42
   resolution: "esbuild-openbsd-64@npm:0.14.42"
   conditions: os=openbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-plugin-alias@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "esbuild-plugin-alias@npm:0.2.1"
+  checksum: afe2d2c8b5f09d5321cb8d9c0825e8a9f6e03c2d50df92f953a291d4620cc29eddb3da9e33b238f6d8f77738e0277bdcb831f127399449fecf78fb84c04e5da9
   languageName: node
   linkType: hard
 
@@ -1778,6 +1942,20 @@ __metadata:
   version: 5.3.0
   resolution: "estraverse@npm:5.3.0"
   checksum: 072780882dc8416ad144f8fe199628d2b3e7bbc9989d9ed43795d2c90309a2047e6bc5979d7e2322a341163d22cfad9e21f4110597fe487519697389497e4e2b
+  languageName: node
+  linkType: hard
+
+"estree-walker@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "estree-walker@npm:1.0.1"
+  checksum: 7e70da539691f6db03a08e7ce94f394ce2eef4180e136d251af299d41f92fb2d28ebcd9a6e393e3728d7970aeb5358705ddf7209d52fbcb2dd4693f95dcf925f
+  languageName: node
+  linkType: hard
+
+"estree-walker@npm:^2.0.1":
+  version: 2.0.2
+  resolution: "estree-walker@npm:2.0.2"
+  checksum: 6151e6f9828abe2259e57f5fd3761335bb0d2ebd76dc1a01048ccee22fabcfef3c0859300f6d83ff0d1927849368775ec5a6d265dde2f6de5a1be1721cd94efc
   languageName: node
   linkType: hard
 
@@ -2396,6 +2574,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-builtin-module@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "is-builtin-module@npm:3.1.0"
+  dependencies:
+    builtin-modules: ^3.0.0
+  checksum: f1e5dd2cd5f252d4d799b20a0c8c4f7e9c399c4d141749af76ca0121058d4062c3015d026f1b1409dd3d2a4ddfb9b15cf6eb9c370fed53fea8652ce35b5e95cb
+  languageName: node
+  linkType: hard
+
 "is-core-module@npm:^2.5.0, is-core-module@npm:^2.8.1":
   version: 2.9.0
   resolution: "is-core-module@npm:2.9.0"
@@ -2432,6 +2619,13 @@ __metadata:
   version: 1.0.1
   resolution: "is-lambda@npm:1.0.1"
   checksum: 93a32f01940220532e5948538699ad610d5924ac86093fcee83022252b363eb0cc99ba53ab084a04e4fb62bf7b5731f55496257a4c38adf87af9c4d352c71c35
+  languageName: node
+  linkType: hard
+
+"is-module@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "is-module@npm:1.0.0"
+  checksum: 8cd5390730c7976fb4e8546dd0b38865ee6f7bacfa08dfbb2cc07219606755f0b01709d9361e01f13009bbbd8099fa2927a8ed665118a6105d66e40f1b838c3f
   languageName: node
   linkType: hard
 
@@ -2493,6 +2687,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"joycon@npm:^3.0.1":
+  version: 3.1.1
+  resolution: "joycon@npm:3.1.1"
+  checksum: 8003c9c3fc79c5c7602b1c7e9f7a2df2e9916f046b0dbad862aa589be78c15734d11beb9fe846f5e06138df22cb2ad29961b6a986ba81c4920ce2b15a7f11067
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -2536,6 +2737,13 @@ __metadata:
   version: 1.0.1
   resolution: "json-stable-stringify-without-jsonify@npm:1.0.1"
   checksum: cff44156ddce9c67c44386ad5cddf91925fe06b1d217f2da9c4910d01f358c6e3989c4d5a02683c7a5667f9727ff05831f7aa8ae66c8ff691c556f0884d49215
+  languageName: node
+  linkType: hard
+
+"jsonc-parser@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "jsonc-parser@npm:3.0.0"
+  checksum: 1df2326f1f9688de30c70ff19c5b2a83ba3b89a1036160da79821d1361090775e9db502dc57a67c11b56e1186fc1ed70b887f25c5febf9a3ec4f91435836c99d
   languageName: node
   linkType: hard
 
@@ -2656,6 +2864,15 @@ __metadata:
   version: 7.10.1
   resolution: "lru-cache@npm:7.10.1"
   checksum: e8b190d71ed0fcd7b29c71a3e9b01f851c92d1ef8865ff06b5581ca991db1e5e006920ed4da8b56da1910664ed51abfd76c46fb55e82ac252ff6c970ff910d72
+  languageName: node
+  linkType: hard
+
+"magic-string@npm:^0.26.1":
+  version: 0.26.2
+  resolution: "magic-string@npm:0.26.2"
+  dependencies:
+    sourcemap-codec: ^1.4.8
+  checksum: b4db4e2b370ac8d9ffc6443a2b591b75364bf1fc9121b5a4068d5b89804abff6709d1fa4a0e0c2d54f2e61e0e44db83efdfe219a5ab0ba6d25ee1f2b51fbed55
   languageName: node
   linkType: hard
 
@@ -3060,54 +3277,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"owlsdepartment-components@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "owlsdepartment-components@workspace:."
-  dependencies:
-    "@commitlint/cli": ^16.1.0
-    "@commitlint/config-conventional": ^16.0.0
-    "@googlemaps/js-api-loader": ^1.14.3
-    "@types/eslint": ^8.4.1
-    "@types/google.maps": ^3.49.1
-    "@types/lodash": ^4.14.178
-    "@types/node": ^17.0.12
-    "@typescript-eslint/eslint-plugin": ^5.10.1
-    "@typescript-eslint/parser": ^5.10.1
-    commander: ^9.0.0
-    esbuild: ^0.14.14
-    esbuild-runner: ^2.2.1
-    eslint: ^8.2.0
-    eslint-config-prettier: ^8.3.0
-    eslint-plugin-html: ^6.2.0
-    eslint-plugin-lit: ^1.2.0
-    eslint-plugin-prettier: ^4.0.0
-    eslint-plugin-simple-import-sort: ^7.0.0
-    gsap: ^3.9.1
-    husky: ^7.0.0
-    lodash: ^4.17.21
-    lottie-web: ^5.8.1
-    ovee.js: ~2.1.8
-    pinst: ^2.0.0
-    prettier: ^2.4.1
-    sass: ^1.49.0
-    stylelint: ^14.2.0
-    stylelint-config-recommended-vue: ^1.1.0
-    stylelint-config-standard-scss: ^3.0.0
-    stylelint-order: ^5.0.0
-    swiper: ^8.0.7
-    typescript: ^4.5.5
-    vanilla-lazyload: ^17.5.1
-    vite: ^2.7.13
-  peerDependencies:
-    "@googlemaps/js-api-loader": ^1.14.3
-    lodash: ^4.17.21
-    lottie-web: ^5.8.1
-    ovee.js: ~2.1.8
-    swiper: ^8.0.7
-    vanilla-lazyload: ^17.5.1
-  languageName: unknown
-  linkType: soft
-
 "p-limit@npm:^2.2.0":
   version: 2.3.0
   resolution: "p-limit@npm:2.3.0"
@@ -3239,7 +3408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.3.1":
+"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.2.2, picomatch@npm:^2.3.1":
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
   checksum: 050c865ce81119c4822c45d3c84f1ced46f93a0126febae20737bd05ca20589c564d6e9226977df859ed5e03dc73f02584a2b0faad36e896936238238b0446cf
@@ -3507,7 +3676,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:^1.10.0, resolve@npm:^1.22.0":
+"resolve@npm:^1.10.0, resolve@npm:^1.17.0, resolve@npm:^1.19.0, resolve@npm:^1.22.0":
   version: 1.22.0
   resolution: "resolve@npm:1.22.0"
   dependencies:
@@ -3520,7 +3689,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.0#~builtin<compat/resolve>":
+"resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.17.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.0#~builtin<compat/resolve>":
   version: 1.22.0
   resolution: "resolve@patch:resolve@npm%3A1.22.0#~builtin<compat/resolve>::version=1.22.0&hash=07638b"
   dependencies:
@@ -3558,6 +3727,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rollup-plugin-dts@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "rollup-plugin-dts@npm:4.2.2"
+  dependencies:
+    "@babel/code-frame": ^7.16.7
+    magic-string: ^0.26.1
+  peerDependencies:
+    rollup: ^2.55
+    typescript: ^4.1
+  dependenciesMeta:
+    "@babel/code-frame":
+      optional: true
+  checksum: cf4b45f6cca442a5f44af0f0fb567c8fc540ecb792c763571d1bcda9bf495803bcc8d4eaef451a2dd32f7f391eb822e2b96cc6b86b096db54a4d3935236fd8da
+  languageName: node
+  linkType: hard
+
+"rollup-plugin-esbuild@npm:^4.9.1":
+  version: 4.9.1
+  resolution: "rollup-plugin-esbuild@npm:4.9.1"
+  dependencies:
+    "@rollup/pluginutils": ^4.1.1
+    debug: ^4.3.3
+    es-module-lexer: ^0.9.3
+    joycon: ^3.0.1
+    jsonc-parser: ^3.0.0
+  peerDependencies:
+    esbuild: ">=0.10.1"
+    rollup: ^1.20.0 || ^2.0.0
+  checksum: 9b74a7ccff6e1487956c2f3f79e302e96b97036e445f2e56749decccda8733e49354fb1e01698420909fc0c817d535771bdbbb8beb046d961af3e08f005741d8
+  languageName: node
+  linkType: hard
+
+"rollup-plugin-typescript-paths@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "rollup-plugin-typescript-paths@npm:1.3.1"
+  peerDependencies:
+    typescript: ">=3.4"
+  checksum: 38d4491cad810fd50de6621c940ddd7115db33c6f8026bf9f2844b7231ff578ca8635a53366a8f8d6b0af2cea0836f2706f52397d69d1ab542a1c1aff4e4ac30
+  languageName: node
+  linkType: hard
+
 "rollup@npm:^2.59.0":
   version: 2.75.3
   resolution: "rollup@npm:2.75.3"
@@ -3569,6 +3779,20 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: ac33a2336df049f21dea64e4c9faee2551bddf2920944ea6214b2ed214f3861c9a4e1a8b7a32d2af6632f649a25a2bf4da8fad9f84f5093f2bf4d7e77933756b
+  languageName: node
+  linkType: hard
+
+"rollup@npm:^2.74.1":
+  version: 2.74.1
+  resolution: "rollup@npm:2.74.1"
+  dependencies:
+    fsevents: ~2.3.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    rollup: dist/bin/rollup
+  checksum: c34dc78317aa0a153010061e5954225b3e18f4013feb9c0476f6878dc3485ac765c28b7849441e4a2ab69c337892bc66399fb7d4b239b94f4758adfdb1f99440
   languageName: node
   linkType: hard
 
@@ -3725,6 +3949,13 @@ __metadata:
   version: 0.6.1
   resolution: "source-map@npm:0.6.1"
   checksum: 59ce8640cf3f3124f64ac289012c2b8bd377c238e316fb323ea22fbfe83da07d81e000071d7242cad7a23cd91c7de98e4df8830ec3f133cb6133a5f6e9f67bc2
+  languageName: node
+  linkType: hard
+
+"sourcemap-codec@npm:^1.4.8":
+  version: 1.4.8
+  resolution: "sourcemap-codec@npm:1.4.8"
+  checksum: b57981c05611afef31605732b598ccf65124a9fcb03b833532659ac4d29ac0f7bfacbc0d6c5a28a03e84c7510e7e556d758d0bb57786e214660016fb94279316
   languageName: node
   linkType: hard
 

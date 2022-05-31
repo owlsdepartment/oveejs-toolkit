@@ -31,7 +31,24 @@ module.exports = {
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/explicit-module-boundary-types': 'off',
 
-		'simple-import-sort/imports': 'warn',
+		'simple-import-sort/imports': [
+			'warn',
+			{
+				groups: [
+					// Side effect imports.
+					['^\\u0000'],
+					// Packages.
+					// Things that start with a letter (or digit or underscore), or `@` followed by a letter.
+					['^@?\\w'],
+					// Absolute imports and other imports such as Vue-style `@/foo`.
+					// Anything not matched in another group.
+					['^', '^@core', '^@integrations'],
+					// Relative imports.
+					// Anything that starts with a dot.
+					['^\\.'],
+				],
+			},
+		],
 		'simple-import-sort/exports': 'warn',
 	},
 };

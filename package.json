@@ -1,13 +1,29 @@
 {
-  "name": "owlsdepartment-components",
+  "name": "@ovee.js/toolkit",
   "version": "1.0.0",
-  "description": "Owls Department components library",
-  "main": "index.js",
+  "description": "Owls Department frontend toolkit",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./*": "./*",
+    "./test": {
+      "types": "./dist/test.d.ts",
+      "import": "./dist/test.mjs",
+      "require": "./dist/test.cjs"
+    }
+  },
   "scripts": {
     "dev": "cd playground && vite",
     "serve": "npm run dev",
     "playground": "esr ./scripts/playground.ts",
     "generate": "esr ./scripts/generate.ts",
+    "build": "esr ./scripts/build.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "yarn eslint && yarn stylelint",
     "lint:no-fix": "yarn eslint:no-fix && yarn stylelint:no-fix",
@@ -38,6 +54,9 @@
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
     "@googlemaps/js-api-loader": "^1.14.3",
+    "@rollup/plugin-alias": "^3.1.9",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-typescript": "^8.3.2",
     "@types/eslint": "^8.4.1",
     "@types/google.maps": "^3.49.1",
     "@types/lodash": "^4.14.178",
@@ -46,6 +65,7 @@
     "@typescript-eslint/parser": "^5.10.1",
     "commander": "^9.0.0",
     "esbuild": "^0.14.14",
+    "esbuild-plugin-alias": "^0.2.1",
     "esbuild-runner": "^2.2.1",
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.3.0",
@@ -60,6 +80,10 @@
     "ovee.js": "~2.1.8",
     "pinst": "^2.0.0",
     "prettier": "^2.4.1",
+    "rollup": "^2.74.1",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-esbuild": "^4.9.1",
+    "rollup-plugin-typescript-paths": "^1.3.1",
     "sass": "^1.49.0",
     "stylelint": "^14.2.0",
     "stylelint-config-recommended-vue": "^1.1.0",

@@ -6,6 +6,7 @@ const PLAYGROUND_PATH = path.resolve(__dirname, '../playground');
 const INDEX = path.resolve(PLAYGROUND_PATH, 'index.html');
 const COMPONENTS = path.resolve(PLAYGROUND_PATH, 'src/components.ts');
 const MODULES = path.resolve(PLAYGROUND_PATH, 'src/modules.ts');
+const STYLES = path.resolve(PLAYGROUND_PATH, 'styles/main.scss');
 const TEMPLATES = path.resolve(__dirname, 'templates/playground');
 
 const program = new Command();
@@ -33,6 +34,7 @@ function init(silent = false) {
 	createViaTemplate(INDEX, '_index.html');
 	createViaTemplate(COMPONENTS, '_components.ts');
 	createViaTemplate(MODULES, '_modules.ts');
+	createViaTemplate(STYLES, '_main.scss');
 
 	if (silent) return;
 
@@ -43,6 +45,7 @@ function clear(silent = false) {
 	removeFile(INDEX);
 	removeFile(COMPONENTS);
 	removeFile(MODULES);
+	removeFile(STYLES);
 
 	if (silent) return;
 

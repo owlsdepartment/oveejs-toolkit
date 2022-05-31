@@ -2,7 +2,7 @@ import { defaultsDeep, isUndefined } from 'lodash';
 import { bind, Component, dataParam, register } from 'ovee.js';
 import VanillaLazyLoad, { ILazyLoadOptions } from 'vanilla-lazyload';
 
-import { WithInViewport } from '@/mixins';
+import { WithInViewport } from '@core/mixins';
 
 export type LazyLoadEvent = CustomEvent<LazyLoadOptions>;
 

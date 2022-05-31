@@ -64,7 +64,7 @@ Here's usage example in component
 
 ```ts
 import { Component, watch } from 'ovee.js'
-import { globalState, togglePreloader } from '@/store';
+import { globalState, togglePreloader } from '@ovee.js/toolkit';
 
 export class ExampleComponent extends Component {
 	@watch()

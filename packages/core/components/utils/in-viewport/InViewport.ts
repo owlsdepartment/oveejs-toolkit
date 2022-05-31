@@ -1,7 +1,7 @@
 import { isNumber } from 'lodash';
 import { Component, dataParam, register } from 'ovee.js';
 
-import { observeIntersections, Unobserve } from '@/tools';
+import { observeIntersections, Unobserve } from '@core/tools';
 
 export interface InViewportConfig {
 	threshold: number;

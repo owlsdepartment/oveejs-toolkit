@@ -10,7 +10,8 @@
         "baseUrl": "..",
         "experimentalDecorators": true,
         "paths": {
-            "@": ["src"],
+            "@core": ["packages/core"],
+            "@integrations": ["packages/core"],
             "@playground/*": ["playground/src/*"],
             "~/*": ["playground/*"],
         }

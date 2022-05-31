@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+		"declaration": true,
 		"allowJs": true,
 		"target": "ES2020",
 		"module": "ES2020",
@@ -12,7 +13,8 @@
 		"lib": ["dom", "es6", "ESNext"],
 		"baseUrl": ".",
 		"paths": {
-            "@/*": ["src/*"],
+            "@core/*": ["packages/core/*"],
+			"@integrations/*": ["packages/integrations/*"],
         }
 	},
 	"exclude": [

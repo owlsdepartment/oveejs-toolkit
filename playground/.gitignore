@@ -1,5 +1,5 @@
 /index.html
-!/src/main.ts
-/src/
-/styles/**/*.scss
-/styles/**/*.css
+/src/**/*
+/styles/**/*
+
+!/**/.gitkeep

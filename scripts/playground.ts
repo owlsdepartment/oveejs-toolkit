@@ -2,12 +2,20 @@ import { Command } from 'commander';
 import { copyFileSync, existsSync, unlinkSync } from 'fs';
 import path from 'path';
 
+interface FileEntry {
+	folder: string;
+	fileName: string;
+}
+
 const PLAYGROUND_PATH = path.resolve(__dirname, '../playground');
-const INDEX = path.resolve(PLAYGROUND_PATH, 'index.html');
-const COMPONENTS = path.resolve(PLAYGROUND_PATH, 'src/components.ts');
-const MODULES = path.resolve(PLAYGROUND_PATH, 'src/modules.ts');
-const STYLES = path.resolve(PLAYGROUND_PATH, 'styles/main.scss');
 const TEMPLATES = path.resolve(__dirname, 'templates/playground');
+const FILES: FileEntry[] = [
+	{ folder: 'src', fileName: 'components.ts' },
+	{ folder: 'src', fileName: 'modules.ts' },
+	{ folder: 'src', fileName: 'main.ts' },
+	{ folder: 'styles', fileName: 'main.scss' },
+	{ folder: '', fileName: 'index.html' },
+];
 
 const program = new Command();
 
@@ -30,28 +38,35 @@ function main() {
 	program.parse();
 }
 
+/**
+ * Init playground with missing files
+ */
 function init(silent = false) {
-	createViaTemplate(INDEX, '_index.html');
-	createViaTemplate(COMPONENTS, '_components.ts');
-	createViaTemplate(MODULES, '_modules.ts');
-	createViaTemplate(STYLES, '_main.scss');
+	for (const file of FILES) {
+		createViaTemplate(file);
+	}
 
 	if (silent) return;
 
 	console.error(`[playground] Init done.`);
 }
 
+/**
+ * Clear playground by removing all files
+ */
 function clear(silent = false) {
-	removeFile(INDEX);
-	removeFile(COMPONENTS);
-	removeFile(MODULES);
-	removeFile(STYLES);
+	for (const file of FILES) {
+		removeFile(file);
+	}
 
 	if (silent) return;
 
 	console.error(`[playground] Clear done.`);
 }
 
+/**
+ * Remove existing files and init with new ones
+ */
 function reset() {
 	clear(true);
 	init(true);
@@ -59,14 +74,24 @@ function reset() {
 	console.error(`[playground] Reset done.`);
 }
 
-function createViaTemplate(target: string, templateName: string) {
+// ----- Helpers
+function createViaTemplate(entry: FileEntry) {
+	const target = getEntryFullPath(entry);
+
 	if (!existsSync(target)) {
-		copyFileSync(path.resolve(TEMPLATES, templateName), target);
+		copyFileSync(path.resolve(TEMPLATES, `_${entry.fileName}`), target);
 	}
 }
 
-function removeFile(target: string) {
+function removeFile(entry: FileEntry) {
+	const target = getEntryFullPath(entry);
+
 	if (existsSync(target)) unlinkSync(target);
 }
+
+function getEntryFullPath(entry: FileEntry) {
+	return `${path.resolve(PLAYGROUND_PATH, entry.folder, entry.fileName)}`;
+}
+// ----- Helpers end
 
 main();

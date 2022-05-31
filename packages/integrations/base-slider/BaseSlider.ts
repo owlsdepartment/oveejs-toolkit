@@ -7,15 +7,10 @@ import {
 	Navigation,
 	Pagination,
 	Swiper,
+	SwiperOptions,
 	Virtual,
 } from 'swiper';
-import {
-	LazyOptions,
-	NavigationOptions,
-	PaginationOptions,
-	SwiperEvents,
-	SwiperOptions,
-} from 'swiper/types';
+import { LazyOptions, NavigationOptions, PaginationOptions, SwiperEvents } from 'swiper/types';
 
 interface SliderElement extends Element {
 	swiperInstance?: Swiper;

@@ -20,7 +20,7 @@
   },
   "scripts": {
     "dev": "cd playground && vite",
-    "serve": "npm run dev",
+    "serve": "yarn run dev",
     "playground": "esr ./scripts/playground.ts",
     "generate": "esr ./scripts/generate.ts",
     "build": "esr ./scripts/build.ts",

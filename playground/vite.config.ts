@@ -9,7 +9,8 @@ export default defineConfig({
 			// pre-configured aliases, change them freely!
 			'~': __dirname,
 			'@playground': path.resolve(__dirname, 'src'),
-			'@': path.resolve(__dirname, '../src'),
+			'@core': path.resolve(__dirname, '../packages/core'),
+			'@integrations': path.resolve(__dirname, '../packages/integrations'),
 		},
 	},
 });

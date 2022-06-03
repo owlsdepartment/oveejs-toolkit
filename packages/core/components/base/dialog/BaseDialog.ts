@@ -5,27 +5,32 @@ export interface WithBaseDialog {
 	_dialogInstance?: BaseDialog;
 }
 
-export interface BaseDialogConfig {
+export interface BaseDialogOptions {
 	dialogRoot: string;
 }
 
 const logger = new Logger('BaseDialog');
-export const BASE_DIALOG_DEFAULT_CONFIG: BaseDialogConfig = {
+export const BASE_DIALOG_DEFAULT_OPTIONS: BaseDialogOptions = {
 	dialogRoot: '.dialog-root',
 };
 
 export class BaseDialog extends TemplateComponent {
-	static config: BaseDialogConfig = BASE_DIALOG_DEFAULT_CONFIG;
-
 	rootClass = '';
 	dialogTarget: HTMLElement;
-	dialogRoot = document.querySelector(BaseDialog.config.dialogRoot);
+	dialogRoot = document.querySelector(this.options.dialogRoot);
 
 	@reactive()
 	isOpen = false;
 
 	protected get renderTarget() {
 		return this.dialogTarget;
+	}
+
+	get options(): BaseDialogOptions {
+		return {
+			...BASE_DIALOG_DEFAULT_OPTIONS,
+			...this.$options,
+		};
 	}
 
 	init() {
@@ -36,7 +41,7 @@ export class BaseDialog extends TemplateComponent {
 
 		if (!this.dialogRoot) {
 			logger.warn(
-				`Dialog root wasn't found. Element with selector '${BaseDialog.config.dialogRoot}' does not exist.`
+				`Dialog root wasn't found. Element with selector '${this.options.dialogRoot}' does not exist.`
 			);
 
 			return;

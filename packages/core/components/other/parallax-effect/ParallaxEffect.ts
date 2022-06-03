@@ -12,7 +12,7 @@ export interface ParallaxTweenVars {
 	ease?: string | gsap.EaseFunction;
 }
 
-export interface ParallaxConfig extends ScrollTrigger.StaticVars {
+export interface ParallaxEffectOptions extends ScrollTrigger.StaticVars {
 	target: gsap.DOMTarget;
 	disableOnMobile: boolean;
 	disableOnTablet: boolean;
@@ -20,52 +20,52 @@ export interface ParallaxConfig extends ScrollTrigger.StaticVars {
 }
 
 const logger = new Logger('ParallaxEffect');
+export const PARALLAX_EFFECT_DEFAULT_OPTIONS: ParallaxEffectOptions = {
+	scrub: true,
+	target: '',
+	disableOnMobile: true,
+	disableOnTablet: true,
+	tweenVars: {
+		y: 100,
+	},
+};
 
 @register('parallax-effect')
 export class ParallaxEffect extends Component {
 	tl: gsap.core.Timeline;
 	st: ScrollTrigger;
 
-	defaultParallaxConfig: ParallaxConfig = {
-		scrub: true,
-		target: this.$element,
-		disableOnMobile: true,
-		disableOnTablet: true,
-		tweenVars: {
-			y: 100,
-		},
-	};
+	@dataParam('parallaxOptions')
+	_parallaxOptions = '';
 
-	@dataParam('parallaxConfig')
-	_parallaxConfig = '';
-
-	get componentParallaxConfig() {
-		return this.$options as ParallaxConfig;
+	get baseOptions(): ParallaxEffectOptions {
+		return {
+			...PARALLAX_EFFECT_DEFAULT_OPTIONS,
+			target: this.$element,
+			...this.$options,
+		};
 	}
 
-	get parallaxConfig(): ParallaxConfig {
-		const baseConfig = {
-			...this.defaultParallaxConfig,
-			...this.componentParallaxConfig,
-		};
+	get parallaxConfig(): ParallaxEffectOptions {
+		const { baseOptions } = this;
 
-		if (!this._parallaxConfig) {
-			return baseConfig;
+		if (!this._parallaxOptions) {
+			return baseOptions;
 		}
 
-		let elementConfig: ParallaxConfig = this.defaultParallaxConfig;
+		let elementOptions: ParallaxEffectOptions;
 
 		try {
-			elementConfig = JSON.parse(this._parallaxConfig);
+			elementOptions = JSON.parse(this._parallaxOptions);
 		} catch (e) {
-			logger.error('Invalid JSON Config:', this._parallaxConfig);
+			logger.error('Invalid JSON Config:', this._parallaxOptions);
 
-			return baseConfig;
+			return baseOptions;
 		}
 
 		return {
-			...baseConfig,
-			...elementConfig,
+			...baseOptions,
+			...elementOptions,
 		};
 	}
 

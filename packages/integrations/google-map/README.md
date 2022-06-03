@@ -1,7 +1,7 @@
 # GoogleMap
 
 ## Requirements
-[Google Maps JavaScript API Loader](https://www.npmjs.com/package/@googlemaps/js-api-loader)
+ - [Google Maps JavaScript API Loader](https://www.npmjs.com/package/@googlemaps/js-api-loader)
 
 ## Installation and configuration
 

@@ -1,12 +1,5 @@
 # ParallaxEffect
 
-## Requirements
- - [gsap](https://www.npmjs.com/package/gsap)
-
-```bash
-yarn add gsap
-```
-
 ## Installation and configuration
 
 See [Components instalation](/docs/components_instalation.md)
@@ -18,7 +11,7 @@ Basic usage
 ```html
 <div 
 	data-parallax-effect 
-	data-parallax-config='{
+	data-parallax-options='{
 		"tweenVars": {
 			"y": 200 
 		},
@@ -36,13 +29,15 @@ To change options you can extend component and override `get parallaxConfig` pro
 ```ts
 export class CustomParallax extends ParallaxEffect {
     get parallaxConfig(): ParallaxConfig {
-		target: this.$element.querySelector('div'),
-		trigger: this.$element,
-        disableOnTablet: false,
-        disableOnMobile: false,
-        tweenVars: {
-			y: () => {
-				return this.$element.offsetHeight;
+		return {
+			target: this.$element.querySelector('div'),
+			trigger: this.$element,
+			disableOnTablet: false,
+			disableOnMobile: false,
+			tweenVars: {
+				y: () => {
+					return this.$element.offsetHeight;
+				}
 			}
 		}
     }
@@ -50,12 +45,12 @@ export class CustomParallax extends ParallaxEffect {
 
 ```
 
-or you can add `data-parallax-config` to element with config as JSON:
+or you can add `data-parallax-options` to element with config as JSON:
 
 ```html
 <div 
 	data-parallax-effect 
-	data-parallax-config='{
+	data-parallax-options='{
 		"tweenVars": {
 			"yPercent": 100 
 		},

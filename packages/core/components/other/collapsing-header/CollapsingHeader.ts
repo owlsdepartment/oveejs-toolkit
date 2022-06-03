@@ -31,18 +31,16 @@ const calcOffsetMap: Record<
 	},
 };
 
-export interface CollapsingHeaderConfig {
+export interface CollapsingHeaderOptions {
 	throttle: number;
 }
 
-export const COLLAPSING_HEADER_DEFAULT_CONFIG: CollapsingHeaderConfig = {
+export const COLLAPSING_HEADER_DEFAULT_OPTIONS: CollapsingHeaderOptions = {
 	throttle: 100,
 };
 
 @register('collapsing-header')
 export class CollapsingHeader extends Component {
-	static config: CollapsingHeaderConfig = COLLAPSING_HEADER_DEFAULT_CONFIG;
-
 	@dataParam()
 	collapsingHeader: string;
 
@@ -53,7 +51,7 @@ export class CollapsingHeader extends Component {
 	offsetMultiplier: string;
 
 	@dataParam('throttleValue')
-	_throttleValue = `${CollapsingHeader.config.throttle}`;
+	_throttleValue = `${this.options.throttle}`;
 
 	html: HTMLElement;
 	triggerEl: HTMLElement | null;
@@ -68,10 +66,17 @@ export class CollapsingHeader extends Component {
 
 	scrollListener: () => void;
 
+	get options(): CollapsingHeaderOptions {
+		return {
+			...COLLAPSING_HEADER_DEFAULT_OPTIONS,
+			...this.$options,
+		};
+	}
+
 	get throttleValue(): number {
 		const parsed = JSON.parse(this._throttleValue);
 
-		return isNumber(parsed) && !isNaN(parsed) ? parsed : CollapsingHeader.config.throttle;
+		return isNumber(parsed) && !isNaN(parsed) ? parsed : this.options.throttle;
 	}
 
 	get isShown() {

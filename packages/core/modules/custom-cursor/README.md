@@ -1,10 +1,5 @@
 # CustomCursor
 
-## Requirements
- - `gsap`
- - `lodash`
- - `ovee.js`
-
 ## Installation and configuration
 
 See [Components installation](/docs/components_installation.md#modules)
@@ -12,14 +7,14 @@ See [Components installation](/docs/components_installation.md#modules)
 Styles
 
 ```scss
-@import '@ovee.js/toolkit/custom-cursor/styles';
+@import '@ovee.js/toolkit/styles/custom-cursor';
 ```
 
 ## Usage example
 
 `CustomCursor` module creates an HTML element and updates its position to reflect the position of an actual cursor.
 
-You can overwrite default config by setting your values using `updateConfig` after importing the module.
+You can overwrite default options when registering module.
 
 ### Module options
 

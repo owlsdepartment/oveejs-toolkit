@@ -1,12 +1,5 @@
 # Store
 
-## Requirements
- - [lodash](https://lodash.com/)
-
-```bash
-yarn add lodash
-```
-
 ## Installation and configuration
 
 This tool doesn't require any special configuration

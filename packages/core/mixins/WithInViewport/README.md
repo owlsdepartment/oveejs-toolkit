@@ -1,9 +1,5 @@
 # WithInViewport
 
-## Requirements
-
-None
-
 ## Installation and configuration
 
 Via `updateConfig`. See [Configuration](/docs/components_installation.md#updateconfig-helper)

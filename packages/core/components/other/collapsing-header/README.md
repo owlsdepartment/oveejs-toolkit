@@ -1,24 +1,8 @@
 # CollapsingHeader
 
-## Requirements
- - `lodash`
- - `ovee.js`
-
-For sticky:
-	Don't animate height on `<header>`, because it triggers the scroll event. `position:sticky` occupies space in DOM.
-
 ## Installation and configuration
 
-```ts
-import { CollapsingHeader, updateConfig } from '@ovee.js/toolkit';
-
-updateConfig(CollapsingHeader, { throttle: 200 });
-
-export default [
-    // ... other components ...
-    CollapsingHeader
-];
-```
+See [Configuration](/docs/components_installation.md#components-installation-and-configuration)
 
 ```scss
 @import '@ovee.js/toolkit/styles/collapsing-header';
@@ -122,6 +106,9 @@ Examples:
 
 <div id="example-id"></div>
 ```
+
+For sticky:
+	Don't animate height on `<header>`, because it triggers the scroll event. `position:sticky` occupies space in DOM.
 
 ## Styling
 

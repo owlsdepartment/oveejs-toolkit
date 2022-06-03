@@ -1,19 +1,31 @@
 import { Component, el, Logger, register } from 'ovee.js';
 
-import { CONFIG_DEFAULTS } from './constants';
 import { calcHeights, hideAnimation, showAnimation } from './helpers';
-import { AccordionElement, AnimationArguments, BaseAccordionConfig } from './types';
+import { AccordionElement, AnimationArguments, BaseAccordionOptions } from './types';
 
 const logger = new Logger('BaseAccordion');
 
+export const BASE_ACCORDION_DEFAULT_OPTIONS: BaseAccordionOptions = {
+	firstActive: false,
+	autoCollapse: false,
+	immediate: false,
+	speed: 0.4,
+	ease: 'power2.inOut',
+};
+
 @register('base-accordion')
 export class BaseAccordion extends Component {
-	static config: BaseAccordionConfig = CONFIG_DEFAULTS;
-
 	@el('[data-accordion-item]', { list: true })
 	items: AccordionElement[];
 
+	options: BaseAccordionOptions;
+
 	init() {
+		this.options = {
+			...BASE_ACCORDION_DEFAULT_OPTIONS,
+			...this.$options,
+		};
+
 		if (!this.items.length) {
 			return logger.warn(
 				'No accordion items were found. You should specify them with data-accordion-item attribute'
@@ -71,7 +83,7 @@ export class BaseAccordion extends Component {
 	}
 
 	setInitHeights() {
-		const { config: options } = BaseAccordion;
+		const { options } = this;
 
 		this.items.forEach((item, i) => {
 			const animationConfig = {
@@ -103,7 +115,7 @@ export class BaseAccordion extends Component {
 		const trigger = e.target as HTMLElement;
 		const item = trigger.closest<AccordionElement>('[data-accordion-item]');
 		const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
-		const { config: options } = BaseAccordion;
+		const { options } = this;
 
 		if (!item) {
 			return logger.error('Failed to handle triggered event. Missing item element');

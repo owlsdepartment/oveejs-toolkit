@@ -15,8 +15,6 @@ export class VhFix extends Module {
 		this.$app.$on('resize', window as any, () => this.updateVh());
 
 		this.$app.$vh = makeComputed(() => this.vh);
-
-		console.log(this.$app);
 	}
 
 	updateVh() {

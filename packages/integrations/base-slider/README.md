@@ -3,8 +3,11 @@
 ## Requirements
 - [swiper](https://www.npmjs.com/package/swiper)
 
-You can install swiper using npm:
+To install swiper
+
 ```bash
+npm install --save swiper
+# or with yarn
 yarn add swiper
 ```
 

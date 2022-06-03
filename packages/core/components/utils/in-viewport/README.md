@@ -1,18 +1,9 @@
 # InViewport
 
-## Requirements
- - [lodash](https://lodash.com/)
-
-```bash
-yarn add lodash
-```
-
 ## Installation and configuration
 
 ```ts
-import { InViewport, updateConfig } from '@ovee.js/toolkit';
-
-updateConfig(InViewport, { threshold: 0.3 });
+import { InViewport } from '@ovee.js/toolkit';
 
 export default [
     // ... other components ...

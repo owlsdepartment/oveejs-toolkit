@@ -1,9 +1,5 @@
 # ObserveIntersections
 
-## Requirements
-
-None
-
 ## Installation and configuration
 
 See [Components installation](/docs/components_installation.md#other)
@@ -40,8 +36,6 @@ unobserve()
 
 <!-- TMP -->
 Both calls of `observeIntersections` creates only one `IntersectionObserver` instance which is reused again, because they share the same default parameters.
-
-<!-- TODO: API -->
 
 ## API
 

@@ -1,16 +1,8 @@
 # BaseAccordion
 
-## Requirements
-- [GSAP 3](https://www.npmjs.com/package/gsap)
-
-You can install GSAP using npm:
-```bash
-yarn add gsap
-```
-
 ## Installation and configuration
 
-See [Components installation](/docs/components_installation.md)
+See [Components installation](/docs/components_installation.md#components-installation-and-configuration)
 
 |	Option			|	Type		|	Default			|	Description														|
 |	---				|	---			|	---				|	---																|

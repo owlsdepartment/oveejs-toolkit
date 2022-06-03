@@ -10,9 +10,7 @@ To add styles
 @import '@ovee.js/toolkit/styles/vh-fix';
 ```
 
-## Requirements
-
-Don't forget to import scss function which calcs vh.
+This import enables function `vh()` in SCSS.
 
 ## Usage example
 

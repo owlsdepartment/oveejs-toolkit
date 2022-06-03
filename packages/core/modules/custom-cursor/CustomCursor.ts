@@ -5,7 +5,7 @@ import { doWatch, Module, ref } from 'ovee.js';
 
 type Setter = (val: number) => void;
 
-export interface CustomCursorConfig {
+export interface CustomCursorOptions {
 	hideDefault: boolean;
 	cursorLerp: boolean;
 	cursorDuration: number;
@@ -15,7 +15,7 @@ export interface CustomCursorConfig {
 	rippleThreshold: number;
 }
 
-export const CUSTOM_CURSOR_DEFAULT_CONFIG: CustomCursorConfig = {
+export const CUSTOM_CURSOR_DEFAULT_OPTIONS: CustomCursorOptions = {
 	hideDefault: false,
 	cursorLerp: true,
 	cursorDuration: 0.4,
@@ -30,7 +30,7 @@ export class Point {
 	y = 0;
 }
 
-export class CustomCursor extends Module<CustomCursorConfig> {
+export class CustomCursor extends Module<CustomCursorOptions> {
 	cursor: HTMLDivElement;
 	shadow: HTMLDivElement;
 	ripple: HTMLDivElement;
@@ -75,7 +75,7 @@ export class CustomCursor extends Module<CustomCursorConfig> {
 
 	init() {
 		this.options = {
-			...CUSTOM_CURSOR_DEFAULT_CONFIG,
+			...CUSTOM_CURSOR_DEFAULT_OPTIONS,
 			...this.options,
 		};
 

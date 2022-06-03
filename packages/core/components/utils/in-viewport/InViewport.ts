@@ -2,30 +2,35 @@ import { observeIntersections, Unobserve } from '@ovee.js/toolkit/tools';
 import { isNumber } from 'lodash';
 import { Component, dataParam, register } from 'ovee.js';
 
-export interface InViewportConfig {
+export interface InViewportOptions {
 	threshold: number;
 }
 
-export const IN_VIEWPORT_DEFAULT_CONFIG: InViewportConfig = {
+export const IN_VIEWPORT_DEFAULT_OPTIONS: InViewportOptions = {
 	threshold: 0.5,
 };
 
 @register('in-viewport')
 export class InViewport extends Component {
-	static config: InViewportConfig = IN_VIEWPORT_DEFAULT_CONFIG;
-
 	unonbserve?: Unobserve;
 
 	@dataParam('threshold')
-	_threshold = `${InViewport.config.threshold}`;
+	_threshold = `${this.options.threshold}`;
 
 	@dataParam()
 	selector = '';
 
+	get options(): InViewportOptions {
+		return {
+			...IN_VIEWPORT_DEFAULT_OPTIONS,
+			...this.$options,
+		};
+	}
+
 	get threshold(): number | number[] {
 		const parsed = JSON.parse(this._threshold);
 
-		return Array.isArray(parsed) || isNumber(parsed) ? parsed : InViewport.config.threshold;
+		return Array.isArray(parsed) || isNumber(parsed) ? parsed : this.options.threshold;
 	}
 
 	init() {

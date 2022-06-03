@@ -1,7 +1,5 @@
+import { LazyLoad, LazyLoadOptions } from '@ovee.js/toolkit-integrations';
 import { register } from 'ovee.js';
-
-// TODO: co do kurwy
-import { LazyLoad, LazyLoadOptions } from '@integrations/lazy-load';
 
 @register('video-autoplay')
 export class VideoAutoplay extends LazyLoad {

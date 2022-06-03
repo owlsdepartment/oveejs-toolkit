@@ -1,2 +1,3 @@
-# owlsdepartment-components
-UI Components library designed by Owls Department
+# Ovee.js Toolkit
+
+UI toolki library designed and crafted by Owls Department

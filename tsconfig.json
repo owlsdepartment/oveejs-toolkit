@@ -13,8 +13,9 @@
 		"lib": ["dom", "es6", "ESNext"],
 		"baseUrl": ".",
 		"paths": {
-            "@core/*": ["packages/core/*"],
-			"@integrations/*": ["packages/integrations/*"],
+            "@ovee.js/toolkit": ["packages/core"],
+			"@ovee.js/toolkit/*": ["packages/core/*"],
+			"@ovee.js/toolkit-integrations": ["packages/integrations"],
         }
 	},
 	"exclude": [

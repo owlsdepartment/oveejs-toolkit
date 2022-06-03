@@ -21,6 +21,8 @@ module.exports = {
 		'plugin:lit/recommended',
 	],
 
+	ignorePatterns: ['**/dist/**/*'],
+
 	rules: {
 		'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
 		quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],

@@ -6,8 +6,11 @@
 
 ## Installation and configuration
 
-<!-- TODO: if something is special or unusual, update this section, else just leave this  -->
+<!-- TODO: if something is special or unusual, update this section -->
+<!-- else link to proper paragraph -->
 See [Configuration](/docs/components_installation.md#components-installation-and-configuration)
+
+<!-- {{styles}} -->
 
 ## Usage example
 

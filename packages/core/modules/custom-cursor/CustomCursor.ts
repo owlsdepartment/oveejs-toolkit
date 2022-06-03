@@ -1,8 +1,7 @@
+import { isAndroid, isIOS, isIOSChrome, isIOSFirefox } from '@ovee.js/toolkit/tools';
 import { gsap } from 'gsap';
 import { debounce } from 'lodash';
 import { doWatch, Module, ref } from 'ovee.js';
-
-import { isAndroid, isIOS, isIOSChrome, isIOSFirefox } from '@core/tools';
 
 type Setter = (val: number) => void;
 

@@ -2,22 +2,12 @@
 
 ## Installation and configuration
 
-```ts
-import { VhFix } from '@owlsdepartment/modules';
-```
+See [Configuration](/docs/components_installation.md#modules)
 
-```ts
-const app = new App({
-    modules: [
-        VhFix,
-    ]
-});
-```
+To add styles
 
-or
-
-```ts
-app.use(VhFix);
+```scss
+@import '@ovee.js/toolkit/styles/vh-fix';
 ```
 
 ## Requirements

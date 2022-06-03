@@ -7,8 +7,8 @@ import modules from './modules';
 
 const root = document.getElementById('app');
 const app = new App({
-	components,
-	modules,
+	components: [...components],
+	modules: [...modules],
 });
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

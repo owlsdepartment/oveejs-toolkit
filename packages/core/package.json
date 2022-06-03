@@ -1,0 +1,42 @@
+{
+  "name": "@ovee.js/toolkit",
+  "author": "Owls Department",
+  "license": "MIT",
+  "version": "0.0.1",
+  "description": "Ovee.js frontend toolkit developed by Owls Department",
+  "bugs": {
+    "url": "https://github.com/owlsdepartment/owlsdepartment-components/issues"
+  },
+  "homepage": "https://github.com/owlsdepartment/owlsdepartment-components#readme",
+  "keywords": [
+    "ui",
+    "ovee.js",
+    "toolkit",
+    "components"
+  ],
+  "main": "index.cjs",
+  "module": "index.mjs",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.mjs",
+      "require": "./index.cjs"
+    },
+    "./*": "./*"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.178",
+    "@types/node": "^17.0.12",
+    "gsap": "^3.9.1",
+    "lodash": "^4.17.21",
+    "ovee.js": "~2.1.8",
+    "typescript": "^4.5.5"
+  },
+  "peerDependencies": {
+    "gsap": "^3.9.1",
+    "lodash": "^4.17.21",
+    "ovee.js": "~2.1.8"
+  },
+  "packageManager": "yarn@3.1.1"
+}

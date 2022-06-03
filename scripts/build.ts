@@ -1,94 +1,114 @@
-import alias from '@rollup/plugin-alias';
-import resolve from '@rollup/plugin-node-resolve';
-import tsPlugin from '@rollup/plugin-typescript';
-import esbuildAlias from 'esbuild-plugin-alias';
-import fs from 'fs';
+import fs, { existsSync } from 'fs';
 import path from 'path';
-import { rollup } from 'rollup';
+import { ExternalOption, rollup } from 'rollup';
 import dts from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
 import { typescriptPaths } from 'rollup-plugin-typescript-paths';
 
+interface PackageEntry {
+	name: string;
+	rootPath: string;
+	external?: ExternalOption;
+	files: FileEntry[];
+}
+
+interface FileEntry {
+	name: string;
+	path: string;
+}
+
 const ROOT_PATH = path.resolve(__dirname, '..');
-const SRC_PATH = path.resolve(__dirname, '../src');
-const DIST_PATH = path.resolve(__dirname, '../dist');
+const CORE_PATH = path.resolve(ROOT_PATH, 'packages/core');
+const INTEGRATIONS_PATH = path.resolve(ROOT_PATH, 'packages/integrations');
+const TSCONFIG = path.resolve(ROOT_PATH, 'tsconfig.json');
+const DIST_FOLDER = 'dist';
+const FORMATS = ['es', 'cjs'] as const;
+const FILES_TO_COPY_LOCAL = ['package.json', 'README.md'];
+const FILES_TO_COPY_ROOT = ['LICENSE'];
 
-// const bundle = format => ({
-// 	input: 'index.ts',
+const packages: PackageEntry[] = [
+	{
+		name: 'core',
+		rootPath: CORE_PATH,
+		external: id => !/^(@ovee\.js\/toolkit|[./])/.test(id),
+		files: [{ name: 'index', path: 'index.ts' }],
+	},
+	{
+		name: 'integrations',
+		rootPath: INTEGRATIONS_PATH,
+		files: [
+			...fs
+				.readdirSync(INTEGRATIONS_PATH, { withFileTypes: true })
+				.filter(dir => dir.isDirectory() && dir.name !== DIST_FOLDER)
+				.map(dir => ({ name: dir.name, path: `${dir.name}/index.ts` })),
 
-// 	output: {
-// 		sourcemap: false,
-// 		file: `dist/index.${format == 'dts' ? 'd.ts' : 'js'}`,
-// 		format: format == 'dts' ? 'esm' : 'cjs',
-// 		exports: 'named',
-// 	},
+			{ name: 'index', path: 'index.ts' },
+		],
+	},
+];
 
-// 	plugins: format == 'dts' ? [dts()] : [esbuild({ target: 'es2020' })],
-
-// 	external: id => !/^[./]/.test(id),
-// });
-
-// export default [bundle('cjs'), bundle('dts')];
 build();
 
 async function build() {
-	// let bundle;
-	// let buildFailed = false;
-	// try {
-	// 	// create a bundle
-	// 	bundle = await rollup({ input: 'index.ts' });
+	console.log('[BUILD] Build all packages...\n');
 
-	// 	// an array of file names this bundle depends on
-	// 	console.log(bundle.watchFiles);
-
-	// 	await generateOutputs(bundle);
-	// } catch (error) {
-	// 	buildFailed = true;
-	// 	// do some error reporting
-	// 	console.error(error);
-	// }
-	// if (bundle) {
-	// 	// closes the bundle
-	// 	await bundle.close();
-	// }
-	// process.exit(buildFailed ? 1 : 0);
-
-	fs.rmdirSync(DIST_PATH, { recursive: true });
-
-	const formats = ['es', 'cjs'] as const;
-
-	for (const format of formats) {
-		const bundle = await rollup({
-			input: path.resolve(SRC_PATH, 'index.ts'),
-			external: id => !/^(@\/|[./])/.test(id),
-			plugins: [
-				typescriptPaths({
-					tsConfigPath: path.resolve(ROOT_PATH, 'tsconfig.json'),
-					preserveExtensions: true,
-				}),
-				esbuild({ target: 'es2020' }),
-			],
-		});
-
-		await bundle.generate({});
-		await bundle.write({
-			format,
-
-			file: path.resolve(DIST_PATH, format === 'es' ? 'index.mjs' : 'index.cjs'),
-		});
+	for (const p of packages) {
+		await bundle(p);
 	}
 
-	await generateDTS();
-	await genTest();
+	console.log('[BUILD] Finished build process!');
 }
 
-async function generateDTS() {
+async function bundle({ name, files, rootPath, external }: PackageEntry) {
+	console.log(`[BUILD] Bundling package '${name}'...`);
+
+	external ??= id => !/^[./]/.test(id);
+
+	prepareDist(rootPath);
+
+	for (const file of files) {
+		console.log(`[BUILD] -- processing entry '${file.name}'`);
+
+		const input = path.resolve(rootPath, file.path);
+
+		for (const format of FORMATS) {
+			const bundle = await rollup({
+				input,
+				external,
+
+				plugins: [
+					typescriptPaths({
+						tsConfigPath: TSCONFIG,
+						preserveExtensions: true,
+					}),
+					esbuild({ target: 'es2020' }),
+				],
+			});
+
+			await bundle.generate({});
+			await bundle.write({
+				format,
+
+				file: path.resolve(rootPath, DIST_FOLDER, getDistFileName(format, file.name)),
+			});
+		}
+
+		await generateDTS(input, path.resolve(rootPath, DIST_FOLDER, `${file.name}.d.ts`), external);
+	}
+
+	copyStaticFiles(rootPath);
+
+	console.log(`[BUILD] Package '${name}' bundled!\n`);
+}
+
+async function generateDTS(input: string, output: string, external: ExternalOption) {
 	const bundle = await rollup({
-		input: path.resolve(SRC_PATH, 'index.ts'),
-		external: id => !/^(@\/|[./])/.test(id),
+		input,
+		external,
+
 		plugins: [
 			typescriptPaths({
-				tsConfigPath: path.resolve(ROOT_PATH, 'tsconfig.json'),
+				tsConfigPath: TSCONFIG,
 				preserveExtensions: true,
 			}),
 			dts(),
@@ -97,52 +117,34 @@ async function generateDTS() {
 
 	await bundle.generate({});
 	await bundle.write({
-		file: path.resolve(DIST_PATH, `index.d.ts`),
 		format: 'es',
+		file: output,
 	});
 	await bundle.close();
 }
 
-async function genTest() {
-	const formats = ['es', 'cjs'] as const;
+function prepareDist(packageFolder: string) {
+	const distPath = path.resolve(packageFolder, DIST_FOLDER);
 
-	for (const format of formats) {
-		const bundle = await rollup({
-			input: path.resolve(SRC_PATH, 'test.ts'),
-			external: id => !/^(@\/|[./])/.test(id),
-			plugins: [
-				typescriptPaths({
-					tsConfigPath: path.resolve(ROOT_PATH, 'tsconfig.json'),
-					preserveExtensions: true,
-				}),
-				esbuild({ target: 'es2020' }),
-			],
-		});
-
-		await bundle.generate({});
-		await bundle.write({
-			format,
-
-			file: path.resolve(DIST_PATH, format === 'es' ? 'test.mjs' : 'test.cjs'),
-		});
+	if (existsSync(distPath)) {
+		fs.rmdirSync(distPath, { recursive: true });
 	}
 
-	const bundle = await rollup({
-		input: path.resolve(SRC_PATH, 'test.ts'),
-		external: id => !/^(@\/|[./])/.test(id),
-		plugins: [
-			typescriptPaths({
-				tsConfigPath: path.resolve(ROOT_PATH, 'tsconfig.json'),
-				preserveExtensions: true,
-			}),
-			dts(),
-		],
-	});
+	fs.mkdirSync(distPath);
+}
 
-	await bundle.generate({});
-	await bundle.write({
-		file: path.resolve(DIST_PATH, `test.d.ts`),
-		format: 'es',
-	});
-	await bundle.close();
+function getDistFileName(format: typeof FORMATS[number], fileName: string) {
+	return format === 'es' ? `${fileName}.mjs` : `${fileName}.cjs`;
+}
+
+async function copyStaticFiles(packageFolder: string) {
+	const dist = path.resolve(packageFolder, DIST_FOLDER);
+
+	for (const file of FILES_TO_COPY_ROOT) {
+		fs.copyFileSync(path.resolve(ROOT_PATH, file), path.resolve(dist, file));
+	}
+
+	for (const file of FILES_TO_COPY_LOCAL) {
+		fs.copyFileSync(path.resolve(packageFolder, file), path.resolve(dist, file));
+	}
 }

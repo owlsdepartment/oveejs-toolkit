@@ -1,6 +1,5 @@
+import { observeIntersections, Unobserve } from '@ovee.js/toolkit/tools';
 import { ClassConstructor, Component } from 'ovee.js';
-
-import { observeIntersections, Unobserve } from '@core/tools';
 
 const DEFAULT_THRESHOLD = [0, 1];
 

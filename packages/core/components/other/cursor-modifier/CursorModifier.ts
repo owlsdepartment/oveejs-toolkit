@@ -1,6 +1,5 @@
+import { CustomCursor } from '@ovee.js/toolkit/modules';
 import { Component, register } from 'ovee.js';
-
-import { CustomCursor } from '@core/modules';
 
 @register('cursor-modifier')
 export class CursorModifier extends Component {

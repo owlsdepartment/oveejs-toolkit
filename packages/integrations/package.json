@@ -2,12 +2,12 @@
   "name": "@ovee.js/toolkit-integrations",
   "author": "Owls Department",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Ovee.js frontend toolkit developed by Owls Department",
   "bugs": {
-    "url": "https://github.com/owlsdepartment/owlsdepartment-components/issues"
+    "url": "https://github.com/owlsdepartment/oveejs-toolkit/issues"
   },
-  "homepage": "https://github.com/owlsdepartment/owlsdepartment-components#readme",
+  "homepage": "https://github.com/owlsdepartment/oveejs-toolkit#readme",
   "keywords": [
     "ui",
     "ovee.js",

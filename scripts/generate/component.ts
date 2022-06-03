@@ -2,23 +2,32 @@ import { appendFileSync, mkdirSync, writeFileSync } from 'fs';
 import { camelCase, kebabCase, upperFirst } from 'lodash';
 import _path from 'path';
 
-import { COMPONENTS_DIR, OTHER_COMPONENTS_DIR, ROOT_DIR } from './constants';
+import { COMPONENTS_DIR, OTHER_COMPONENTS_DIR } from './constants';
 import {
 	doesModuleExists,
 	fillMissingBarrels,
 	generateReadme,
 	getGeneratedElementParams,
+	getPackageDir,
 	trimPath,
 } from './helpers';
+import { WithIntegrations, WithStyles } from './options';
 
-export async function generateComponent(path: string, name: string, withStyles: boolean) {
+export async function generateComponent(
+	path: string,
+	name: string,
+	options: WithStyles & WithIntegrations
+) {
+	const { styles: withStyles, integrations: toIntegrations } = options;
 	const { directoryPath: dirPath, outputName: componentName } = getGeneratedElementParams({
 		name,
 		path,
+		toIntegrations,
 		otherDir: OTHER_COMPONENTS_DIR,
 		baseDir: COMPONENTS_DIR,
 	});
-	const fullPath = _path.resolve(ROOT_DIR, dirPath);
+	const packageDir = getPackageDir(toIntegrations);
+	const fullPath = _path.resolve(packageDir, dirPath);
 	const kebabCaseName = kebabCase(componentName);
 	const camelCaseName = camelCase(componentName);
 	const pascalCaseName = upperFirst(camelCaseName);
@@ -42,8 +51,8 @@ export async function generateComponent(path: string, name: string, withStyles: 
 	);
 
 	await fillMissingBarrels({
-		folders: ['.', ...trimPath(dirPath.replace(COMPONENTS_DIR, '')).split('/')],
-		relativeTo: _path.resolve(ROOT_DIR, COMPONENTS_DIR),
+		folders: toIntegrations ? ['.'] : [...trimPath(dirPath).split('/')],
+		relativeTo: packageDir,
 	});
 
 	mkdirSync(fullPath, { recursive: true });
@@ -73,7 +82,7 @@ export class ${pascalCaseName} extends Component {
 		appendFileSync(
 			_path.resolve(fullPath, 'README.md'),
 			`## Styling
-<!-- TODO: add notes about styling you component -->
+<!-- TODO: add notes about styling your component -->
 `
 		);
 	}

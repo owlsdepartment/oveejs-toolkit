@@ -3,6 +3,7 @@ import { Command } from 'commander';
 import { generateComponent } from './generate/component';
 import { generateMixin } from './generate/mixin';
 import { generateModule } from './generate/module';
+import { WithIntegrations, WithStyles } from './generate/options';
 import { generateTool } from './generate/tool';
 
 const program = new Command();
@@ -14,9 +15,12 @@ program
 	.argument('<path>', 'component path. If used alone, component name will be infered')
 	.argument('[name]', 'component name')
 	.option('-s, --styles', 'generate styles file', false)
-	.action(async (path: string, name: string | undefined, options: { styles: boolean }) => {
-		await generateComponent(path, name ?? '', options.styles);
-	});
+	.option('-i, --integrations', `output component to 'integrations' package`, false)
+	.action(
+		async (path: string, name: string | undefined, options: WithStyles & WithIntegrations) => {
+			await generateComponent(path, name ?? '', options);
+		}
+	);
 
 program
 	.command('module')
@@ -24,9 +28,13 @@ program
 	.description('generate boilerplate for new module')
 	.argument('<path>', 'module path. If used alone, module name will be infered')
 	.argument('[name]', 'module name')
-	.action(async (path: string, name: string | undefined) => {
-		await generateModule(path, name ?? '');
-	});
+	.option('-s, --styles', 'generate styles file', false)
+	.option('-i, --integrations', `output module to 'integrations' package`, false)
+	.action(
+		async (path: string, name: string | undefined, options: WithStyles & WithIntegrations) => {
+			await generateModule(path, name ?? '', options);
+		}
+	);
 
 program
 	.command('mixin')
@@ -34,8 +42,9 @@ program
 	.description('generate boilerplate for new mixin')
 	.argument('<path>', 'mixin path. If used alone, mixin name will be infered')
 	.argument('[name]', 'mixin name')
-	.action(async (path: string, name: string | undefined) => {
-		await generateMixin(path, name ?? '');
+	.option('-i, --integrations', `output mixin to 'integrations' package`, false)
+	.action(async (path: string, name: string | undefined, options: WithIntegrations) => {
+		await generateMixin(path, name ?? '', options);
 	});
 
 program
@@ -43,8 +52,9 @@ program
 	.alias('t')
 	.description('generate boilerplate for new tool')
 	.argument('<path>', 'path for tool. Tools default name will be a final part of path')
-	.action(async (path: string) => {
-		await generateTool(path);
+	.option('-i, --integrations', `output tool to 'integrations' package`, false)
+	.action(async (path: string, options: WithIntegrations) => {
+		await generateTool(path, options);
 	});
 
 /**

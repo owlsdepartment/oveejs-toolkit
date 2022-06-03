@@ -1,5 +1,5 @@
 // import components to test
-// import {} from '@';
+// import {} from '@ovee.js/toolkit';
 import { Class, Component } from 'ovee.js';
 
 const components: Class<Component, typeof Component>[] = [];

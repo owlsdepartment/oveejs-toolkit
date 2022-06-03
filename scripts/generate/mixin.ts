@@ -2,23 +2,28 @@ import { mkdirSync, writeFileSync } from 'fs';
 import { camelCase, upperFirst } from 'lodash';
 import _path from 'path';
 
-import { MIXINS_DIR, ROOT_DIR } from './constants';
+import { MIXINS_DIR } from './constants';
 import {
 	doesModuleExists,
 	fillMissingBarrels,
 	generateReadme,
 	getGeneratedElementParams,
+	getPackageDir,
 	trimPath,
 } from './helpers';
+import { WithIntegrations } from './options';
 
-export async function generateMixin(path: string, name: string) {
+export async function generateMixin(path: string, name: string, options: WithIntegrations) {
+	const { integrations: toIntegrations } = options;
 	const { directoryPath: dirPath, outputName: mixinName } = getGeneratedElementParams({
 		name,
 		path,
+		toIntegrations,
 		otherDir: MIXINS_DIR,
 		baseDir: MIXINS_DIR,
 	});
-	const fullPath = _path.resolve(ROOT_DIR, dirPath);
+	const packageDir = getPackageDir(toIntegrations);
+	const fullPath = _path.resolve(packageDir, dirPath);
 	const camelCaseName = camelCase(mixinName);
 	const pascalCaseName = upperFirst(camelCaseName);
 
@@ -32,8 +37,8 @@ export async function generateMixin(path: string, name: string) {
 	);
 
 	await fillMissingBarrels({
-		folders: ['.', ...trimPath(dirPath.replace(MIXINS_DIR, '')).split('/')],
-		relativeTo: _path.resolve(ROOT_DIR, MIXINS_DIR),
+		folders: toIntegrations ? ['.'] : [...trimPath(dirPath).split('/')],
+		relativeTo: packageDir,
 	});
 
 	mkdirSync(fullPath, { recursive: true });

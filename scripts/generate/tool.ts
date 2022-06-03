@@ -1,18 +1,26 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { mkdirSync, writeFileSync } from 'fs';
 import { camelCase, last, upperFirst } from 'lodash';
 import _path from 'path';
 
-import { ROOT_DIR, TOOLS_DIR } from './constants';
-import { doesModuleExists, fillMissingBarrels, trimPath } from './helpers';
+import { TOOLS_DIR } from './constants';
+import {
+	doesModuleExists,
+	fillMissingBarrels,
+	generateReadme,
+	getPackageDir,
+	trimPath,
+} from './helpers';
+import { WithIntegrations } from './options';
 
-export async function generateTool(path: string) {
-	const readmeTemplatePath = _path.resolve(ROOT_DIR, '.github/readme_template.md');
+export async function generateTool(path: string, options: WithIntegrations) {
+	const { integrations: toIntegrations } = options;
 	const trimmedPath = trimPath(path);
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const toolName = last(trimmedPath.split('/'))!;
 	const pascalCaseName = upperFirst(camelCase(toolName));
-	const dirPath = `${TOOLS_DIR}/${trimmedPath}`;
-	const fullPath = _path.resolve(ROOT_DIR, dirPath);
+	const dirPath = toIntegrations ? `${toolName}` : `${TOOLS_DIR}/${trimmedPath}`;
+	const packageDir = getPackageDir(toIntegrations);
+	const fullPath = _path.resolve(packageDir, dirPath);
 
 	if (doesModuleExists(fullPath)) {
 		console.error(`[generate ~ tool] Tool under path '${path}' already exists. Aborting`);
@@ -21,10 +29,10 @@ export async function generateTool(path: string) {
 
 	console.log(`[generate ~ tool] Generating tool '${toolName}' in directory '${dirPath}' ...`);
 
-	const dirs = ['.', ...trimmedPath.split('/')];
-	const toolsDir = _path.resolve(ROOT_DIR, TOOLS_DIR);
-
-	await fillMissingBarrels({ folders: dirs, relativeTo: toolsDir });
+	await fillMissingBarrels({
+		folders: toIntegrations ? ['.'] : [...trimPath(dirPath).split('/')],
+		relativeTo: packageDir,
+	});
 
 	mkdirSync(fullPath, { recursive: true });
 
@@ -37,13 +45,7 @@ export async function generateTool(path: string) {
 		`// TODO: write your tool\nexport {};\n`
 	);
 
-	// README.md
-	const readmeContent = readFileSync(readmeTemplatePath, 'utf-8').replace(
-		/{{ComponentName}}/g,
-		`${pascalCaseName}`
-	);
-
-	writeFileSync(_path.resolve(fullPath, 'README.md'), readmeContent);
+	generateReadme(fullPath, pascalCaseName);
 
 	console.log(`[generate ~ tool] Generation completed successfully!`);
 }

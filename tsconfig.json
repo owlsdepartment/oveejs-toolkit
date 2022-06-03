@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+		"declaration": true,
 		"allowJs": true,
 		"target": "ES2020",
 		"module": "ES2020",
@@ -7,18 +8,22 @@
 		"esModuleInterop": true,
     	"experimentalDecorators": true,
     	"allowSyntheticDefaultImports": true,
+		"resolveJsonModule": true,
 		"noImplicitAny": true,
 		"strictNullChecks": true,
 		"lib": ["dom", "es6", "ESNext"],
 		"baseUrl": ".",
 		"paths": {
-            "@/*": ["src/*"],
+            "@ovee.js/toolkit": ["packages/core"],
+			"@ovee.js/toolkit/*": ["packages/core/*"],
+			"@ovee.js/toolkit-integrations": ["packages/integrations"],
         }
 	},
 	"exclude": [
 		"node_modules",
 	],
 	"include": [
-		"**/*.ts"
+		"**/*.ts",
+		"**/*.json",
 	]
 }

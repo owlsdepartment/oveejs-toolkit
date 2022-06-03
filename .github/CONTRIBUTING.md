@@ -18,21 +18,25 @@ yarn
 
 3. Done!
 
-If you're using VS Code, you can use preconfigured workspace file: `owlsdeparment-components.code-workspace`.
+If you're using VS Code, you can use preconfigured workspace file: `ovee-toolkit.code-workspace`.
 
-## Writing components
+## Writing components and other
 
 <!-- TODO: -->
 Components are self-contained folders, placed in `src/components` folder.
 
 Folder must contain:
- - `README.md` file with documentation and examples, based on [template](/.github/readme_template.md)
+ - `README.md` file with documentation and examples, based on [template](/scripts/templates/readme_template.md)
  - `index.ts` file, that either defines full component (if there isn't much code) or exports all things you want to expose to the world
 
 Folder can contain:
- - `style.scss` file with component styling
+ - `styles.scss` file with component styling
 
-Folder can contain other script or style files, but they need to be imported inside either `style.scss` or `index.ts`.
+Folder can contain other script or style files, but they need to be imported inside either `styles.scss` or `index.ts`.
+
+Other tools can either go to: `modules`, `mixins` or `tools`. Structure and rules are the same as for components, with exception of `styles.scss`. Only modules can contain styles.
+
+There is a tool included for generating boilerplate code. To run it, just type in root `yarn generate` and you will get all possible commands with instructions on how to use them.
 
 ### Good practices
 

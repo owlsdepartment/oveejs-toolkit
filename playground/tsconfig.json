@@ -10,8 +10,8 @@
         "baseUrl": "..",
         "experimentalDecorators": true,
         "paths": {
-            "@core": ["packages/core"],
-            "@integrations": ["packages/core"],
+            "@ovee.js/toolkit": ["packages/core"],
+            "@ovee.js/toolkit-integrations": ["packages/integrations"],
             "@playground/*": ["playground/src/*"],
             "~/*": ["playground/*"],
         }

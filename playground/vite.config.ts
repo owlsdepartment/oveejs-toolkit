@@ -9,8 +9,8 @@ export default defineConfig({
 			// pre-configured aliases, change them freely!
 			'~': __dirname,
 			'@playground': path.resolve(__dirname, 'src'),
-			'@core': path.resolve(__dirname, '../packages/core'),
-			'@integrations': path.resolve(__dirname, '../packages/integrations'),
+			'@ovee.js/toolkit': path.resolve(__dirname, '../packages/core'),
+			'@ovee.js/toolkit-integrations': path.resolve(__dirname, '../packages/integrations'),
 		},
 	},
 });

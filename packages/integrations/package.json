@@ -78,12 +78,24 @@
     "vanilla-lazyload": "^17.5.1"
   },
   "peerDependenciesMeta": {
-    "@googlemaps/js-api-loader": { "optional": true },
-    "lodash": { "optional": false },
-    "lottie-web": { "optional": true },
-    "ovee.js": { "optional": false },
-    "swiper": { "optional": true },
-    "vanilla-lazyload": { "optional": true }
+    "@googlemaps/js-api-loader": {
+      "optional": true
+    },
+    "lodash": {
+      "optional": false
+    },
+    "lottie-web": {
+      "optional": true
+    },
+    "ovee.js": {
+      "optional": false
+    },
+    "swiper": {
+      "optional": true
+    },
+    "vanilla-lazyload": {
+      "optional": true
+    }
   },
   "packageManager": "yarn@3.1.1"
 }

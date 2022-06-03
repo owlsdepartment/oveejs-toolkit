@@ -9,7 +9,7 @@ const packages = ['core', 'integrations'];
 execSync('yarn version_sync', { stdio: 'inherit' });
 execSync('yarn build', { stdio: 'inherit' });
 
-let command = 'yarn npm publish --access public';
+let command = 'npm publish --access public';
 
 if (version.includes('beta')) {
 	command += ' --tag beta';

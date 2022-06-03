@@ -10,7 +10,7 @@ For sticky:
 ## Installation and configuration
 
 ```ts
-import { CollapsingHeader, updateConfig } from '@owlsdepartment/components';
+import { CollapsingHeader, updateConfig } from '@ovee.js/toolkit';
 
 updateConfig(CollapsingHeader, { throttle: 200 });
 
@@ -21,7 +21,7 @@ export default [
 ```
 
 ```scss
-@import '@owlsdepartment/components/styles/collapsing-header';
+@import '@ovee.js/toolkit/styles/collapsing-header';
 ```
 
 ## Usage example

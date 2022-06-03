@@ -2,10 +2,10 @@
 
 ## Installation and configuration
 
-See [components installation](https://github.com/owlsdepartment/owlsdepartment-components/blob/master/docs/components_installation.md) or use this:
+See [components installation](/docs/components_installation.md#components-installation-and-configuration) or use this:
 
 ```ts
-import { NavToggle } from '@owlsdepartment/components';
+import { NavToggle } from '@ovee.js/toolkit';
 
 export default [
     // ... other components ...

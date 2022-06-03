@@ -18,7 +18,7 @@ Stores are a way of preserving data throughout single instance of site/applicati
 Creating a store
 
 ```ts
-import { createStore } from '@owlsdepartment/components'
+import { createStore } from '@ovee.js/toolkit'
 
 const { state: globalState, mutation, getter } = createStore('global', {
 	isPreloaderVisible: true,
@@ -92,7 +92,7 @@ export class ExampleComponent extends Component {
 All stores are kept together in `OveeStore` class singletone. To retrieve it, just import it and use it like that:
 
 ```ts
-import { OveeStore } from '@owlsdepartment/components'
+import { OveeStore } from '@ovee.js/toolkit'
 
 const store = OveeStore.getInstance();
 

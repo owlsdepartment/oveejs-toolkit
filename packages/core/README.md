@@ -10,6 +10,16 @@ npm install --save @ovee.js/toolkit
 yarn add @ovee.js/toolkit
 ```
 
+Additionally, it is required to install these packages:
+
+```bash
+npm install --save ovee.js gsap lodash
+# for yarn
+yarn add ovee.js gsap lodash
+```
+
+They are included as peer dependencies, as they are pretty common and we want to avoid multiplying packages instances and versions.
+
 ## Usage notes
 
 All tools are exposed in root package, so to use them, just write

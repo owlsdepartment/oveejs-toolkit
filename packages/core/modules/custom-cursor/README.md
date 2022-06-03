@@ -12,7 +12,7 @@ See [Components installation](/docs/components_installation.md#modules)
 Styles
 
 ```scss
-@import '@owlsdepartment/modules/custom-cursor/styles/';
+@import '@ovee.js/toolkit/custom-cursor/styles';
 ```
 
 ## Usage example

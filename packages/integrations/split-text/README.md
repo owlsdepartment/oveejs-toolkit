@@ -9,7 +9,7 @@ This component uses GSAP's [SplitText plugin](https://greensock.com/docs/v3/Plug
 ## Installation and configuration
 
 ```ts
-import { SplitText } from '@owlsdepartment/components';
+import { SplitText } from '@ovee.js/toolkit';
 
 export default [
     // ... other components ...

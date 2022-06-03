@@ -10,7 +10,7 @@ yarn add lodash
 ## Installation and configuration
 
 ```ts
-import { InViewport, updateConfig } from '@owlsdepartment/components';
+import { InViewport, updateConfig } from '@ovee.js/toolkit';
 
 updateConfig(InViewport, { threshold: 0.3 });
 

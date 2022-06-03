@@ -55,9 +55,6 @@
       "require": "./video-autoplay.cjs"
     }
   },
-  "dependencies": {
-    "@ovee.js/toolkit": "workspace:*"
-  },
   "devDependencies": {
     "@googlemaps/js-api-loader": "^1.14.3",
     "@types/google.maps": "^3.49.1",
@@ -73,6 +70,7 @@
   },
   "peerDependencies": {
     "@googlemaps/js-api-loader": "^1.14.3",
+    "@ovee.js/toolkit": "workspace:*",
     "lodash": "^4.17.21",
     "lottie-web": "^5.8.1",
     "ovee.js": "~2.1.8",

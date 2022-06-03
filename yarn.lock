@@ -377,11 +377,25 @@ __metadata:
     vanilla-lazyload: ^17.5.1
   peerDependencies:
     "@googlemaps/js-api-loader": ^1.14.3
+    "@ovee.js/toolkit": "workspace:*"
     lodash: ^4.17.21
     lottie-web: ^5.8.1
     ovee.js: ~2.1.8
     swiper: ^8.0.7
     vanilla-lazyload: ^17.5.1
+  peerDependenciesMeta:
+    "@googlemaps/js-api-loader":
+      optional: true
+    lodash:
+      optional: false
+    lottie-web:
+      optional: true
+    ovee.js:
+      optional: false
+    swiper:
+      optional: true
+    vanilla-lazyload:
+      optional: true
   languageName: unknown
   linkType: soft
 

@@ -8,6 +8,7 @@
 		"esModuleInterop": true,
     	"experimentalDecorators": true,
     	"allowSyntheticDefaultImports": true,
+		"resolveJsonModule": true,
 		"noImplicitAny": true,
 		"strictNullChecks": true,
 		"lib": ["dom", "es6", "ESNext"],
@@ -22,6 +23,7 @@
 		"node_modules",
 	],
 	"include": [
-		"**/*.ts"
+		"**/*.ts",
+		"**/*.json",
 	]
 }

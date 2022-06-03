@@ -1,4 +1,5 @@
 {
+  "version": "0.0.1",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -9,6 +10,8 @@
     "playground": "esr ./scripts/playground.ts",
     "generate": "esr ./scripts/generate.ts",
     "build": "esr ./scripts/build.ts",
+    "publish": "esr ./scripts/publish.ts",
+    "version_sync": "esr ./scripts/version-sync.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "yarn eslint && yarn stylelint",
     "lint:no-fix": "yarn eslint:no-fix && yarn stylelint:no-fix",

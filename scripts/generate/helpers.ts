@@ -3,7 +3,7 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } fr
 import { last, trimEnd, trimStart } from 'lodash';
 import path from 'path';
 
-import { README_TEMPLATE, ROOT_DIR } from './constants';
+import { PACKAGE_CORE, PACKAGE_INTEGRATIONS, README_TEMPLATE, ROOT_DIR } from './constants';
 
 export function trimPath(path: string) {
 	return trimStart(trimEnd(path, '/'), '/');
@@ -70,11 +70,13 @@ export function getGeneratedElementParams({
 	path,
 	otherDir,
 	baseDir,
+	toIntegrations,
 }: {
 	path: string;
 	name: string;
 	otherDir: string;
 	baseDir: string;
+	toIntegrations: boolean;
 }) {
 	let outputName: string;
 	let directoryPath: string;
@@ -84,17 +86,19 @@ export function getGeneratedElementParams({
 
 		if (splitted.length === 1) {
 			outputName = path;
-			directoryPath = `${otherDir}/${outputName}`;
+			directoryPath = toIntegrations ? `${outputName}` : `${otherDir}/${outputName}`;
 		} else {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			outputName = last(splitted)!;
-			directoryPath = `${baseDir}/${splitted.join('/')}`;
+			directoryPath = toIntegrations ? `${outputName}` : `${baseDir}/${splitted.join('/')}`;
 		}
 	} else {
 		const trimmedPath = trimPath(path);
 
 		outputName = name;
-		directoryPath = `${baseDir}/${trimmedPath}`;
+		directoryPath = toIntegrations
+			? `${last(trimmedPath.split('/'))}`
+			: `${baseDir}/${trimmedPath}`;
 	}
 
 	return {
@@ -111,4 +115,8 @@ export function generateReadme(basePath: string, targetName?: string) {
 	}
 
 	writeFileSync(path.resolve(basePath, 'README.md'), readmeContent);
+}
+
+export function getPackageDir(toIntegrations: boolean): string {
+	return path.resolve(ROOT_DIR, toIntegrations ? PACKAGE_INTEGRATIONS : PACKAGE_CORE);
 }

@@ -5,16 +5,20 @@ export interface AccordionElement extends HTMLElement {
 
 export interface AnimationArguments {
 	item: AccordionElement;
-	height?: number;
 	immediate: boolean;
-	speed: number;
-	ease: string;
+	duration: number;
+	ease: string | gsap.EaseFunction;
+	display?: string;
+	onInit?: (tween: gsap.core.Tween) => void;
 }
 
 export interface BaseAccordionOptions {
 	firstActive: boolean;
 	autoCollapse: boolean;
 	immediate: boolean;
-	speed: number;
-	ease: string;
+	duration: number;
+	ease: string | gsap.EaseFunction;
+	openClass?: string;
+	collapsedClass?: string;
+	display?: string;
 }

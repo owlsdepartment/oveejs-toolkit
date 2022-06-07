@@ -1,7 +1,24 @@
-[data-accordion-trigger] {
-	cursor: pointer;
+$base_accordion_default_open_class: '.is-open' !default;
+$base_accordion_default_collapsed_class: '.is-collapsed' !default;
 
-	& * {
-		pointer-events: none;
+@mixin base-accordion(
+	$openClass: $base_accordion_default_open_class,
+	$collapsedClass: $base_accordion_default_collapsed_class
+) {
+	display: block;
+
+	[data-accordion-trigger] {
+		cursor: pointer;
 	}
+
+	[data-accordion-item]:not(#{$openClass}):not(#{$collapsedClass}) {
+		[data-accordion-content] {
+			display: none;
+		}
+	}
+}
+
+base-accordion,
+[data-base-accordion] {
+	@include base-accordion;
 }

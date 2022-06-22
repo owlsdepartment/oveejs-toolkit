@@ -1,8 +1,8 @@
 # NavToggle
 
-## Installation and configuration
+## Registration and configuration
 
-See [components installation](/docs/components_installation.md#components-installation-and-configuration) or use this:
+See [Components registration](/docs/registration.md#components) or use this:
 
 ```ts
 import { NavToggle } from '@ovee.js/toolkit';

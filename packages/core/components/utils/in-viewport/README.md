@@ -1,6 +1,6 @@
 # InViewport
 
-## Installation and configuration
+## Registration and configuration
 
 ```ts
 import { InViewport } from '@ovee.js/toolkit';

@@ -1,8 +1,8 @@
 # Viewport
 
-## Installation and configuration
+## Registration and configuration
 
-See [Configuration](/docs/components_installation.md#modules)
+See [Modules registration](/docs/registration.md#modules)
 
 To add styles
 

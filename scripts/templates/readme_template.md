@@ -4,11 +4,11 @@
 <!-- TODO: fill dependencies (maybe automatic in future) -->
 <!-- TODO: add `yarn add ...` with all dependencies -->
 
-## Installation and configuration
+## Registration and configuration
 
 <!-- TODO: if something is special or unusual, update this section -->
 <!-- else link to proper paragraph -->
-See [Configuration](/docs/components_installation.md#components-installation-and-configuration)
+See [Registration](/docs/registration.md#components)
 
 <!-- {{styles}} -->
 

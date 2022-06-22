@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollTrigger } from 'gsap/ScrollTrigger.js';
 import { Component, dataParam, Logger, register } from 'ovee.js';
 
 gsap.registerPlugin(ScrollTrigger);

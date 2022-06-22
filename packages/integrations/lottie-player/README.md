@@ -7,7 +7,7 @@
 yarn add lottie-web
 ```
 
-## Installation and configuration
+## Registration and configuration
 
 See [Components instalation](/docs/components_instalation.md)
 

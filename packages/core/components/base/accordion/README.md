@@ -1,8 +1,8 @@
 # BaseAccordion
 
-## Installation and configuration
+## Registration and configuration
 
-See [Components installation](/docs/components_installation.md#components-installation-and-configuration)
+See [Components installation](/docs/registration.md#components)
 
 |	Option			|	Type		|	Default			|	Description														|
 |	---				|	---			|	---				|	---																|

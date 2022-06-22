@@ -1,8 +1,8 @@
 # WithInViewport
 
-## Installation and configuration
+## Registration and configuration
 
-Via `updateConfig`. See [Configuration](/docs/components_installation.md#updateconfig-helper)
+Configuration via `updateConfig`. See [`updateConfig` helper](/docs/registration.md#updateconfig-helper)
 
 ## Usage example
 

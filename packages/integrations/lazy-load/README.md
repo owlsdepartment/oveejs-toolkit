@@ -3,7 +3,7 @@
 ## Requirements
  - [`vanilla-lazyload`](https://github.com/verlok/vanilla-lazyload)
 
-## Installation and configuration
+## Registration and configuration
 
 See [Components instalation](/docs/components_instalation.md)
 

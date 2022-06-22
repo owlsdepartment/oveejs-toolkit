@@ -27,9 +27,10 @@ export function slideDown<T extends HTMLElement = HTMLElement>(
 			overflow: 'hidden',
 		});
 
-		const paddingTop = parseFloat(getComputedStyle(target).paddingTop);
-		const paddingBottom = parseFloat(getComputedStyle(target).paddingBottom);
-		const height = parseFloat(getComputedStyle(target).height);
+		const computedStyles = getComputedStyle(target);
+		const paddingTop = parseFloat(computedStyles.paddingTop);
+		const paddingBottom = parseFloat(computedStyles.paddingBottom);
+		const height = parseFloat(computedStyles.height);
 
 		gsap.set(target, {
 			height: 0,

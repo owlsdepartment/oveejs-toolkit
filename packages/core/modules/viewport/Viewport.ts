@@ -1,4 +1,4 @@
-import { ComputedRef, makeComputed, Module, reactive } from 'ovee.js';
+import { ComputedRef, makeComputed, Module, ref } from 'ovee.js';
 
 declare module 'ovee.js' {
 	interface App {
@@ -8,23 +8,23 @@ declare module 'ovee.js' {
 }
 
 export class Viewport extends Module {
-	@reactive() vh = 0;
-	@reactive() vw = 0;
+	vh = ref(0);
+	vw = ref(0);
 
 	init() {
 		this.updateUnits();
 		this.$app.$on('resize', window as any, () => this.updateUnits());
 
-		this.$app.$vh = makeComputed(() => this.vh);
-		this.$app.$vw = makeComputed(() => this.vw);
+		this.$app.$vh = makeComputed(() => this.vh.value);
+		this.$app.$vw = makeComputed(() => this.vw.value);
 	}
 
 	updateUnits() {
-		this.vh = document.documentElement.clientHeight / 100;
-		this.vw = window.innerWidth / 100;
+		this.vh.value = document.documentElement.clientHeight / 100;
+		this.vw.value = window.innerWidth / 100;
 
-		window.document.documentElement.style.setProperty('--vh', `${this.vh}px`);
-		window.document.documentElement.style.setProperty('--vw', `${this.vw}px`);
+		window.document.documentElement.style.setProperty('--vh', `${this.vh.value}px`);
+		window.document.documentElement.style.setProperty('--vw', `${this.vw.value}px`);
 	}
 
 	static getName() {

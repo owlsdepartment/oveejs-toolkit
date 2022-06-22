@@ -6,7 +6,7 @@
 
 This component uses GSAP's [SplitText plugin](https://greensock.com/docs/v3/Plugins/SplitText) that requires GSAP Business License.
 
-## Installation and configuration
+## Registration and configuration
 
 ```ts
 import { SplitText } from '@ovee.js/toolkit';

@@ -1,6 +1,6 @@
 # Store
 
-## Installation and configuration
+## Registration and configuration
 
 This tool doesn't require any special configuration
 

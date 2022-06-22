@@ -1,4 +1,6 @@
-# Components installation and configuration
+# Components
+
+## Registration
 
 ```ts
 // Import component from library
@@ -14,7 +16,7 @@ const app = new App({
 })
 ```
 
-With custom config:
+## Registration with custom options
 
 ```ts
 // Import component from library
@@ -33,19 +35,17 @@ const app = new App({
 app.registerComponent(YourComponent, { customField: 'custom' });
 ```
 
+## Styling
+
 Some components have styles, which you can import in `SCSS`:
 
 ```scss
 @import '@ovee.js/toolkit/styles/your-component';
 ```
 
-or in `CSS`:
-
-```css
-@import '@ovee.js/toolkit/styles/your-component.css';
-```
-
 # Modules
+
+## Registration
 
 ```ts
 // Import module from library
@@ -61,7 +61,7 @@ const app = new App({
 })
 ```
 
-With custom config:
+## Registration with custom options
 
 ```ts
 // Import module from library
@@ -79,16 +79,13 @@ const app = new App({
 // alternatively, use it with `use` method, to get full typing
 app.use(YourModule, { customField: 'custom' });
 ```
+
+## Styling
+
 Some modules have styles, which you can import in `SCSS`:
 
 ```scss
 @import '@ovee.js/toolkit/styles/your-module';
-```
-
-or in `CSS`:
-
-```css
-@import '@ovee.js/toolkit/styles/your-module.css';
 ```
 
 # `updateConfig` helper
@@ -107,4 +104,4 @@ If tool or mixin that are configurable this way, will have it specified in `READ
 
 # Other
 
-If tool doesn't use `updateConfig` helper (which should be specified in `README`),  it should not require any special configuration or installation.
+If tool doesn't use `updateConfig` helper (which should be specified in `README`), it should not require any special configuration.

@@ -1,8 +1,8 @@
 # CustomCursor
 
-## Installation and configuration
+## Registration and configuration
 
-See [Components installation](/docs/components_installation.md#modules)
+See [Modules registration](/docs/registration.md#modules)
 
 Styles
 

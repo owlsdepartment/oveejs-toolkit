@@ -10,7 +10,7 @@ npm install --save @ovee.js/toolkit
 yarn add @ovee.js/toolkit
 ```
 
-Additionally, it is required to install these packages:
+Additionally, it is required to install these packages if you don't have them already:
 
 ```bash
 npm install --save ovee.js gsap lodash
@@ -22,7 +22,7 @@ They are included as peer dependencies, as they are pretty common and we want to
 
 ## Usage notes
 
-All tools are exposed in root package, so to use them, just write
+All tools are exposed in root package, so to import them, just write
 
 ```ts
 import { BaseDialog } from '@ovee.js/toolkit'
@@ -55,4 +55,6 @@ Every tool has seperate `README` with specific guide on how to install it, use i
 
  - [observeIntersections](./tools/observeIntersections/README.md)
  - [OveeStore](./tools/store/README.md)
+
+[<- Root](/README.md)
 

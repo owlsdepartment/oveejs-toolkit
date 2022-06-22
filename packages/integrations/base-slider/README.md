@@ -11,9 +11,9 @@ npm install --save swiper
 yarn add swiper
 ```
 
-## Installation and configuration
+## Registration and configuration
 
-See [Components installation](/docs/components_installation.md)
+See [Components registration](/docs/registration.md#components)
 
 ## Usage example
 

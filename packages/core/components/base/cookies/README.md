@@ -1,8 +1,8 @@
 # BaseCookies
 
-## Installation and configuration
+## Registration and configuration
 
-See [Components installation](/docs/components_installation.md#components-installation-and-configuration)
+See [Components registration](/docs/registration.md#components)
 
 ## Usage example
 

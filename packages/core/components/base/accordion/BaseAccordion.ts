@@ -83,8 +83,7 @@ export class BaseAccordion extends Component {
 	}
 
 	setInitHeights() {
-		const { options } = this;
-		const { duration, ease } = options;
+		const { duration, ease, firstActive } = this.options;
 
 		this.items.forEach((item, i) => {
 			const animationConfig = {
@@ -94,7 +93,7 @@ export class BaseAccordion extends Component {
 				ease,
 			};
 
-			if (options.firstActive && i === 0) {
+			if (firstActive && i === 0) {
 				this.show(animationConfig);
 			} else {
 				this.hide(animationConfig);
@@ -102,11 +101,26 @@ export class BaseAccordion extends Component {
 		});
 	}
 
+	bind() {
+		if (!this.items) return;
+
+		this.items.forEach(({ _trigger: trigger }) => {
+			if (!trigger) {
+				return logger.error('Failed to bind event listener. Missing trigger element');
+			}
+
+			this.$on('click', trigger, this.clickHandler);
+			this.$on('keydown', trigger, this.keyDownHandler);
+		});
+	}
+
 	async show(args: AnimationArguments) {
 		const { openClass, collapsedClass } = this.options;
+
 		this.$emit('base-accordion:will-show', args.item);
 		args.item.classList.remove(collapsedClass);
 		args.item.classList.add(openClass);
+
 		try {
 			await showAnimation(args);
 			this.$emit('base-accordion:show', args.item);
@@ -117,14 +131,26 @@ export class BaseAccordion extends Component {
 
 	async hide(args: AnimationArguments) {
 		const { openClass, collapsedClass } = this.options;
+
 		this.$emit('base-accordion:will-hide', args.item);
 		args.item.classList.remove(openClass);
 		args.item.classList.add(collapsedClass);
+
 		try {
 			await hideAnimation(args);
 			this.$emit('base-accordion:hide', args.item);
 		} catch (err) {
 			this.$emit('base-accordion:hide-interrupted', args.item);
+		}
+	}
+
+	clickHandler(e: MouseEvent) {
+		this.handleTriggerEvent(e);
+	}
+
+	keyDownHandler(e: KeyboardEvent) {
+		if (e.code === 'Space' || e.code === 'Enter') {
+			this.handleTriggerEvent(e);
 		}
 	}
 
@@ -139,9 +165,7 @@ export class BaseAccordion extends Component {
 			return logger.error('Failed to handle triggered event. Missing item element');
 		}
 
-		const tl = gsap.timeline({
-			paused: true,
-		});
+		const tl = gsap.timeline({ paused: true });
 		const animationConfig: AnimationArguments = {
 			item,
 			immediate: options.immediate,
@@ -177,39 +201,5 @@ export class BaseAccordion extends Component {
 		}
 
 		tl.play();
-	}
-
-	clickHandler(e: MouseEvent) {
-		this.handleTriggerEvent(e);
-	}
-
-	keyDownHandler(e: KeyboardEvent) {
-		if (e.code === 'Space' || e.code === 'Enter') {
-			this.handleTriggerEvent(e);
-		}
-	}
-
-	bind() {
-		if (!this.items) return;
-
-		this.items.forEach(({ _trigger: trigger }) => {
-			if (!trigger) {
-				return logger.error('Failed to bind event listener. Missing trigger element');
-			}
-
-			this.$on('click', trigger, this.clickHandler);
-			this.$on('keydown', trigger, this.keyDownHandler);
-		});
-	}
-
-	destroy() {
-		this.items.forEach(({ _trigger: trigger }) => {
-			if (!trigger) {
-				return;
-			}
-
-			this.$off('click', trigger, this.clickHandler);
-			this.$off('keydown', trigger, this.keyDownHandler);
-		});
 	}
 }

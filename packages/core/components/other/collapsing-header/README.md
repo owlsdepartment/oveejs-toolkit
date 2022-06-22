@@ -1,8 +1,8 @@
 # CollapsingHeader
 
-## Installation and configuration
+## Registration and configuration
 
-See [Configuration](/docs/components_installation.md#components-installation-and-configuration)
+See [Components registration](/docs/registration.md#components)
 
 ```scss
 @import '@ovee.js/toolkit/styles/collapsing-header';

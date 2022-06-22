@@ -5,14 +5,16 @@ This package adds components and modules for `Ovee.js`, that heavily rely on ext
 ## Installation
 
 ```bash
-npm install --save @ovee.js/toolkit-integrations @ovee.js/toolkit
+npm install --save @ovee.js/toolkit-integrations
 # for yarn
-yarn add @ovee.js/toolkit-integrations @ovee.js/toolkit
+yarn add @ovee.js/toolkit-integrations
 ```
+
+This package requires `@ovee.js/toolkit`. If you didn't installed it already, follow [this link](/packages/core/README.md#installation) for installation instructions.
 
 ## Usage notes
 
-All submodules have their own peer dependencies, so you should check `README` file for it to see if anything should be installed additionally, alongside standard configuration and installation instructions.
+All submodules have their own peer dependencies, so you should check submodule's `README` file to see if anything should be installed additionally, alongside standard configuration.
 
 All imports should be done from specific submodules, f.ex.:
 
@@ -34,3 +36,5 @@ You can do it, but it requires all optional libraries to be installed tho.
  - [LottiePlayer](./lottie-player/README.md), using `lottie-web`
  - [SplitText](./split-text/README.md), using `gsap@business`
  - [VideoAutoplay](./video-autoplay/README.md)
+
+[<- Root](/README.md)

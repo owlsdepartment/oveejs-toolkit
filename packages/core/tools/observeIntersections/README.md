@@ -1,8 +1,8 @@
 # ObserveIntersections
 
-## Installation and configuration
+## Registration and configuration
 
-See [Components installation](/docs/components_installation.md#other)
+No configuration is needed.
 
 ## Usage example
 

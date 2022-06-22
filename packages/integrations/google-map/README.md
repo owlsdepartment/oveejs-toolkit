@@ -3,9 +3,9 @@
 ## Requirements
  - [Google Maps JavaScript API Loader](https://www.npmjs.com/package/@googlemaps/js-api-loader)
 
-## Installation and configuration
+## Registration and configuration
 
-[Components installation](https://github.com/owlsdepartment/owlsdepartment-components/blob/master/docs/components_installation.md)
+See [Components registration](/docs/registration.md#components)
 
 ## Usage example
 

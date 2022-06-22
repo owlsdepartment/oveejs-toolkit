@@ -377,7 +377,7 @@ __metadata:
     vanilla-lazyload: ^17.5.1
   peerDependencies:
     "@googlemaps/js-api-loader": ^1.14.3
-    "@ovee.js/toolkit": "workspace:*"
+    "@ovee.js/toolkit": ^0.0.1
     lodash: ^4.17.21
     lottie-web: ^5.8.1
     ovee.js: ~2.1.8

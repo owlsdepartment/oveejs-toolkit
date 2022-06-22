@@ -1,16 +1,20 @@
+import gsap from 'gsap';
 import { Component, el, Logger, register } from 'ovee.js';
 
-import { calcHeights, hideAnimation, showAnimation } from './helpers';
+import { hideAnimation, showAnimation } from './helpers';
 import { AccordionElement, AnimationArguments, BaseAccordionOptions } from './types';
 
 const logger = new Logger('BaseAccordion');
 
-export const BASE_ACCORDION_DEFAULT_OPTIONS: BaseAccordionOptions = {
+export const BASE_ACCORDION_DEFAULT_OPTIONS: Required<BaseAccordionOptions> = {
 	firstActive: false,
 	autoCollapse: false,
 	immediate: false,
-	speed: 0.4,
+	duration: 0.4,
 	ease: 'power2.inOut',
+	openClass: 'is-open',
+	collapsedClass: 'is-collapsed',
+	display: 'block',
 };
 
 @register('base-accordion')
@@ -18,7 +22,7 @@ export class BaseAccordion extends Component {
 	@el('[data-accordion-item]', { list: true })
 	items: AccordionElement[];
 
-	options: BaseAccordionOptions;
+	options: Required<BaseAccordionOptions>;
 
 	init() {
 		this.options = {
@@ -33,7 +37,6 @@ export class BaseAccordion extends Component {
 		}
 
 		this.initAttributes();
-		this.calcHeights();
 		this.setInitHeights();
 		this.bind();
 	}
@@ -78,85 +81,23 @@ export class BaseAccordion extends Component {
 		}
 	}
 
-	calcHeights() {
-		calcHeights(this.items, true);
-	}
-
 	setInitHeights() {
-		const { options } = this;
+		const { duration, ease, firstActive } = this.options;
 
 		this.items.forEach((item, i) => {
 			const animationConfig = {
 				item,
-				immediate: options.immediate,
-				speed: options.speed,
-				ease: options.ease,
+				immediate: true,
+				duration,
+				ease,
 			};
 
-			if (options.firstActive && i === 0) {
+			if (firstActive && i === 0) {
 				this.show(animationConfig);
 			} else {
 				this.hide(animationConfig);
 			}
 		});
-	}
-
-	show(args: AnimationArguments) {
-		showAnimation(args);
-		this.$emit('base-accordion:show', args.item);
-	}
-
-	hide(args: AnimationArguments) {
-		hideAnimation(args);
-		this.$emit('base-accordion:hide', args.item);
-	}
-
-	handleTriggerEvent(e: Event) {
-		const trigger = e.target as HTMLElement;
-		const item = trigger.closest<AccordionElement>('[data-accordion-item]');
-		const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
-		const { options } = this;
-
-		if (!item) {
-			return logger.error('Failed to handle triggered event. Missing item element');
-		}
-
-		const animationConfig = {
-			item,
-			immediate: options.immediate,
-			speed: options.speed,
-			ease: options.ease,
-		};
-
-		if (options.autoCollapse) {
-			this.items.forEach(item => {
-				const { _trigger: trigger, _content: content } = item;
-
-				if (!trigger || !content) {
-					return logger.error('Missing trigger or content element');
-				}
-
-				if (trigger.getAttribute('aria-expanded') === 'true') {
-					this.hide(animationConfig);
-				}
-			});
-		}
-
-		if (!isExpanded) {
-			this.show(animationConfig);
-		} else {
-			this.hide(animationConfig);
-		}
-	}
-
-	clickHandler(e: MouseEvent) {
-		this.handleTriggerEvent(e);
-	}
-
-	keyDownHandler(e: KeyboardEvent) {
-		if (e.code === 'Space' || e.code === 'Enter') {
-			this.handleTriggerEvent(e);
-		}
 	}
 
 	bind() {
@@ -172,14 +113,92 @@ export class BaseAccordion extends Component {
 		});
 	}
 
-	destroy() {
-		this.items.forEach(({ _trigger: trigger }) => {
-			if (!trigger) {
-				return;
-			}
+	async show(args: AnimationArguments) {
+		const { openClass, collapsedClass } = this.options;
 
-			this.$off('click', trigger, this.clickHandler);
-			this.$off('keydown', trigger, this.keyDownHandler);
-		});
+		this.$emit('base-accordion:will-show', args.item);
+		args.item.classList.remove(collapsedClass);
+		args.item.classList.add(openClass);
+
+		try {
+			await showAnimation(args);
+			this.$emit('base-accordion:show', args.item);
+		} catch (err) {
+			this.$emit('base-accordion:show-interrupted', args.item);
+		}
+	}
+
+	async hide(args: AnimationArguments) {
+		const { openClass, collapsedClass } = this.options;
+
+		this.$emit('base-accordion:will-hide', args.item);
+		args.item.classList.remove(openClass);
+		args.item.classList.add(collapsedClass);
+
+		try {
+			await hideAnimation(args);
+			this.$emit('base-accordion:hide', args.item);
+		} catch (err) {
+			this.$emit('base-accordion:hide-interrupted', args.item);
+		}
+	}
+
+	clickHandler(e: MouseEvent) {
+		this.handleTriggerEvent(e);
+	}
+
+	keyDownHandler(e: KeyboardEvent) {
+		if (e.code === 'Space' || e.code === 'Enter') {
+			this.handleTriggerEvent(e);
+		}
+	}
+
+	handleTriggerEvent(e: Event) {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const trigger = (e.target as HTMLElement).closest<HTMLElement>('[data-accordion-trigger]')!;
+		const item = trigger.closest<AccordionElement>('[data-accordion-item]');
+		const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+		const { options } = this;
+
+		if (!item) {
+			return logger.error('Failed to handle triggered event. Missing item element');
+		}
+
+		const tl = gsap.timeline({ paused: true });
+		const animationConfig: AnimationArguments = {
+			item,
+			immediate: options.immediate,
+			duration: options.duration,
+			ease: options.ease,
+			display: options.display,
+			onInit: tween => tl.add(tween, 0),
+		};
+
+		if (options.autoCollapse) {
+			this.items.forEach(subItem => {
+				const { _trigger: trigger, _content: content } = subItem;
+
+				if (item === subItem) return;
+
+				if (!trigger || !content) {
+					return logger.error('Missing trigger or content element');
+				}
+
+				if (trigger.getAttribute('aria-expanded') === 'true') {
+					this.hide({
+						...animationConfig,
+						item: subItem,
+					});
+				}
+			});
+		}
+
+		if (!isExpanded) {
+			this.show(animationConfig);
+		} else {
+			this.hide(animationConfig);
+		}
+
+		tl.play();
 	}
 }

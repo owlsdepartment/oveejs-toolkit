@@ -1,4 +1,4 @@
-import gsap from 'gsap';
+import { slideDownFade, slideUpFade } from '@ovee.js/toolkit/tools/animations';
 import { Logger } from 'ovee.js';
 
 import { AnimationArguments } from '../types';
@@ -6,69 +6,39 @@ import { AnimationArguments } from '../types';
 const logger = new Logger('BaseAccordion - animations');
 
 export const showAnimation = (args: AnimationArguments) => {
-	const { item, immediate, speed, ease } = args;
+	const { item, immediate, duration, ease, display, onInit } = args;
 	const { _trigger: trigger, _content: content } = item;
 
 	if (!trigger || !content) {
-		return logger.error('Missing trigger or content element');
+		logger.error('Missing trigger or content element');
+		return Promise.reject();
 	}
 
 	trigger.setAttribute('aria-expanded', 'true');
 	content.style.pointerEvents = 'all';
-	const height = item.dataset.activeHeight ?? 'auto';
 
-	if (immediate === true) {
-		item.style.height = `${height}px`;
-		content.style.opacity = '1';
-
-		return Promise.resolve();
-	} else {
-		gsap.to(content, {
-			duration: speed / 2,
-			ease: 'none',
-			opacity: 1,
-			delay: speed / 1.5,
-			clearProps: 'all',
-		});
-
-		return gsap.to(item, {
-			duration: speed,
-			ease,
-			height,
-			clearProps: 'all',
-		});
-	}
+	return slideDownFade(content, immediate ? 0 : duration, {
+		ease,
+		display,
+		onInit,
+	});
 };
 
 export const hideAnimation = (args: AnimationArguments) => {
-	const { item, height, immediate, speed, ease } = args;
+	const { item, immediate, duration, ease, display, onInit } = args;
 	const { _trigger: trigger, _content: content } = item;
-	const blockHeight = height ?? item.dataset.reducedHeight;
 
 	if (!trigger || !content) {
-		return logger.error('Missing trigger or content element');
+		logger.error('Missing trigger or content element');
+		return Promise.reject();
 	}
 
 	trigger.setAttribute('aria-expanded', 'false');
 	content.style.pointerEvents = 'none';
 
-	if (immediate == true) {
-		item.style.height = `${blockHeight}px`;
-		content.style.opacity = '0';
-
-		return Promise.resolve();
-	} else {
-		gsap.to(content, {
-			duration: speed / 2,
-			ease: 'none',
-			opacity: 0,
-		});
-
-		return gsap.to(item, {
-			duration: speed,
-			ease,
-			height: blockHeight,
-			delay: 0.1,
-		});
-	}
+	return slideUpFade(content, immediate ? 0 : duration, {
+		ease,
+		display,
+		onInit,
+	});
 };

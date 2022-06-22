@@ -87,7 +87,7 @@ my-custom-accordion {
 }
 ```
 
-Also, if you customize open/closed classes with the component's options, the default styles will no longer work and all of the accordion's items will stay opened until the JS loads. TO solve this, you can either add custom styling to hide the item unil it gets the configured classes or you can set the following global Sass variables before including the component's styles:
+Also, if you customize open/closed classes with the component's options, the default styles will no longer work and all of the accordion's items will stay opened until the JS loads. To solve this, you can either add custom styling to hide the item until it gets the configured classes or you can set the following global Sass variables before including the component's styles:
 
 ```scss
 $base_accordion_default_open_class: '.is-open';

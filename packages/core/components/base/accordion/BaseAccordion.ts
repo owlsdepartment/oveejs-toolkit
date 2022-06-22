@@ -27,7 +27,6 @@ export class BaseAccordion extends Component {
 	init() {
 		this.options = {
 			...BASE_ACCORDION_DEFAULT_OPTIONS,
-			...(this.options ?? {}),
 			...this.$options,
 		};
 

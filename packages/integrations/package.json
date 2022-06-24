@@ -53,6 +53,11 @@
       "types": "./video-autoplay.d.ts",
       "import": "./video-autoplay.mjs",
       "require": "./video-autoplay.cjs"
+    },
+    "./media-player": {
+      "types": "./media-player.d.ts",
+      "import": "./media-player.mjs",
+      "require": "./media-player.cjs"
     }
   },
   "devDependencies": {
@@ -64,6 +69,7 @@
     "lodash": "^4.17.21",
     "lottie-web": "^5.8.1",
     "ovee.js": "~2.1.8",
+    "plyr": "^3.7.2",
     "swiper": "^8.0.7",
     "typescript": "^4.5.5",
     "vanilla-lazyload": "^17.5.1"
@@ -74,6 +80,7 @@
     "lodash": "^4.17.21",
     "lottie-web": "^5.8.1",
     "ovee.js": "~2.1.8",
+    "plyr": "*",
     "swiper": "^8.0.7",
     "vanilla-lazyload": "^17.5.1"
   },
@@ -89,6 +96,9 @@
     },
     "ovee.js": {
       "optional": false
+    },
+    "plyr": {
+      "optional": true
     },
     "swiper": {
       "optional": true

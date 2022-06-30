@@ -23,9 +23,9 @@ To configure the component, you can set the following options during it's regist
 
 To use this component you need to add the following `data-` attributes to the component elements:
 
-- `data-base-accordion-item` - accordion item
-- `data-base-accordion-trigger` - accordion item trigger
-- `data-base-accordion-content` - accordion item content
+- `data-accordion-item` - accordion item
+- `data-accordion-trigger` - accordion item trigger
+- `data-accordion-content` - accordion item content
 
 ```html
 <base-accordion>

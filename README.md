@@ -18,3 +18,8 @@ To install other packages, check their `README`.
 
  - `@ovee.js/toolkit` - required core package containing useful components, modules, tools, and much more. You can find documentation [here 👈](/packages/core/README.md)
  - `@ovee.js/toolkit-integrations`(/packages/integrations/README.md) - additional package, containing refrences and integrations to external packages. Documentation [here 👈](/packages/integrations/README.md)
+
+## Submodules list
+
+ - `@ovee.js/toolkit` [submodules list](/packages/core/README.md#available-submodules)
+ - `@ovee.js/toolkit-integrations` [submodules list](/packages/integrations/README.md#available-submodules)

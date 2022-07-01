@@ -29,14 +29,22 @@ Example:
     aria-controls="menu-menu"
     aria-expanded="false"
 ></button>
+
+<nav class="header__menu">
+    <ul id="menu-menu" class="menu">
+        <li class="menu-item">
+            <a href=""></a>
+        </li>
+    </ul>
+</nav>
 ```
 
 ## Attributes
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `data-nav-toggle` | `string` | `menu` | Specifie name (*navName*). It describes what element you toggle |
-| `data-nav` | `string` | `undefined` | Specifie **selector** of the element which you want to toggle |
+| `data-nav-toggle` | `string` | `menu` | Specifie name of element you toggle. It's responsible for assigning class to `HTML`, for example `"menu-visible"`, so the best practice is using name of element which will show/hide |
+| `data-nav` | `string` | `undefined` | Pass **selector** `(class/id/tag)` of the element which you want to be toggled. In this example is `.menu` |
 | `data-show-immediately` | `boolean` | `false` | Set to true to show element immediately |
 | `data-hide-immediately` | `boolean` | `false` | Set to true to hide element immediately |
 

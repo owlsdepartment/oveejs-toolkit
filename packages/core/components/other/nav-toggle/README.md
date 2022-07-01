@@ -43,8 +43,8 @@ Example:
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `data-nav-toggle` | `string` | `menu` | Specifie name of element you toggle. It's responsible for assigning class to `HTML`, for example `"menu-visible"`, so the best practice is using name of element which will show/hide |
-| `data-nav` | `string` | `undefined` | Pass **selector** `(class/id/tag)` of the element which you want to be toggled. In this example is `.menu` |
+| `data-nav-toggle` | `string` | `menu` | Specify the name of an element you toggle. It's responsible for assigning a class to `HTML`, for example `"menu-visible"`, so the best practice is to use the name of an element which will show/hide |
+| `data-nav` | `string` | `undefined` | Pass **selector** `(class/id/tag)` of the element which you want to toggle. In this example: `.menu` |
 | `data-show-immediately` | `boolean` | `false` | Set to true to show element immediately |
 | `data-hide-immediately` | `boolean` | `false` | Set to true to hide element immediately |
 

@@ -372,6 +372,7 @@ __metadata:
     lodash: ^4.17.21
     lottie-web: ^5.8.1
     ovee.js: ~2.1.8
+    plyr: ^3.7.2
     swiper: ^8.0.7
     typescript: ^4.5.5
     vanilla-lazyload: ^17.5.1
@@ -381,6 +382,7 @@ __metadata:
     lodash: ^4.17.21
     lottie-web: ^5.8.1
     ovee.js: ~2.1.8
+    plyr: "*"
     swiper: ^8.0.7
     vanilla-lazyload: ^17.5.1
   peerDependenciesMeta:
@@ -392,6 +394,8 @@ __metadata:
       optional: true
     ovee.js:
       optional: false
+    plyr:
+      optional: true
     swiper:
       optional: true
     vanilla-lazyload:
@@ -1236,6 +1240,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"core-js@npm:^3.22.0":
+  version: 3.23.2
+  resolution: "core-js@npm:3.23.2"
+  checksum: dc388ec8565610eff11d8ea81c390b002c8aeaaff20224b132737680c4ed13d1c2feddd4a4e803e9fa60cef633c66847e1cbc51d387c2c2cd8928927267af3a3
+  languageName: node
+  linkType: hard
+
 "cosmiconfig-typescript-loader@npm:^2.0.0":
   version: 2.0.1
   resolution: "cosmiconfig-typescript-loader@npm:2.0.1"
@@ -1294,6 +1305,13 @@ __metadata:
   bin:
     cssesc: bin/cssesc
   checksum: f8c4ababffbc5e2ddf2fa9957dda1ee4af6048e22aeda1869d0d00843223c1b13ad3f5d88b51caa46c994225eacb636b764eb807a8883e2fb6f99b4f4e8c48b2
+  languageName: node
+  linkType: hard
+
+"custom-event-polyfill@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "custom-event-polyfill@npm:1.0.7"
+  checksum: f9ff2cf13e482a75b3cf83dce9e2c6e3063c5ac1b9c23ac440e4f27e875b0873445b11811237f3f30aeb1216e9ad20f9f9d30ccf5b1b658a4e50dd0b3e67b629
   languageName: node
   linkType: hard
 
@@ -2805,6 +2823,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"loadjs@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "loadjs@npm:4.2.0"
+  checksum: 2144723f55c75260ce6781b36009c40d098d96fe06e3ec5c85ba250cf96c3a0aa37169b829e818c40bcba7c5141a8e52736fec193333bb6260ab95f9a493a2ef
+  languageName: node
+  linkType: hard
+
 "locate-path@npm:^5.0.0":
   version: 5.0.0
   resolution: "locate-path@npm:5.0.0"
@@ -3426,6 +3451,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"plyr@npm:^3.7.2":
+  version: 3.7.2
+  resolution: "plyr@npm:3.7.2"
+  dependencies:
+    core-js: ^3.22.0
+    custom-event-polyfill: ^1.0.7
+    loadjs: ^4.2.0
+    rangetouch: ^2.0.1
+    url-polyfill: ^1.1.12
+  checksum: 140b2e43272023737dd7f95b7bc745490131da866a4ef154f6b2c7992f94d6d951b859614ca851c3ec4a134b6b8fd1244a2642d2739dfad3aae5402b8f311455
+  languageName: node
+  linkType: hard
+
 "postcss-media-query-parser@npm:^0.2.3":
   version: 0.2.3
   resolution: "postcss-media-query-parser@npm:0.2.3"
@@ -3562,6 +3600,13 @@ __metadata:
   version: 4.0.1
   resolution: "quick-lru@npm:4.0.1"
   checksum: bea46e1abfaa07023e047d3cf1716a06172c4947886c053ede5c50321893711577cb6119360f810cc3ffcd70c4d7db4069c3cee876b358ceff8596e062bd1154
+  languageName: node
+  linkType: hard
+
+"rangetouch@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "rangetouch@npm:2.0.1"
+  checksum: 2aa7c0901d28356ef0c02021656ed7d11fc6652f01ffe92806862fc4593e75f7a5d52d4455fa1b0ab2123d438e03dc091315949dbfad9562a680440ac0dfeb7d
   languageName: node
   linkType: hard
 
@@ -4561,6 +4606,13 @@ __metadata:
   dependencies:
     punycode: ^2.1.0
   checksum: 7167432de6817fe8e9e0c9684f1d2de2bb688c94388f7569f7dbdb1587c9f4ca2a77962f134ec90be0cc4d004c939ff0d05acc9f34a0db39a3c797dada262633
+  languageName: node
+  linkType: hard
+
+"url-polyfill@npm:^1.1.12":
+  version: 1.1.12
+  resolution: "url-polyfill@npm:1.1.12"
+  checksum: 3214cc82424c215e921dacadac56b4b099f995d24e14078369bea9ff8aa74d1a4c803ab03021e61e0a275bee7979d212d046092dba3aab73cf232ee6739ddee4
   languageName: node
   linkType: hard
 

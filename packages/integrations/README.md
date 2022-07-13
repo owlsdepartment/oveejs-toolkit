@@ -36,5 +36,6 @@ You can do it, but it requires all optional libraries to be installed tho.
  - [LottiePlayer](./lottie-player/README.md), using `lottie-web`
  - [SplitText](./split-text/README.md), using `gsap@business`
  - [VideoAutoplay](./video-autoplay/README.md)
+ - [MediaPlayer](./media-player/README.md)
 
 [<- Root](/README.md)

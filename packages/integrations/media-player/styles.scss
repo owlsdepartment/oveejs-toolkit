@@ -1,0 +1,15 @@
+@import 'plyr/src/sass/plyr';
+
+.plyr {
+	audio[data-media-player] {
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		position: absolute;
+		white-space: nowrap;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+		border: 0;
+	}
+}

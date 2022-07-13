@@ -8,7 +8,7 @@ export class VideoAutoplay extends LazyLoad {
 	loadPromiseResolve: CallableFunction;
 
 	init() {
-		this.isLoadingInitialized = (this.$element as HTMLElement).dataset.src === undefined;
+		this.isLoadingInitialized = this.videoElement.dataset.src === undefined;
 
 		this.loadPromise = new Promise(resolve => {
 			if (this.isLoadingInitialized) {
@@ -42,6 +42,12 @@ export class VideoAutoplay extends LazyLoad {
 		return this.$element as HTMLVideoElement;
 	}
 
+	get isVideoLoaded() {
+		const { videoElement } = this;
+
+		return videoElement.classList.contains('loaded') || videoElement.dataset.llStatus === 'loaded';
+	}
+
 	onIntersection(entry: IntersectionObserverEntry) {
 		super.onIntersection(entry);
 
@@ -59,7 +65,9 @@ export class VideoAutoplay extends LazyLoad {
 	}
 
 	async pause() {
-		await this.loadPromise;
+		if (!this.isVideoLoaded) {
+			return;
+		}
 
 		if (!this.playPromise) {
 			this.playPromise = Promise.resolve();

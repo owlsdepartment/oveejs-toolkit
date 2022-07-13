@@ -60,6 +60,7 @@
     "@types/google.maps": "^3.49.1",
     "@types/lodash": "^4.14.178",
     "@types/node": "^17.0.12",
+    "choices.js": "^10.1.0",
     "gsap": "^3.9.1",
     "lodash": "^4.17.21",
     "lottie-web": "^5.8.1",
@@ -71,6 +72,7 @@
   "peerDependencies": {
     "@googlemaps/js-api-loader": "^1.14.3",
     "@ovee.js/toolkit": "^0.0.1",
+    "choices.js": "^10.1.0",
     "lodash": "^4.17.21",
     "lottie-web": "^5.8.1",
     "ovee.js": "~2.1.8",
@@ -79,6 +81,9 @@
   },
   "peerDependenciesMeta": {
     "@googlemaps/js-api-loader": {
+      "optional": true
+    },
+    "choices.js": {
       "optional": true
     },
     "lodash": {

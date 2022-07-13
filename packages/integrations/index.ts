@@ -1,3 +1,4 @@
+export * from './base-select';
 export * from './base-slider';
 export * from './google-map';
 export * from './lazy-load';

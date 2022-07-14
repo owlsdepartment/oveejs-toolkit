@@ -23,9 +23,11 @@ To configure the component, you can set the following options during it's regist
 
 To use this component you need to add the following `data-` attributes to the component elements:
 
-- `data-base-accordion-item` - accordion item
-- `data-base-accordion-trigger` - accordion item trigger
-- `data-base-accordion-content` - accordion item content
+|  Attribute                    | Description                        |
+| ---                           | ---                                |
+| `data-accordion-item`    | accordion item                     |
+| `data-accordion-trigger` | accordion item trigger. Sometimes you'll find yourself in situation, where you need more than one trigger, to control   yours accordion. In such situatations you can simply use multiple trigger attributes on different elements. |
+| `data-accordion-content` |  accordion item content            |
 
 ```html
 <base-accordion>
@@ -36,6 +38,10 @@ To use this component you need to add the following `data-` attributes to the co
 
 		<div data-accordion-content>
 			<p>Accordion content</p>
+		</div>
+
+		<div data-accordion-trigger>
+			<h3>Bottom accordion title</h3>
 		</div>
 	</div>
 </base-accordion>

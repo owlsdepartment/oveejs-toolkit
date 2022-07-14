@@ -43,14 +43,14 @@ export class BaseAccordion extends Component {
 
 	initAttributes() {
 		this.items.forEach(item => {
-			const trigger = item.querySelector<HTMLElement>('[data-accordion-trigger]');
+			const triggers = Array.from(item.querySelectorAll<HTMLElement>('[data-accordion-trigger]'));
 			const content = item.querySelector<HTMLElement>('[data-accordion-content]');
 			const timestamp = Date.now();
 			const id = `accordion-${timestamp + Math.floor(Math.random() * (timestamp - 0)) + 0}`;
 
-			if (!trigger) {
+			if (!triggers.length) {
 				return logger.error(
-					'Missing trigger element. You should specify it with data-accordion-trigger attribute'
+					'Missing trigger elements. You should specify them with data-accordion-trigger attribute'
 				);
 			}
 
@@ -60,18 +60,20 @@ export class BaseAccordion extends Component {
 				);
 			}
 
-			item._trigger = trigger;
+			item._triggers = triggers;
 			item._content = content;
 
 			this.setAttributes(content, {
 				id,
 			});
 
-			this.setAttributes(trigger, {
-				tabindex: '0',
-				'aria-controls': id,
-				'aria-expanded': 'false',
-			});
+			triggers.forEach(trigger =>
+				this.setAttributes(trigger, {
+					tabindex: '0',
+					'aria-controls': id,
+					'aria-expanded': 'false',
+				})
+			);
 		});
 	}
 
@@ -103,13 +105,15 @@ export class BaseAccordion extends Component {
 	bind() {
 		if (!this.items) return;
 
-		this.items.forEach(({ _trigger: trigger }) => {
-			if (!trigger) {
-				return logger.error('Failed to bind event listener. Missing trigger element');
+		this.items.forEach(({ _triggers: triggers }) => {
+			if (!triggers.length) {
+				return logger.error('Failed to bind event listener. Missing trigger elements');
 			}
 
-			this.$on('click', trigger, this.clickHandler);
-			this.$on('keydown', trigger, this.keyDownHandler);
+			triggers.forEach(trigger => {
+				this.$on('click', trigger, this.clickHandler);
+				this.$on('keydown', trigger, this.keyDownHandler);
+			});
 		});
 	}
 
@@ -176,15 +180,23 @@ export class BaseAccordion extends Component {
 
 		if (options.autoCollapse) {
 			this.items.forEach(subItem => {
-				const { _trigger: trigger, _content: content } = subItem;
+				const { _triggers: triggers, _content: content } = subItem;
 
 				if (item === subItem) return;
 
-				if (!trigger || !content) {
-					return logger.error('Missing trigger or content element');
+				if (!triggers.length) {
+					return logger.error('Missing trigger elements');
 				}
 
-				if (trigger.getAttribute('aria-expanded') === 'true') {
+				if (!content) {
+					return logger.error('Missing content element');
+				}
+
+				const shouldHide = triggers.some(
+					(trigger: HTMLElement) => trigger.getAttribute('aria-expanded') === 'true'
+				);
+
+				if (shouldHide) {
 					this.hide({
 						...animationConfig,
 						item: subItem,

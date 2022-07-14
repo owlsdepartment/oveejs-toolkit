@@ -22,7 +22,7 @@ They are included as peer dependencies, as they are pretty common and we want to
 
 ## Usage notes
 
-All tools are exposed in root package, so to import them, just write
+All submodules are exposed in root package, so to import them, just write
 
 ```ts
 import { BaseDialog } from '@ovee.js/toolkit'
@@ -30,7 +30,7 @@ import { BaseDialog } from '@ovee.js/toolkit'
 
 Every tool has seperate `README` with specific guide on how to install it, use it, and it's full API.
 
-## All Tools
+## Available submodules
 
 ### Components
 
@@ -41,7 +41,7 @@ Every tool has seperate `README` with specific guide on how to install it, use i
  - [CursorModifier](./components/other/cursor-modifier/README.md)
  - [NavToggle](./components/other/nav-toggle/README.md)
  - [ParallaxEffect](./components/other/parallax-effect/README.md)
- - [ParallaxEffect](./components/utils/in-viewport/README.md)
+ - [InViewport](./components/utils/in-viewport/README.md)
 
 ### Modules
  - [CustomCursor](./modules/custom-cursor/README.md)

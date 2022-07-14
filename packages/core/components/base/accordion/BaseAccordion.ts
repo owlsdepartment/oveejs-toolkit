@@ -25,10 +25,7 @@ export class BaseAccordion extends Component {
 	options: Required<BaseAccordionOptions>;
 
 	init() {
-		this.options = {
-			...BASE_ACCORDION_DEFAULT_OPTIONS,
-			...this.$options,
-		};
+		this.options = this.getOptions();
 
 		if (!this.items.length) {
 			return logger.warn(
@@ -39,6 +36,13 @@ export class BaseAccordion extends Component {
 		this.initAttributes();
 		this.setInitHeights();
 		this.bind();
+	}
+
+	getOptions() {
+		return {
+			...BASE_ACCORDION_DEFAULT_OPTIONS,
+			...this.$options,
+		};
 	}
 
 	initAttributes() {

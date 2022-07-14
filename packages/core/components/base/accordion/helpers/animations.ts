@@ -7,14 +7,19 @@ const logger = new Logger('BaseAccordion - animations');
 
 export const showAnimation = (args: AnimationArguments) => {
 	const { item, immediate, duration, ease, display, onInit } = args;
-	const { _trigger: trigger, _content: content } = item;
+	const { _triggers: triggers, _content: content } = item;
 
-	if (!trigger || !content) {
-		logger.error('Missing trigger or content element');
+	if (!triggers.length) {
+		logger.error('Missing trigger elements');
 		return Promise.reject();
 	}
 
-	trigger.setAttribute('aria-expanded', 'true');
+	if (!content) {
+		logger.error('Missing content element');
+		return Promise.reject();
+	}
+
+	triggers.forEach(trigger => trigger.setAttribute('aria-expanded', 'true'));
 	content.style.pointerEvents = 'all';
 
 	return slideDownFade(content, immediate ? 0 : duration, {
@@ -26,14 +31,19 @@ export const showAnimation = (args: AnimationArguments) => {
 
 export const hideAnimation = (args: AnimationArguments) => {
 	const { item, immediate, duration, ease, display, onInit } = args;
-	const { _trigger: trigger, _content: content } = item;
+	const { _triggers: triggers, _content: content } = item;
 
-	if (!trigger || !content) {
-		logger.error('Missing trigger or content element');
+	if (!triggers.length) {
+		logger.error('Missing trigger elements');
 		return Promise.reject();
 	}
 
-	trigger.setAttribute('aria-expanded', 'false');
+	if (!content) {
+		logger.error('Missing content element');
+		return Promise.reject();
+	}
+
+	triggers.forEach(trigger => trigger.setAttribute('aria-expanded', 'false'));
 	content.style.pointerEvents = 'none';
 
 	return slideUpFade(content, immediate ? 0 : duration, {

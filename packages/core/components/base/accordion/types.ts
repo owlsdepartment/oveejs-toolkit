@@ -1,5 +1,5 @@
 export interface AccordionElement extends HTMLElement {
-	_trigger: HTMLElement | null;
+	_triggers: HTMLElement[] | [];
 	_content: HTMLElement | null;
 }
 

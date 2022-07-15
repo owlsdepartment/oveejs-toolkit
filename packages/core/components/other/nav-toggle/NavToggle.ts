@@ -82,7 +82,11 @@ export class NavToggle extends Component {
 		this.hide(e.detail);
 	}
 
-	animStart() {
+	animStart(e: Event) {
+		if (e.target !== this.nav) {
+			return;
+		}
+
 		if (this.animStarted) {
 			return;
 		}
@@ -96,7 +100,11 @@ export class NavToggle extends Component {
 		}
 	}
 
-	animEnd() {
+	animEnd(e: Event) {
+		if (e.target !== this.nav) {
+			return;
+		}
+
 		if (!this.animStarted) {
 			return;
 		}

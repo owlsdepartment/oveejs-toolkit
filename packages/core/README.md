@@ -45,7 +45,7 @@ Every tool has seperate `README` with specific guide on how to install it, use i
 
 ### Modules
  - [CustomCursor](./modules/custom-cursor/README.md)
- - [VhFix](./modules/vh-fix/README.md)
+ - [Viewport](./modules/viewport/README.md)
 
 ### Mixins
 

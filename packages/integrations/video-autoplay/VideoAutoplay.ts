@@ -1,4 +1,4 @@
-import { LazyLoad, LazyLoadOptions } from '@ovee.js/toolkit-integrations';
+import { LazyLoad, LazyLoadOptions } from '@ovee.js/toolkit-integrations/lazy-load';
 import { register } from 'ovee.js';
 
 @register('video-autoplay')

@@ -4,7 +4,7 @@ A set of handy animation helpers built on top of [GSAP 3](https://greensock.com/
 
 ## Installation and configuration
 
-See [Components installation](/docs/components_installation.md#other)
+See [Components installation](/docs/registration.md#other)
 
 ## Available animations
 
@@ -34,7 +34,7 @@ Let's say we have the following markup, showing a button that should trigger a g
 We can use `slideDownFade` animation to handle the animation. What's actually cool is that the animation will automatically calculate the target height of the element, including paddings. It will assume the target `display` value to be `block`, so if you are using something else, you can pass it through options. 
 
 ```ts
-import { slideDownFade } from '@ovee.js/toolkit/tools/animations';
+import { slideDownFade } from '@ovee.js/toolkit';
 
 function showDetais() {
 	const target = document.getElementById('#details');

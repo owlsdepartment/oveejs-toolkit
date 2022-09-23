@@ -18,7 +18,7 @@ export interface BaseAccordionOptions {
 	immediate: boolean;
 	duration: number;
 	ease: string | gsap.EaseFunction;
-	openClass?: string;
-	collapsedClass?: string;
-	display?: string;
+	openClass: string;
+	collapsedClass: string;
+	display: string;
 }

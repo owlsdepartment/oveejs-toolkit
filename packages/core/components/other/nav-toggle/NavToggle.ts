@@ -58,8 +58,8 @@ export class NavToggle extends Component {
 	bind() {
 		this.$on('nav-toggle:show', this.onNavShow);
 		this.$on('nav-toggle:hide', this.onNavHide);
-		this.$on('transitionstart', this.nav, this.animStart);
-		this.$on('transitionend', this.nav, this.animEnd);
+		this.$on('transitionstart', this.animStart, { target: this.nav });
+		this.$on('transitionend', this.animEnd, { target: this.nav });
 	}
 
 	@bind('click')

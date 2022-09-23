@@ -6,27 +6,25 @@ import { AccordionElement, AnimationArguments, BaseAccordionOptions } from './ty
 
 const logger = new Logger('BaseAccordion');
 
-export const BASE_ACCORDION_DEFAULT_OPTIONS: Required<BaseAccordionOptions> = {
-	firstActive: false,
-	autoCollapse: false,
-	immediate: false,
-	duration: 0.4,
-	ease: 'power2.inOut',
-	openClass: 'is-open',
-	collapsedClass: 'is-collapsed',
-	display: 'block',
-};
-
 @register('base-accordion')
-export class BaseAccordion extends Component {
+export class BaseAccordion extends Component<HTMLElement, BaseAccordionOptions> {
 	@el('[data-accordion-item]', { list: true })
 	items: AccordionElement[];
 
-	options: Required<BaseAccordionOptions>;
+	static defaultOptions(): BaseAccordionOptions {
+		return {
+			firstActive: false,
+			autoCollapse: false,
+			immediate: false,
+			duration: 0.4,
+			ease: 'power2.inOut',
+			openClass: 'is-open',
+			collapsedClass: 'is-collapsed',
+			display: 'block',
+		};
+	}
 
 	init() {
-		this.options = this.getOptions();
-
 		if (!this.items.length) {
 			return logger.warn(
 				'No accordion items were found. You should specify them with data-accordion-item attribute'
@@ -36,13 +34,6 @@ export class BaseAccordion extends Component {
 		this.initAttributes();
 		this.setInitHeights();
 		this.bind();
-	}
-
-	getOptions() {
-		return {
-			...BASE_ACCORDION_DEFAULT_OPTIONS,
-			...this.$options,
-		};
 	}
 
 	initAttributes() {
@@ -86,7 +77,7 @@ export class BaseAccordion extends Component {
 	}
 
 	setInitHeights() {
-		const { duration, ease, firstActive } = this.options;
+		const { duration, ease, firstActive } = this.$options;
 
 		this.items.forEach((item, i) => {
 			const animationConfig = {
@@ -107,18 +98,18 @@ export class BaseAccordion extends Component {
 	bind() {
 		if (!this.items) return;
 
-		this.items.forEach(({ _trigger: trigger }) => {
-			if (!trigger) {
+		this.items.forEach(({ _trigger: target }) => {
+			if (!target) {
 				return logger.error('Failed to bind event listener. Missing trigger element');
 			}
 
-			this.$on('click', trigger, this.clickHandler);
-			this.$on('keydown', trigger, this.keyDownHandler);
+			this.$on('click', this.clickHandler, { target });
+			this.$on('keydown', this.keyDownHandler, { target });
 		});
 	}
 
 	async show(args: AnimationArguments) {
-		const { openClass, collapsedClass } = this.options;
+		const { openClass, collapsedClass } = this.$options;
 
 		this.$emit('base-accordion:will-show', args.item);
 		args.item.classList.remove(collapsedClass);
@@ -133,7 +124,7 @@ export class BaseAccordion extends Component {
 	}
 
 	async hide(args: AnimationArguments) {
-		const { openClass, collapsedClass } = this.options;
+		const { openClass, collapsedClass } = this.$options;
 
 		this.$emit('base-accordion:will-hide', args.item);
 		args.item.classList.remove(openClass);
@@ -162,7 +153,7 @@ export class BaseAccordion extends Component {
 		const trigger = (e.target as HTMLElement).closest<HTMLElement>('[data-accordion-trigger]')!;
 		const item = trigger.closest<AccordionElement>('[data-accordion-item]');
 		const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
-		const { options } = this;
+		const { $options } = this;
 
 		if (!item) {
 			return logger.error('Failed to handle triggered event. Missing item element');
@@ -171,14 +162,14 @@ export class BaseAccordion extends Component {
 		const tl = gsap.timeline({ paused: true });
 		const animationConfig: AnimationArguments = {
 			item,
-			immediate: options.immediate,
-			duration: options.duration,
-			ease: options.ease,
-			display: options.display,
+			immediate: $options.immediate,
+			duration: $options.duration,
+			ease: $options.ease,
+			display: $options.display,
 			onInit: tween => tl.add(tween, 0),
 		};
 
-		if (options.autoCollapse) {
+		if ($options.autoCollapse) {
 			this.items.forEach(subItem => {
 				const { _trigger: trigger, _content: content } = subItem;
 

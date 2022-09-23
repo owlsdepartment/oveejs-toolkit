@@ -32,15 +32,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.16.3":
-  version: 7.18.3
-  resolution: "@babel/runtime@npm:7.18.3"
-  dependencies:
-    regenerator-runtime: ^0.13.4
-  checksum: db8526226aa02cfa35a5a7ac1a34b5f303c62a1f000c7db48cb06c6290e616483e5036ab3c4e7a84d0f3be6d4e2148d5fe5cec9564bf955f505c3e764b83d7f1
-  languageName: node
-  linkType: hard
-
 "@commitlint/cli@npm:^16.1.0":
   version: 16.3.0
   resolution: "@commitlint/cli@npm:16.3.0"
@@ -369,9 +360,10 @@ __metadata:
     "@types/lodash": ^4.14.178
     "@types/node": ^17.0.12
     gsap: ^3.9.1
+    lit-html: ^2.3.1
     lodash: ^4.17.21
     lottie-web: ^5.8.1
-    ovee.js: ~2.1.8
+    ovee.js: ~2.2.2
     swiper: ^8.0.7
     typescript: ^4.5.5
     vanilla-lazyload: ^17.5.1
@@ -380,7 +372,7 @@ __metadata:
     "@ovee.js/toolkit": ^0.0.1
     lodash: ^4.17.21
     lottie-web: ^5.8.1
-    ovee.js: ~2.1.8
+    ovee.js: ~2.2.2
     swiper: ^8.0.7
     vanilla-lazyload: ^17.5.1
   peerDependenciesMeta:
@@ -406,13 +398,14 @@ __metadata:
     "@types/lodash": ^4.14.178
     "@types/node": ^17.0.12
     gsap: ^3.9.1
+    lit-html: ^2.3.1
     lodash: ^4.17.21
-    ovee.js: ~2.1.8
+    ovee.js: ~2.2.2
     typescript: ^4.5.5
   peerDependencies:
     gsap: ^3.9.1
     lodash: ^4.17.21
-    ovee.js: ~2.1.8
+    ovee.js: ~2.2.2
   languageName: unknown
   linkType: soft
 
@@ -594,6 +587,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: dc6a6df507656004e242dcb02c784479deca516d5f4b58a1707e708022b269ae147e1da0521f3e8ad0d63638869d87e0adc023f0bd5454aa6f72ac66c7525cf5
+  languageName: node
+  linkType: hard
+
+"@types/trusted-types@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@types/trusted-types@npm:2.0.2"
+  checksum: 3371eef5f1c50e1c3c07a127c1207b262ba65b83dd167a1c460fc1b135a3fb0c97b9f508efebd383f239cc5dd5b7169093686a692a501fde9c3f7208657d9b0d
   languageName: node
   linkType: hard
 
@@ -2798,10 +2798,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lit-html@npm:^1.1.2":
-  version: 1.4.1
-  resolution: "lit-html@npm:1.4.1"
-  checksum: 6e1bb335cd8493700d2f1eaf1e019c2f6bf78ac641bdba5e2ff9f1545430e0fec15c6721ee1c8ca75559e1d52a1d34cdc568da46319681304299d9aff83a6346
+"lit-html@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "lit-html@npm:2.3.1"
+  dependencies:
+    "@types/trusted-types": ^2.0.2
+  checksum: 6177f0854001b7e464a994adb6339a5ede4977c189587e49186b8bb10e49feaa57fe08ad14d13c06c2bce2a80671e1de3f08d8f2bdb25b2f265b21e2dd091c5b
   languageName: node
   linkType: hard
 
@@ -3265,15 +3267,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ovee.js@npm:~2.1.8":
-  version: 2.1.13
-  resolution: "ovee.js@npm:2.1.13"
+"ovee.js@npm:~2.2.2":
+  version: 2.2.2
+  resolution: "ovee.js@npm:2.2.2"
   dependencies:
-    "@babel/runtime": ^7.16.3
     "@vue/reactivity": ^3.2.6
     "@vue/runtime-core": ^3.2.6
-    lit-html: ^1.1.2
-  checksum: 6b6ede128404904bd3253f68c9691966d0d3067b16fcc5e0bbdba51380cb6d99e41dcc0870d978e0338f1440e37cca00e557912fe74ab97941f4f472d60bd34c
+    reflect-metadata: ^0.1.13
+  peerDependencies:
+    lit-html: ^2.3.1
+  checksum: 73c4d4564c37a5a574141c8670904cdf5196d66d681f069d28c2e676f46534d79593455cff4034ef533474b895176a9dd7d831acacbef76947e964241ef6591f
   languageName: node
   linkType: hard
 
@@ -3618,10 +3621,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regenerator-runtime@npm:^0.13.4":
-  version: 0.13.9
-  resolution: "regenerator-runtime@npm:0.13.9"
-  checksum: 65ed455fe5afd799e2897baf691ca21c2772e1a969d19bb0c4695757c2d96249eb74ee3553ea34a91062b2a676beedf630b4c1551cc6299afb937be1426ec55e
+"reflect-metadata@npm:^0.1.13":
+  version: 0.1.13
+  resolution: "reflect-metadata@npm:0.1.13"
+  checksum: 798d379a7b6f6455501145419505c97dd11cbc23857a386add2b9ef15963ccf15a48d9d15507afe01d4cd74116df8a213247200bac00320bd7c11ddeaa5e8fb4
   languageName: node
   linkType: hard
 
@@ -3821,9 +3824,6 @@ __metadata:
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-simple-import-sort: ^7.0.0
     husky: ^7.0.0
-    lodash: ^4.17.21
-    lottie-web: ^5.8.1
-    ovee.js: ~2.1.8
     pinst: ^2.0.0
     prettier: ^2.4.1
     rollup: ^2.74.1

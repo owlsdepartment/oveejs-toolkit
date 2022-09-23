@@ -47,7 +47,7 @@ export class SplitText extends Component {
 		});
 	}
 
-	@bind('resize', window as any)
+	@bind('resize', { target: window })
 	resizeHandler() {
 		this.text.revert();
 		this.initSplitText();

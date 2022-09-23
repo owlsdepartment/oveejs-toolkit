@@ -188,7 +188,7 @@ function prepareDist(packageFolder: string) {
 	const distPath = path.resolve(packageFolder, DIST_FOLDER);
 
 	if (existsSync(distPath)) {
-		fs.rmdirSync(distPath, { recursive: true });
+		fs.rmSync(distPath, { recursive: true });
 	}
 
 	fs.mkdirSync(distPath);

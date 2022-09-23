@@ -1,19 +1,14 @@
 import { bind, Component, dataParam, Logger, register } from 'ovee.js';
 
 export interface BaseCookiesOptions {
-	storageKey?: string;
+	storageKey: string;
 }
-
-export const BASE_COOKIES_DEFAULT_OPTIONS: BaseCookiesOptions = {
-	storageKey: 'cookies_accepted',
-};
 
 const logger = new Logger('BaseCookies');
 
 @register('base-cookies')
-export class BaseCookies extends Component {
+export class BaseCookies extends Component<HTMLElement, BaseCookiesOptions> {
 	storageKey: string;
-	options: BaseCookiesOptions;
 
 	@dataParam('storageKey')
 	_storageKey?: string;
@@ -22,13 +17,14 @@ export class BaseCookies extends Component {
 		return localStorage.getItem(this.storageKey) === 'true';
 	}
 
-	init() {
-		this.options = {
-			...BASE_COOKIES_DEFAULT_OPTIONS,
-			...this.$options,
+	static defaultOptions(): BaseCookiesOptions {
+		return {
+			storageKey: 'cookies_accepted',
 		};
+	}
 
-		const key = this._storageKey || this.options.storageKey;
+	init() {
+		const key = this._storageKey || this.$options.storageKey;
 
 		if (!key) {
 			logger.error(
@@ -43,7 +39,7 @@ export class BaseCookies extends Component {
 		this.statusCheck();
 	}
 
-	@bind('storage', window as any)
+	@bind('storage', { target: window })
 	statusCheck() {
 		if (!this.cookiesAccepted) {
 			this.showPopup();
@@ -52,7 +48,7 @@ export class BaseCookies extends Component {
 		}
 	}
 
-	@bind('click', '.cookies__button')
+	@bind('click', { target: '.cookies__button' })
 	onClick() {
 		this.hidePopup();
 	}

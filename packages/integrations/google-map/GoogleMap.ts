@@ -5,16 +5,18 @@ export interface GoogleMapOptions extends google.maps.MapOptions {
 	gmapsKey?: string;
 }
 
-export const GOOGLE_MAP_DEFAULT_OPTIONS: GoogleMapOptions = {
-	zoomControl: true,
-	fullscreenControl: false,
-	zoom: 18,
-};
-
 const logger = new Logger('GoogleMap');
 
 @register('google-map')
 export default class GoogleMap extends Component {
+	static defaultOptions(): GoogleMapOptions {
+		return {
+			zoomControl: true,
+			fullscreenControl: false,
+			zoom: 18,
+		};
+	}
+
 	@dataParam('lat')
 	_lat?: string;
 
@@ -39,14 +41,7 @@ export default class GoogleMap extends Component {
 	}
 
 	get apiKey(): string {
-		return this._key || this.options.gmapsKey || '';
-	}
-
-	get options(): GoogleMapOptions {
-		return {
-			...GOOGLE_MAP_DEFAULT_OPTIONS,
-			...this.$options,
-		};
+		return this._key || this.$options.gmapsKey || '';
 	}
 
 	init() {
@@ -69,11 +64,7 @@ export default class GoogleMap extends Component {
 		try {
 			const google = await this.loader.load();
 
-			this.map = new google.maps.Map(
-				this.$element as HTMLElement,
-
-				this.getMapOptions(this.lat, this.lng)
-			);
+			this.map = new google.maps.Map(this.$element, this.getMapOptions(this.lat, this.lng));
 
 			this.onMapInitialized();
 		} catch (e) {
@@ -100,10 +91,10 @@ export default class GoogleMap extends Component {
 
 	protected getMapOptions(lat: number, lng: number, zoom?: number): GoogleMapOptions {
 		return {
-			...this.options,
+			...this.$options,
 
 			center: { lat, lng },
-			zoom: zoom ?? this.options.zoom,
+			zoom: zoom ?? this.$options.zoom,
 		};
 	}
 }

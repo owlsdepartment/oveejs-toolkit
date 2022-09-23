@@ -13,7 +13,7 @@ export class Viewport extends Module {
 
 	init() {
 		this.updateUnits();
-		this.$app.$on('resize', window as any, () => this.updateUnits());
+		this.$app.$on('resize', () => this.updateUnits(), { target: window });
 
 		this.$app.$vh = makeComputed(() => this.vh.value);
 		this.$app.$vw = makeComputed(() => this.vw.value);

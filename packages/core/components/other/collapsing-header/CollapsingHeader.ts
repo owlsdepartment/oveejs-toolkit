@@ -35,12 +35,14 @@ export interface CollapsingHeaderOptions {
 	throttle: number;
 }
 
-export const COLLAPSING_HEADER_DEFAULT_OPTIONS: CollapsingHeaderOptions = {
-	throttle: 100,
-};
-
 @register('collapsing-header')
-export class CollapsingHeader extends Component {
+export class CollapsingHeader extends Component<HTMLElement, CollapsingHeaderOptions> {
+	static defaultOptions(): CollapsingHeaderOptions {
+		return {
+			throttle: 100,
+		};
+	}
+
 	@dataParam()
 	collapsingHeader: string;
 
@@ -51,7 +53,7 @@ export class CollapsingHeader extends Component {
 	offsetMultiplier: string;
 
 	@dataParam('throttleValue')
-	_throttleValue = `${this.options.throttle}`;
+	_throttleValue = `${this.$options.throttle}`;
 
 	html: HTMLElement;
 	triggerEl: HTMLElement | null;
@@ -66,17 +68,10 @@ export class CollapsingHeader extends Component {
 
 	scrollListener: () => void;
 
-	get options(): CollapsingHeaderOptions {
-		return {
-			...COLLAPSING_HEADER_DEFAULT_OPTIONS,
-			...this.$options,
-		};
-	}
-
 	get throttleValue(): number {
 		const parsed = JSON.parse(this._throttleValue);
 
-		return isNumber(parsed) && !isNaN(parsed) ? parsed : this.options.throttle;
+		return isNumber(parsed) && !isNaN(parsed) ? parsed : this.$options.throttle;
 	}
 
 	get isShown() {
@@ -216,7 +211,7 @@ export class CollapsingHeader extends Component {
 	}
 
 	bind() {
-		this.$on('scroll load ajaxload', window as any, this.scrollListener);
-		this.$on('resize', window as any, this.calcOffsets);
+		this.$on('scroll load ajaxload', this.scrollListener, { target: window });
+		this.$on('resize', this.calcOffsets, { target: window });
 	}
 }

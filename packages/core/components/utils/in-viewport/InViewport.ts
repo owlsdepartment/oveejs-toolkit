@@ -6,36 +6,33 @@ export interface InViewportOptions {
 	threshold: number;
 }
 
-export const IN_VIEWPORT_DEFAULT_OPTIONS: InViewportOptions = {
-	threshold: 0.5,
-};
-
 @register('in-viewport')
 export class InViewport extends Component {
+	static defaultOptions(): InViewportOptions {
+		return {
+			threshold: 0.5,
+		};
+	}
+
 	unonbserve?: Unobserve;
 
 	@dataParam('threshold')
-	_threshold = `${this.options.threshold}`;
+	_threshold = `${this.$options.threshold}`;
 
 	@dataParam()
 	selector = '';
 
-	get options(): InViewportOptions {
-		return {
-			...IN_VIEWPORT_DEFAULT_OPTIONS,
-			...this.$options,
-		};
-	}
-
 	get threshold(): number | number[] {
 		const parsed = JSON.parse(this._threshold);
 
-		return Array.isArray(parsed) || isNumber(parsed) ? parsed : this.options.threshold;
+		return Array.isArray(parsed) || isNumber(parsed) ? parsed : this.$options.threshold;
 	}
 
 	init() {
-		const $el = this.$element as HTMLElement;
-		const context = $el.dataset.selector ? $el.querySelector($el.dataset.selector) ?? $el : $el;
+		const { $element } = this;
+		const context = $element.dataset.selector
+			? $element.querySelector($element.dataset.selector) ?? $element
+			: $element;
 
 		this.unonbserve = observeIntersections(
 			context,

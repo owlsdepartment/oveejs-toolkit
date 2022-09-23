@@ -77,7 +77,7 @@ All events has effect only on element with this component.
 
 ```ts
 export class SomeComponent extends Component {
-    @bind('lazy-load:loaded', 'img')
+    @bind('lazy-load:loaded', { target: 'img' })
     onImageLoad(element) {
         gsap.fromTo(element, {
             opacity: 0
@@ -92,7 +92,7 @@ export class SomeComponent extends Component {
 
 ```ts
 export class SomeComponent extends Component {
-    @bind('lazy-load:error', 'img')
+    @bind('lazy-load:error', { target: 'img' })
     onImageError(element) {
         const errorElement = document.createElement('span');
 

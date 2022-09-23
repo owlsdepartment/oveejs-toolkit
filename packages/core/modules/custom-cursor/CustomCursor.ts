@@ -183,43 +183,63 @@ export class CustomCursor extends Module<CustomCursorOptions> {
 		const { documentElement: root, body } = document;
 
 		this.isBinded = true;
-		this.$app.$on('mousemove', root, ({ clientX, clientY, target }: MouseEvent) => {
-			if (this.isMobile) return;
+		this.$app.$on(
+			'mousemove',
+			({ clientX, clientY, target }: MouseEvent) => {
+				if (this.isMobile) return;
 
-			this.updateCursorPosition(clientX, clientY);
+				this.updateCursorPosition(clientX, clientY);
 
-			this.moveHander();
-			this.detectIsOverLink(target as HTMLElement);
-		});
+				this.moveHander();
+				this.detectIsOverLink(target as HTMLElement);
+			},
+			{ target: root }
+		);
 
-		this.$app.$on('touchstart touchend touchmove', root, () => {
-			this.hide();
-			this.up();
-
-			this.isMobile = true;
-			this.turnOffMobile();
-		});
-
-		this.$app.$on('mouseout', body, ({ relatedTarget }: MouseEvent) => {
-			if (relatedTarget === null || relatedTarget === document.documentElement) {
+		this.$app.$on(
+			'touchstart touchend touchmove',
+			() => {
 				this.hide();
-				this.resetSide();
 				this.up();
-			}
-		});
 
-		this.$app.$on('mousedown', root, () => {
-			if (this.isMobile) return;
+				this.isMobile = true;
+				this.turnOffMobile();
+			},
+			{ target: root }
+		);
 
-			this.down();
-		});
+		this.$app.$on(
+			'mouseout',
+			({ relatedTarget }: MouseEvent) => {
+				if (relatedTarget === null || relatedTarget === document.documentElement) {
+					this.hide();
+					this.resetSide();
+					this.up();
+				}
+			},
+			{ target: body }
+		);
 
-		this.$app.$on('mouseup', root, () => {
-			if (this.isMobile) return;
-			if (this.options.ripple) this.createRipple();
+		this.$app.$on(
+			'mousedown',
+			() => {
+				if (this.isMobile) return;
 
-			this.up();
-		});
+				this.down();
+			},
+			{ target: root }
+		);
+
+		this.$app.$on(
+			'mouseup',
+			() => {
+				if (this.isMobile) return;
+				if (this.options.ripple) this.createRipple();
+
+				this.up();
+			},
+			{ target: root }
+		);
 
 		const onScrollDebounce = debounce(
 			() => {

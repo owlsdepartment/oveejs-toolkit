@@ -12,14 +12,14 @@ import {
 } from 'swiper';
 import { LazyOptions, NavigationOptions, PaginationOptions, SwiperEvents } from 'swiper/types';
 
-interface SliderElement extends Element {
+interface SliderElement extends HTMLElement {
 	swiperInstance?: Swiper;
 }
 
 const logger = new Logger('BaseSlider');
 
 @register('base-slider')
-export class BaseSlider extends Component {
+export class BaseSlider extends Component<SliderElement> {
 	swiper: Swiper;
 	count: number;
 	curr: number;
@@ -148,17 +148,20 @@ export class BaseSlider extends Component {
 			this.swiper = new Swiper(this.swiperContainer, options);
 		}
 
-		// (this.$element as HTMLElement).dataset.swiperInstance = this.swiper;
-		(this.$element as SliderElement).swiperInstance = this.swiper;
+		this.$element.swiperInstance = this.swiper;
 		this.$emit('sliderInitialized', this.swiper);
 	}
 
 	bind() {
-		this.$on('imageload', 'img', () => {
-			if (this.swiper) {
-				this.swiper.update();
-			}
-		});
+		this.$on(
+			'imageload',
+			() => {
+				if (this.swiper) {
+					this.swiper.update();
+				}
+			},
+			{ target: 'img' }
+		);
 	}
 
 	destroy() {

@@ -20,18 +20,21 @@ export interface ParallaxEffectOptions extends ScrollTrigger.StaticVars {
 }
 
 const logger = new Logger('ParallaxEffect');
-export const PARALLAX_EFFECT_DEFAULT_OPTIONS: ParallaxEffectOptions = {
-	scrub: true,
-	target: '',
-	disableOnMobile: true,
-	disableOnTablet: true,
-	tweenVars: {
-		y: 100,
-	},
-};
 
 @register('parallax-effect')
-export class ParallaxEffect extends Component {
+export class ParallaxEffect extends Component<HTMLElement, ParallaxEffectOptions> {
+	static defaultOptions(): ParallaxEffectOptions {
+		return {
+			scrub: true,
+			target: '',
+			disableOnMobile: true,
+			disableOnTablet: true,
+			tweenVars: {
+				y: 100,
+			},
+		};
+	}
+
 	tl: gsap.core.Timeline;
 	st: ScrollTrigger;
 
@@ -39,11 +42,13 @@ export class ParallaxEffect extends Component {
 	_parallaxOptions = '';
 
 	get baseOptions(): ParallaxEffectOptions {
-		return {
-			...PARALLAX_EFFECT_DEFAULT_OPTIONS,
-			target: this.$element,
-			...this.$options,
-		};
+		const { $options } = this;
+
+		if (!$options.target) {
+			$options.target = this.$element;
+		}
+
+		return $options;
 	}
 
 	get parallaxConfig(): ParallaxEffectOptions {

@@ -1,5 +1,5 @@
 import { observeIntersections, Unobserve } from '@ovee.js/toolkit/tools';
-import { ClassConstructor, Component } from 'ovee.js';
+import { ClassConstructor, ComponentClass } from 'ovee.js';
 
 const DEFAULT_THRESHOLD = [0, 1];
 
@@ -11,10 +11,10 @@ export interface IWithInViewport {
 	onIntersection(entry: IntersectionObserverEntry): void;
 }
 
-export function WithInViewport<Base extends ClassConstructor<Component>>(
+export function WithInViewport<Base extends ComponentClass>(
 	Ctor: Base
 ): ClassConstructor<IWithInViewport> & Base {
-	class _WithInViewport extends Ctor implements IWithInViewport {
+	class _WithInViewport extends (Ctor as any) implements IWithInViewport {
 		unobserve?: Unobserve;
 
 		get observerOptions(): IntersectionObserverInit {
@@ -47,7 +47,7 @@ export function WithInViewport<Base extends ClassConstructor<Component>>(
 		}
 	}
 
-	return _WithInViewport;
+	return _WithInViewport as any;
 }
 
 WithInViewport.config = {

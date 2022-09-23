@@ -14,32 +14,34 @@ export const LAZYLOAD_DEFAULT_OPTIONS: LazyLoadOptions = {
 	inViewportClass: 'is-in-viewport',
 };
 
+class _LazyLoad extends Component<HTMLElement, LazyLoadOptions> {}
+
 @register('lazy-load')
-export class LazyLoad extends WithInViewport(Component) {
+export class LazyLoad extends WithInViewport(_LazyLoad) {
+	static defaultOptions(): LazyLoadOptions {
+		return {
+			threshold: 0.5,
+			inViewportClass: 'is-in-viewport',
+		};
+	}
+
 	isLoadingInitialized = false;
 
 	@dataParam()
 	target = '';
 
-	get options(): LazyLoadOptions {
-		return {
-			...LAZYLOAD_DEFAULT_OPTIONS,
-			...(this.$options as LazyLoadOptions),
-		};
-	}
-
 	get observerOptions(): IntersectionObserverInit {
 		return {
-			threshold: isUndefined(this.options?.threshold)
+			threshold: isUndefined(this.$options?.threshold)
 				? LAZYLOAD_DEFAULT_OPTIONS.threshold
-				: this.options.threshold,
+				: this.$options.threshold,
 		};
 	}
 
 	get loadTargets(): HTMLElement[] {
 		const targets = this.target
 			? Array.from(this.$element.querySelectorAll<HTMLElement>(this.target))
-			: [this.$element as HTMLElement];
+			: [this.$element];
 
 		if (!targets.length) {
 			console.error(
@@ -54,7 +56,7 @@ export class LazyLoad extends WithInViewport(Component) {
 	onIntersection({ isIntersecting }: IntersectionObserverEntry) {
 		if (isIntersecting) {
 			this.$element.classList.add(
-				this.options?.inViewportClass ?? LAZYLOAD_DEFAULT_OPTIONS.inViewportClass
+				this.$options?.inViewportClass ?? LAZYLOAD_DEFAULT_OPTIONS.inViewportClass
 			);
 
 			if (!this.isLoadingInitialized) {
@@ -67,7 +69,7 @@ export class LazyLoad extends WithInViewport(Component) {
 	load(e?: LazyLoadEvent | LazyLoadOptions) {
 		const { loadTargets } = this;
 		const arg = e instanceof CustomEvent ? e.detail : e;
-		const options = defaultsDeep({}, arg ?? {}, this.options) as LazyLoadOptions;
+		const options = defaultsDeep({}, arg ?? {}, this.$options) as LazyLoadOptions;
 
 		for (const target of loadTargets) {
 			VanillaLazyLoad.load(target, {

@@ -10,18 +10,19 @@ export interface LottiePlayerConfig {
 const ALLOWED_RENDERERS = ['svg', 'canvas', 'html'];
 const logger = new Logger('LottiePlayer');
 
-export const LOTTIE_PLAYER_DEFAULT_CONFIG: LottiePlayerConfig = {
-	renderer: 'svg',
-};
-
 @register('lottie-player')
-export class LottiePlayer extends Component {
+export class LottiePlayer extends Component<HTMLElement, LottiePlayerConfig> {
+	static defaultOptions(): LottiePlayerConfig {
+		return {
+			renderer: 'svg',
+		};
+	}
+
 	@dataParam()
 	path = '';
 
 	@dataParam()
-	renderer: LottieRenderer =
-		(this.$options as LottiePlayerConfig).renderer ?? LOTTIE_PLAYER_DEFAULT_CONFIG.renderer;
+	renderer: LottieRenderer = this.$options.renderer;
 
 	player?: AnimationItem;
 

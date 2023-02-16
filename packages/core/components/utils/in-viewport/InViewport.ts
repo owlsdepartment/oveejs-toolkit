@@ -17,7 +17,7 @@ export class InViewport extends Component {
 	unonbserve?: Unobserve;
 
 	@dataParam('threshold')
-	_threshold = `${this.$options.threshold}`;
+	_threshold = `${this.options.threshold}`;
 
 	@dataParam()
 	selector = '';
@@ -25,7 +25,11 @@ export class InViewport extends Component {
 	get threshold(): number | number[] {
 		const parsed = JSON.parse(this._threshold);
 
-		return Array.isArray(parsed) || isNumber(parsed) ? parsed : this.$options.threshold;
+		return Array.isArray(parsed) || isNumber(parsed) ? parsed : this.options.threshold;
+	}
+
+	get options() {
+		return this.$options;
 	}
 
 	init() {

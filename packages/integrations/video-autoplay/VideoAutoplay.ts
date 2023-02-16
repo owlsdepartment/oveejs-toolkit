@@ -31,7 +31,7 @@ export class VideoAutoplay extends LazyLoad {
 
 	get options(): LazyLoadOptions {
 		return {
-			...super.$options,
+			...super.options,
 			callback_loaded: () => {
 				this.loadPromiseResolve?.();
 			},

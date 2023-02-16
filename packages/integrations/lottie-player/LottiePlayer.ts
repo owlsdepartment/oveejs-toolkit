@@ -22,7 +22,7 @@ export class LottiePlayer extends Component<HTMLElement, LottiePlayerConfig> {
 	path = '';
 
 	@dataParam()
-	renderer: LottieRenderer = this.$options.renderer;
+	renderer: LottieRenderer = this.options.renderer;
 
 	player?: AnimationItem;
 
@@ -43,6 +43,10 @@ export class LottiePlayer extends Component<HTMLElement, LottiePlayerConfig> {
 			container: this.$element,
 			path: this.path,
 		};
+	}
+
+	get options() {
+		return this.$options;
 	}
 
 	init() {

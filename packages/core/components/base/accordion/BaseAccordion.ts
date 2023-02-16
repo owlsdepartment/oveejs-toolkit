@@ -24,6 +24,10 @@ export class BaseAccordion extends Component<HTMLElement, BaseAccordionOptions> 
 		};
 	}
 
+	get options() {
+		return this.$options;
+	}
+
 	init() {
 		if (!this.items.length) {
 			return logger.warn(
@@ -77,7 +81,7 @@ export class BaseAccordion extends Component<HTMLElement, BaseAccordionOptions> 
 	}
 
 	setInitHeights() {
-		const { duration, ease, firstActive } = this.$options;
+		const { duration, ease, firstActive } = this.options;
 
 		this.items.forEach((item, i) => {
 			const animationConfig = {
@@ -109,7 +113,7 @@ export class BaseAccordion extends Component<HTMLElement, BaseAccordionOptions> 
 	}
 
 	async show(args: AnimationArguments) {
-		const { openClass, collapsedClass } = this.$options;
+		const { openClass, collapsedClass } = this.options;
 
 		this.$emit('base-accordion:will-show', args.item);
 		args.item.classList.remove(collapsedClass);
@@ -124,7 +128,7 @@ export class BaseAccordion extends Component<HTMLElement, BaseAccordionOptions> 
 	}
 
 	async hide(args: AnimationArguments) {
-		const { openClass, collapsedClass } = this.$options;
+		const { openClass, collapsedClass } = this.options;
 
 		this.$emit('base-accordion:will-hide', args.item);
 		args.item.classList.remove(openClass);
@@ -153,7 +157,7 @@ export class BaseAccordion extends Component<HTMLElement, BaseAccordionOptions> 
 		const trigger = (e.target as HTMLElement).closest<HTMLElement>('[data-accordion-trigger]')!;
 		const item = trigger.closest<AccordionElement>('[data-accordion-item]');
 		const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
-		const { $options } = this;
+		const { options } = this;
 
 		if (!item) {
 			return logger.error('Failed to handle triggered event. Missing item element');
@@ -162,14 +166,14 @@ export class BaseAccordion extends Component<HTMLElement, BaseAccordionOptions> 
 		const tl = gsap.timeline({ paused: true });
 		const animationConfig: AnimationArguments = {
 			item,
-			immediate: $options.immediate,
-			duration: $options.duration,
-			ease: $options.ease,
-			display: $options.display,
+			immediate: options.immediate,
+			duration: options.duration,
+			ease: options.ease,
+			display: options.display,
 			onInit: tween => tl.add(tween, 0),
 		};
 
-		if ($options.autoCollapse) {
+		if (options.autoCollapse) {
 			this.items.forEach(subItem => {
 				const { _trigger: trigger, _content: content } = subItem;
 

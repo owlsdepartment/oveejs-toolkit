@@ -30,11 +30,15 @@ export class LazyLoad extends WithInViewport(_LazyLoad) {
 	@dataParam()
 	target = '';
 
+	get options() {
+		return this.$options;
+	}
+
 	get observerOptions(): IntersectionObserverInit {
 		return {
-			threshold: isUndefined(this.$options?.threshold)
+			threshold: isUndefined(this.options?.threshold)
 				? LAZYLOAD_DEFAULT_OPTIONS.threshold
-				: this.$options.threshold,
+				: this.options.threshold,
 		};
 	}
 
@@ -56,7 +60,7 @@ export class LazyLoad extends WithInViewport(_LazyLoad) {
 	onIntersection({ isIntersecting }: IntersectionObserverEntry) {
 		if (isIntersecting) {
 			this.$element.classList.add(
-				this.$options?.inViewportClass ?? LAZYLOAD_DEFAULT_OPTIONS.inViewportClass
+				this.options?.inViewportClass ?? LAZYLOAD_DEFAULT_OPTIONS.inViewportClass
 			);
 
 			if (!this.isLoadingInitialized) {
@@ -69,7 +73,7 @@ export class LazyLoad extends WithInViewport(_LazyLoad) {
 	load(e?: LazyLoadEvent | LazyLoadOptions) {
 		const { loadTargets } = this;
 		const arg = e instanceof CustomEvent ? e.detail : e;
-		const options = defaultsDeep({}, arg ?? {}, this.$options) as LazyLoadOptions;
+		const options = defaultsDeep({}, arg ?? {}, this.options) as LazyLoadOptions;
 
 		for (const target of loadTargets) {
 			VanillaLazyLoad.load(target, {

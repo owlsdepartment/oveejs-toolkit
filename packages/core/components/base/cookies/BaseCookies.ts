@@ -23,8 +23,12 @@ export class BaseCookies extends Component<HTMLElement, BaseCookiesOptions> {
 		};
 	}
 
+	get options() {
+		return this.$options;
+	}
+
 	init() {
-		const key = this._storageKey || this.$options.storageKey;
+		const key = this._storageKey || this.options.storageKey;
 
 		if (!key) {
 			logger.error(

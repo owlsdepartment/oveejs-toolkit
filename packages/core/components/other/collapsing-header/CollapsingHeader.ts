@@ -53,7 +53,7 @@ export class CollapsingHeader extends Component<HTMLElement, CollapsingHeaderOpt
 	offsetMultiplier: string;
 
 	@dataParam('throttleValue')
-	_throttleValue = `${this.$options.throttle}`;
+	_throttleValue = `${this.options.throttle}`;
 
 	html: HTMLElement;
 	triggerEl: HTMLElement | null;
@@ -71,7 +71,7 @@ export class CollapsingHeader extends Component<HTMLElement, CollapsingHeaderOpt
 	get throttleValue(): number {
 		const parsed = JSON.parse(this._throttleValue);
 
-		return isNumber(parsed) && !isNaN(parsed) ? parsed : this.$options.throttle;
+		return isNumber(parsed) && !isNaN(parsed) ? parsed : this.options.throttle;
 	}
 
 	get isShown() {
@@ -88,6 +88,10 @@ export class CollapsingHeader extends Component<HTMLElement, CollapsingHeaderOpt
 
 	get multiplier() {
 		return this.offsetMultiplier ? parseFloat(parseFloat(this.offsetMultiplier).toPrecision(2)) : 1;
+	}
+
+	get options() {
+		return this.$options;
 	}
 
 	init() {

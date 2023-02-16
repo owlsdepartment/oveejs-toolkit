@@ -41,7 +41,11 @@ export default class GoogleMap extends Component {
 	}
 
 	get apiKey(): string {
-		return this._key || this.$options.gmapsKey || '';
+		return this._key || this.options.gmapsKey || '';
+	}
+
+	get options() {
+		return this.$options;
 	}
 
 	init() {
@@ -91,10 +95,10 @@ export default class GoogleMap extends Component {
 
 	protected getMapOptions(lat: number, lng: number, zoom?: number): GoogleMapOptions {
 		return {
-			...this.$options,
+			...this.options,
 
 			center: { lat, lng },
-			zoom: zoom ?? this.$options.zoom,
+			zoom: zoom ?? this.options.zoom,
 		};
 	}
 }

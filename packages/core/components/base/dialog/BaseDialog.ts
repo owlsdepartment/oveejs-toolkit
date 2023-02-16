@@ -16,7 +16,7 @@ const logger = new Logger('BaseDialog');
 export class BaseDialog extends TemplateComponent<BaseDialogOptions> {
 	rootClass = '';
 	dialogTarget: BaseDialogElement;
-	dialogRoot = document.querySelector<HTMLElement>(this.$options.dialogRoot);
+	dialogRoot = document.querySelector<HTMLElement>(this.options.dialogRoot);
 
 	@reactive()
 	isOpen = false;
@@ -29,6 +29,10 @@ export class BaseDialog extends TemplateComponent<BaseDialogOptions> {
 		return { dialogRoot: '.dialog-root' };
 	}
 
+	get options() {
+		return this.$options;
+	}
+
 	init() {
 		const target = document.createElement('div') as BaseDialogElement;
 
@@ -37,7 +41,7 @@ export class BaseDialog extends TemplateComponent<BaseDialogOptions> {
 
 		if (!this.dialogRoot) {
 			logger.warn(
-				`Dialog root wasn't found. Element with selector '${this.$options.dialogRoot}' does not exist.`
+				`Dialog root wasn't found. Element with selector '${this.options.dialogRoot}' does not exist.`
 			);
 
 			return;

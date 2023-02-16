@@ -41,14 +41,18 @@ export class ParallaxEffect extends Component<HTMLElement, ParallaxEffectOptions
 	@dataParam('parallaxOptions')
 	_parallaxOptions = '';
 
-	get baseOptions(): ParallaxEffectOptions {
-		const { $options } = this;
+	get options() {
+		return this.$options;
+	}
 
-		if (!$options.target) {
-			$options.target = this.$element;
+	get baseOptions(): ParallaxEffectOptions {
+		const { options } = this;
+
+		if (!options.target) {
+			options.target = this.$element;
 		}
 
-		return $options;
+		return options;
 	}
 
 	get parallaxConfig(): ParallaxEffectOptions {

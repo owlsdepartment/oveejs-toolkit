@@ -2,7 +2,7 @@
   "name": "@ovee.js/toolkit",
   "author": "Owls Department",
   "license": "MIT",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Ovee.js frontend toolkit developed by Owls Department",
   "bugs": {
     "url": "https://github.com/owlsdepartment/oveejs-toolkit/issues"

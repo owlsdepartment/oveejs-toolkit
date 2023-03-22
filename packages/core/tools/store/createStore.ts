@@ -11,7 +11,7 @@ export function createStore<S extends StateDef>(name: string, stateDef: S) {
 	type State = GetState<S>;
 
 	const state = makeReactive(isFunction(stateDef) ? stateDef() : cloneDeep(stateDef)) as State;
-	const readonlyState = readonly(state);
+	const readonlyState = readonly(state) as State;
 
 	OveeStore.getInstance().registerStore(name, state);
 

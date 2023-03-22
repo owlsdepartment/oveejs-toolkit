@@ -16,14 +16,14 @@
 		"paths": {
             "@ovee.js/toolkit": ["packages/core"],
 			"@ovee.js/toolkit/*": ["packages/core/*"],
-			"@ovee.js/toolkit-integrations": ["packages/integrations"],
+			"@ovee.js/toolkit-integrations": ["packages/integrations"]
         }
 	},
 	"exclude": [
-		"node_modules",
+		"node_modules"
 	],
 	"include": [
 		"**/*.ts",
-		"**/*.json",
+		"**/*.json"
 	]
 }

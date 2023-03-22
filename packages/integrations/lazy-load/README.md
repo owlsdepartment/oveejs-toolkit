@@ -25,9 +25,11 @@ Example:
 ```ts
 export class CustomLazyLoad extends LazyLoad {
     get options() {
-        ...super.options,
+        return {
+            ...super.options,
 
-        threshold: 0
+            threshold: 0
+        }
     }
 
     get loadTargets() {

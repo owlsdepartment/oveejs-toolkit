@@ -1,7 +1,7 @@
 // import components to test
 // import {} from '@ovee.js/toolkit';
-import { Class, Component } from 'ovee.js';
+import { AnyComponent, ComponentOptions } from 'ovee.js';
 
-const components: Class<Component, typeof Component>[] = [];
+const components: Record<string, AnyComponent | [AnyComponent, ComponentOptions | undefined]> = {};
 
 export default components;

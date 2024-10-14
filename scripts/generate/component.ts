@@ -61,12 +61,13 @@ export async function generateComponent(
 
 	writeFileSync(
 		_path.resolve(fullPath, `${pascalCaseName}.ts`),
-		`import { Component, register } from 'ovee.js';
+		`import { defineComponent } from 'ovee.js';
 
-@register('${kebabCaseName}')
-export class ${pascalCaseName} extends Component {
-	// write your code
-}
+export const ${pascalCaseName} = defineComponent((element, {
+	app, on, off, emit, name, options
+}) => {
+	console.log('hi from component!')
+});
 `
 	);
 

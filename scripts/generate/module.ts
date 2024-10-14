@@ -51,17 +51,11 @@ export async function generateModule(
 
 	writeFileSync(
 		_path.resolve(fullPath, `${pascalCaseName}.ts`),
-		`import { Module } from 'ovee.js';
+		`import { defineModule } from 'ovee.js';
 
-export class ${pascalCaseName} extends Module {
-	init() {
-		// write your code here
-	}
-
-	static getName(): string {
-		return '${pascalCaseName}';
-	}
-}
+export const ${pascalCaseName} = defineModule(({ app, options }) => {
+	console.log("I'm inside the module!");
+});
 `
 	);
 

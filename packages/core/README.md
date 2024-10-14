@@ -44,12 +44,12 @@ Every tool has seperate `README` with specific guide on how to install it, use i
  - [InViewport](./components/utils/in-viewport/README.md)
 
 ### Modules
+
  - [CustomCursor](./modules/custom-cursor/README.md)
- - [Viewport](./modules/viewport/README.md)
+ - [ViewportUnits](./modules/viewport/README.md)
 
-### Mixins
-
- - [WithInViewport](./mixins/WithInViewport/README.md)
+### Composables
+ - [useInViewport](./composables/in-viewport/README.md) 
 
 ### Tools
 

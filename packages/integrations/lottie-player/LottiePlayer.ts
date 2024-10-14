@@ -1,84 +1,64 @@
-import lottie, { AnimationConfigWithPath, AnimationItem } from 'lottie-web';
-import { Component, dataParam, Logger, register } from 'ovee.js';
+import lottie, { AnimationConfigWithPath, AnimationItem, RendererType } from 'lottie-web';
+import { computed, defineComponent, Logger, onUnmounted, shallowRef, useDataAttr } from 'ovee.js';
 
-export type LottieRenderer = 'svg' | 'canvas' | 'html';
-
-export interface LottiePlayerConfig {
-	renderer: LottieRenderer;
-}
+export type LottiePlayerConfig = AnimationConfigWithPath<RendererType>;
 
 const ALLOWED_RENDERERS = ['svg', 'canvas', 'html'];
 const logger = new Logger('LottiePlayer');
 
-@register('lottie-player')
-export class LottiePlayer extends Component<HTMLElement, LottiePlayerConfig> {
-	static defaultOptions(): LottiePlayerConfig {
-		return {
-			renderer: 'svg',
-		};
-	}
+export const LottiePlayer = defineComponent<HTMLElement, LottiePlayerConfig>(
+	(element, { options, emit }) => {
+		const player = shallowRef<AnimationItem>();
 
-	@dataParam()
-	path = '';
+		const path = useDataAttr('path');
+		const renderer = useDataAttr('renderer');
+		const autoplay = useDataAttr('autoplay');
+		const loop = useDataAttr('loop');
 
-	@dataParam()
-	renderer: LottieRenderer = this.options.renderer;
+		const animationConfig = computed<LottiePlayerConfig>(() => {
+			return {
+				...(options ?? {}),
+				loop: !!(loop.value ?? options?.loop),
+				autoplay: !!(autoplay.value ?? options?.autoplay),
+				container: options?.container ?? element,
+				path: path.value ?? options?.path,
+				renderer: (renderer.value ?? options?.renderer ?? 'svg') as RendererType,
+			};
+		});
 
-	player?: AnimationItem;
+		createLottie();
 
-	get autoplay() {
-		return this.$element.hasAttribute('autoplay');
-	}
+		onUnmounted(destroy);
 
-	get loop() {
-		return this.$element.hasAttribute('loop');
-	}
+		function createLottie() {
+			if (
+				animationConfig.value.renderer &&
+				!ALLOWED_RENDERERS.includes(animationConfig.value.renderer)
+			) {
+				const allowed = ALLOWED_RENDERERS.map(r => `'${r}'`).join(', ');
 
-	get animationConfig(): AnimationConfigWithPath {
-		const { autoplay, loop } = this;
+				logger.error(
+					`Wrong data-renderer type. Received: '${renderer}', expected one of: ${allowed}`
+				);
+				return;
+			}
 
-		return {
-			loop,
-			autoplay,
-			container: this.$element,
-			path: this.path,
-		};
-	}
+			player.value = lottie.loadAnimation(animationConfig.value);
 
-	get options() {
-		return this.$options;
-	}
+			emit('lottie-player:created', element);
 
-	init() {
-		this.createLottie();
-	}
-
-	destroy() {
-		this.player?.destroy();
-	}
-
-	createLottie() {
-		const { renderer } = this;
-
-		if (!ALLOWED_RENDERERS.includes(renderer)) {
-			const allowed = ALLOWED_RENDERERS.map(r => `'${r}'`).join(', ');
-
-			logger.error(
-				`Wrong data-renderer type. Received: '${renderer}', expected one of: ${allowed}`
-			);
-			return;
+			player.value.addEventListener('DOMLoaded', () => {
+				emit('lottie-player:loaded', element);
+			});
 		}
 
-		this.player = lottie.loadAnimation({
-			...this.animationConfig,
+		function destroy() {
+			player.value?.destroy();
+		}
 
-			renderer: renderer as any,
-		});
-
-		this.$emit('lottiePlayer:created', this.$element);
-
-		this.player.addEventListener('DOMLoaded', () => {
-			this.$emit('lottiePlayer:loaded', this.$element);
-		});
+		return {
+			player,
+			destroy,
+		};
 	}
-}
+);

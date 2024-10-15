@@ -27,6 +27,7 @@ You can overwrite default options when registering module.
 	shadowDuration: 1,
 	ripple: false,
 	rippleThreshold: 50,
+	checkIfLink: undefined,
 }
 ```
 
@@ -37,6 +38,7 @@ You can overwrite default options when registering module.
 - `shadowDuration` - shadow travel duration.
 - `ripple` - enables the ripple effect on click.
 - `rippleThreshold` - by default, the ripple effect will not be triggered when dragging the cursor over a distance longer than or equal to this value. It is meant to prevent the effect on components as sliders or when selecting text.
+- `checkIfLink: (target?: HTMLElement | null): boolean` - allows you to provide a custom function to determine if an element should be treated as a link. This function receives the target element as an argument and should return a boolean value.
 
 ## Styling
 

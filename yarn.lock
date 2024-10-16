@@ -358,13 +358,12 @@ __metadata:
     "@types/google.maps": ^3.49.1
     "@types/lodash": ^4.17.7
     "@types/node": ^17.0.12
-    gsap: ^3.9.1
-    lit-html: ^2.3.1
+    gsap: ^3.12.5
     lodash: ^4.17.21
     lottie-web: ^5.12.2
     ovee.js: ^3.0.0-alpha.6
     swiper: ^11.1.12
-    typescript: ^4.5.5
+    typescript: ^5.6.2
     vanilla-lazyload: ^19.1.3
   peerDependencies:
     "@googlemaps/js-api-loader": ^1.16.8
@@ -396,13 +395,12 @@ __metadata:
   dependencies:
     "@types/lodash": ^4.17.7
     "@types/node": ^17.0.12
-    gsap: ^3.9.1
-    lit-html: ^2.3.1
+    gsap: ^3.12.5
     lodash: ^4.17.21
     ovee.js: ^3.0.0-alpha.6
-    typescript: ^4.5.5
+    typescript: ^5.6.2
   peerDependencies:
-    gsap: ^3.9.1
+    gsap: ^3.12.5
     lodash: ^4.17.21
     ovee.js: ^3.0.0-alpha.6
   languageName: unknown
@@ -586,13 +584,6 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: dc6a6df507656004e242dcb02c784479deca516d5f4b58a1707e708022b269ae147e1da0521f3e8ad0d63638869d87e0adc023f0bd5454aa6f72ac66c7525cf5
-  languageName: node
-  linkType: hard
-
-"@types/trusted-types@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@types/trusted-types@npm:2.0.2"
-  checksum: 3371eef5f1c50e1c3c07a127c1207b262ba65b83dd167a1c460fc1b135a3fb0c97b9f508efebd383f239cc5dd5b7169093686a692a501fde9c3f7208657d9b0d
   languageName: node
   linkType: hard
 
@@ -2324,10 +2315,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gsap@npm:^3.9.1":
-  version: 3.10.4
-  resolution: "gsap@npm:3.10.4"
-  checksum: 0c965c6e46a02198ba1662e338eb48123d65b49f41263223cfcd326abf734a5fbdeddcaf877ded610735408cd1e8e599da79ab954823daf7fe2f6b53d3807009
+"gsap@npm:^3.12.5":
+  version: 3.12.5
+  resolution: "gsap@npm:3.12.5"
+  checksum: 60b99dc4482992ba86013963ee9a97a5ec62d480495dd85764788913245aa08cfd202c1df4bbc7592e43d5faa885127bec75f77266f2964fe3d3b559ab63f852
   languageName: node
   linkType: hard
 
@@ -2785,15 +2776,6 @@ __metadata:
   version: 1.2.4
   resolution: "lines-and-columns@npm:1.2.4"
   checksum: 0c37f9f7fa212b38912b7145e1cd16a5f3cd34d782441c3e6ca653485d326f58b3caccda66efce1c5812bde4961bbde3374fae4b0d11bf1226152337f3894aa5
-  languageName: node
-  linkType: hard
-
-"lit-html@npm:^2.3.1":
-  version: 2.3.1
-  resolution: "lit-html@npm:2.3.1"
-  dependencies:
-    "@types/trusted-types": ^2.0.2
-  checksum: 6177f0854001b7e464a994adb6339a5ede4977c189587e49186b8bb10e49feaa57fe08ad14d13c06c2bce2a80671e1de3f08d8f2bdb25b2f265b21e2dd091c5b
   languageName: node
   linkType: hard
 
@@ -3823,7 +3805,7 @@ __metadata:
     stylelint-config-recommended-vue: ^1.1.0
     stylelint-config-standard-scss: ^3.0.0
     stylelint-order: ^5.0.0
-    typescript: ^4.5.5
+    typescript: ^5.6.2
     vite: ^2.7.13
   languageName: unknown
   linkType: soft
@@ -4488,7 +4470,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.4.3, typescript@npm:^4.5.5":
+"typescript@npm:^4.4.3":
   version: 4.7.2
   resolution: "typescript@npm:4.7.2"
   bin:
@@ -4498,13 +4480,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
+"typescript@npm:^5.6.2":
+  version: 5.6.3
+  resolution: "typescript@npm:5.6.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: ba302f8822777ebefb28b554105f3e074466b671e7444ec6b75dadc008a62f46f373d9e57ceced1c433756d06c8b7dc569a7eefdf3a9573122a49205ff99021a
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>":
   version: 4.7.2
   resolution: "typescript@patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=493e53"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 09d93fc0983d38eadd9b0427f790b49b4437f45002a87d447be3fbe53120880e87a91dd03e1d900498f99205d6e0b7c9784fe41fca11d56f4bbce371f74bb160
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^5.6.2#~builtin<compat/typescript>":
+  version: 5.6.3
+  resolution: "typescript@patch:typescript@npm%3A5.6.3#~builtin<compat/typescript>::version=5.6.3&hash=493e53"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: ade87bce2363ee963eed0e4ca8a312ea02c81873ebd53609bc3f6dc0a57f6e61ad7e3fb8cbb7f7ab8b5081cbee801b023f7c4823ee70b1c447eae050e6c7622b
   languageName: node
   linkType: hard
 

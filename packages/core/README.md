@@ -52,6 +52,7 @@ Every tool has seperate `README` with specific guide on how to install it, use i
 
  - [useInViewport](./composables/useInViewport/README.md) 
  - [useIntersectionObserver](./composables/useIntersectionObserver/README.md) 
+  - [useMediaQuery](./composables/useMediaQuery/README.md) 
 
 ### Tools
 

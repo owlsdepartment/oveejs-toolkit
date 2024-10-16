@@ -1,24 +1,13 @@
 import { defaultsDeep } from 'lodash';
-import { defineComponent, Logger, onUnmounted, ref, shallowRef } from 'ovee.js';
-import Swiper from 'swiper';
 import {
-	A11y,
-	Autoplay,
-	Controller,
-	EffectFade,
-	FreeMode,
-	Grid,
-	Keyboard,
-	Manipulation,
-	Mousewheel,
-	Navigation,
-	Pagination,
-	Parallax,
-	Thumbs,
-	Virtual,
-	Zoom,
-} from 'swiper/modules';
-import { PaginationOptions } from 'swiper/types/modules/pagination';
+	defineComponent,
+	Logger,
+	onUnmounted,
+	ref,
+	shallowRef,
+	useQuerySelectorAll,
+} from 'ovee.js';
+import Swiper from 'swiper';
 import { SwiperEvents } from 'swiper/types/swiper-events';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 
@@ -31,12 +20,11 @@ const logger = new Logger('BaseSlider');
 export const BaseSlider = defineComponent<SliderElement, Partial<SwiperOptions>>(
 	(element, { options, emit }) => {
 		const swiperInstance = shallowRef<Swiper>();
-		const swiperContainer = shallowRef(element.querySelector<HTMLElement>('.swiper-container'));
 		const swiperOptions = ref<SwiperOptions>();
+		const swiperContainer = shallowRef(element.querySelector<HTMLElement>('.swiper-container'));
+		const swiperSlides = useQuerySelectorAll<HTMLElement>('.slider__slide');
 
-		const count = element.querySelectorAll('.slider__slide').length;
-
-		if (count < 1) {
+		if (swiperSlides.value.length < 1) {
 			return logger.warn('No slider items were found.');
 		}
 
@@ -48,24 +36,6 @@ export const BaseSlider = defineComponent<SliderElement, Partial<SwiperOptions>>
 		});
 
 		function getSwiperOptions(): SwiperOptions {
-			const modules = [
-				Keyboard,
-				Mousewheel,
-				Controller,
-				Grid,
-				EffectFade,
-				Navigation,
-				Pagination,
-				Autoplay,
-				Virtual,
-				FreeMode,
-				Zoom,
-				A11y,
-				Thumbs,
-				Manipulation,
-				Parallax,
-			];
-			const keyboard = true;
 			const effect = 'slide';
 			const speed = 600;
 
@@ -78,35 +48,11 @@ export const BaseSlider = defineComponent<SliderElement, Partial<SwiperOptions>>
 				},
 			};
 
-			const navigation = {
-				prevEl: element.querySelector<HTMLElement>('.button--prev'),
-				nextEl: element.querySelector<HTMLElement>('.button--next'),
-			};
-
-			const pagination: PaginationOptions | boolean = {
-				el: element.querySelector<HTMLElement>('.slider__pagination'),
-				clickable: false,
-				type: 'fraction',
-				renderFraction(currentClass: any, totalClass: any) {
-					return `<span class="${currentClass}"></span><span> OF </span><span class="${totalClass}"></span>`;
-				},
-				modifierClass: 'slider__pagination--',
-				clickableClass: 'is-clickable',
-			};
-
-			return defaultsDeep(
-				{},
-				{
-					modules,
-					keyboard,
-					effect,
-					speed,
-					navigation,
-					pagination,
-					on,
-				},
-				options
-			);
+			return defaultsDeep(options, {
+				effect,
+				speed,
+				on,
+			});
 		}
 
 		function prepareDom() {
@@ -117,14 +63,12 @@ export const BaseSlider = defineComponent<SliderElement, Partial<SwiperOptions>>
 
 				element.appendChild(container);
 
-				const slides = Array.from(element.querySelectorAll<HTMLElement>('.slider__slide'));
-
-				slides.forEach((slide, index) => {
+				swiperSlides.value.forEach((slide, index) => {
 					slide.classList.add('swiper-slide');
 					slide.dataset.slideNumber = `${index}`;
 				});
 
-				container.querySelector<HTMLElement>('.swiper-wrapper')?.append(...slides);
+				container.querySelector<HTMLElement>('.swiper-wrapper')?.append(...swiperSlides.value);
 
 				swiperContainer.value = container;
 			}

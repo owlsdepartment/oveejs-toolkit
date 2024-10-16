@@ -31,3 +31,19 @@ export const SomeComponent = defineComponent(() => {
     const { vh, vw } = useModule(ViewportUnits)
 })
 ```
+
+Also this module adds to `app` reactive computeds `$vh` and `$vw`.
+
+```ts
+import { useApp } from 'ovee.js'
+
+export const SomeComponent = defineComponent(() => {
+    const app = useApp();
+
+	console.log(app.$vh, app.$vw);
+})
+```
+
+## Composables
+
+- [useViewportUnits](./composables/README.md)

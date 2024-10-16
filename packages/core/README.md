@@ -49,11 +49,12 @@ Every tool has seperate `README` with specific guide on how to install it, use i
  - [ViewportUnits](./modules/viewport/README.md)
 
 ### Composables
- - [useInViewport](./composables/in-viewport/README.md) 
+
+ - [useInViewport](./composables/useInViewport/README.md) 
+ - [useIntersectionObserver](./composables/useIntersectionObserver/README.md) 
 
 ### Tools
 
- - [observeIntersections](./tools/observeIntersections/README.md)
  - [OveeStore](./tools/store/README.md)
 
 [<- Root](/README.md)

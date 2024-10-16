@@ -35,7 +35,7 @@ export const MyComponent = defineComponent((element) => {
 
 ### Notes
 
-- The `useInViewport` function uses the `observeIntersections` utility from [`@ovee.js/toolkit/tools`](/packages/core/tools/observeIntersections/README.md) to observe the element.
+- The `useInViewport` function uses the `useIntersectionObserver` composable from [`@ovee.js/toolkit/composables`](/packages/core//composables/useIntersectionObserver/README.md) to observe the element.
 - The `useComponentContext` function from `ovee.js` is used to get the current component's context, specifically the element.
 - The `onMounted` and `onUnmounted` lifecycle hooks from `ovee.js` are used to start and stop observing the element.
 - When the element intersects the viewport, the `is-in-viewport` class is added to the element. If the `once` option is set to `true` and the element intersects, the observer stops observing. If the `once` option is `false`, the `is-in-viewport` class is removed when the element is no longer intersecting (you can change it with the `shouldRemoveClass` prop).

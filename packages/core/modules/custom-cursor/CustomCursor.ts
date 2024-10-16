@@ -1,7 +1,7 @@
 import { isAndroid, isIOS, isIOSChrome, isIOSFirefox } from '@ovee.js/toolkit/tools';
 import { gsap } from 'gsap';
 import { debounce, defaults } from 'lodash';
-import { computed, defineModule, onInit, Reactive, reactive, Ref, ref, watch } from 'ovee.js';
+import { defineModule, onInit, Reactive, reactive, Ref, ref, watch } from 'ovee.js';
 
 type Setter = (val: number) => void;
 

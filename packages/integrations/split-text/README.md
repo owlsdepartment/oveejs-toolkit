@@ -33,7 +33,7 @@ export const MyComponent = defineComponent(() => {
 })
 ```
 
-The `SplitText` composable returns an object containing the `SplitText` instance.
+The `SplitText` composable returns an object containing the `SplitText` instance as a `shallowRef`. This means that the reference is reactive.
 
 ### Data Parameters
 

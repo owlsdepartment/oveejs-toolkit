@@ -29,9 +29,6 @@ export const SplitText = defineComponent<HTMLElement, SplitTextOptions>(
 		}
 
 		onUnmounted(() => {
-			text.value?.revert();
-			text.value = null;
-
 			if (options?.windowResize) {
 				off('resize', resizeHandlerDebounced);
 			}
@@ -48,8 +45,13 @@ export const SplitText = defineComponent<HTMLElement, SplitTextOptions>(
 		}
 
 		function resizeHandler() {
-			text.value?.revert();
+			cleanup();
 			initSplitText();
+		}
+
+		function cleanup() {
+			text.value?.revert();
+			text.value = null;
 		}
 
 		return {

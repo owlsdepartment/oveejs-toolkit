@@ -33,7 +33,7 @@ export const MyComponent = defineComponent(() => {
 })
 ```
 
-The `SplitText` component returns an object containing the `SplitText` instance.
+The `SplitText` composable returns an object containing the `SplitText` instance.
 
 ### Data Parameters
 

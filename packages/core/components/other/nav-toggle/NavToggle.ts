@@ -1,4 +1,4 @@
-import { computed, defineComponent, emitEvent, Logger, useDataAttr } from 'ovee.js';
+import { computed, defineComponent, emitEvent, Logger, onMounted, ref, useDataAttr } from 'ovee.js';
 
 type toggleEvent = CustomEvent<boolean>;
 
@@ -6,57 +6,67 @@ const logger = new Logger('NavToggle');
 const DEFAULT_NAV_NAME = 'menu';
 
 export const NavToggle = defineComponent((_, { on, emit }) => {
-	const navName = useDataAttr('navToggle');
-	const navSelector = useDataAttr('nav');
+	const html = document.documentElement;
 
+	const isOpen = ref(false);
+	const animStarted = ref(false);
+
+	const _navSelector = useDataAttr('nav');
+	const _navName = useDataAttr('navToggle');
 	const _showImmediately = useDataAttr('showImmediately');
+	const _hideImmediately = useDataAttr('hideImmediately');
+
+	const navElement = computed(() => {
+		if (!_navSelector.value) {
+			logger.error(`Attribute 'data-nav' with value is required`);
+
+			return;
+		}
+
+		const nav = document.querySelector<HTMLElement>(_navSelector.value);
+
+		if (!nav) {
+			logger.error(`Could not find nav with selector: '${_navSelector.value}'`);
+
+			return;
+		}
+
+		return nav;
+	});
+
+	const navName = computed(() => {
+		return _navName.value ?? DEFAULT_NAV_NAME;
+	});
+
 	const showImmediately = computed(() => {
 		return _showImmediately.value === 'true';
 	});
 
-	const _hideImmediately = useDataAttr('hideImmediately');
 	const hideImmediately = computed(() => {
 		return _hideImmediately.value === 'true';
 	});
 
-	let isOpen = false;
+	onMounted(() => {
+		if (!navElement.value) {
+			return;
+		}
 
-	if (!navName.value) {
-		navName.value = DEFAULT_NAV_NAME;
-	}
-
-	if (!navSelector.value) {
-		logger.error(`Attribute 'data-nav' with value is required`);
-		return;
-	}
-
-	const nav = document.querySelector<HTMLElement>(navSelector.value);
-	let animStarted: boolean;
-	const html = document.documentElement;
-
-	if (!nav) {
-		logger.error(`Could not find nav with selector: '${navSelector.value}'`);
-		return;
-	}
-
-	bind();
+		bind();
+	});
 
 	function bind() {
 		on('click', clickHandler);
 		on('nav-toggle:show', onNavShow);
 		on('nav-toggle:hide', onNavHide);
-
-		if (nav) {
-			on('transitionstart', animStart, { target: nav });
-			on('transitionend', animEnd, { target: nav });
-		}
+		on('transitionstart', animStart, { target: navElement.value });
+		on('transitionend', animEnd, { target: navElement.value });
 	}
 
 	function clickHandler(e: Event) {
 		e.preventDefault();
 		e.stopPropagation();
 
-		if (isOpen) {
+		if (isOpen.value) {
 			hide(hideImmediately.value);
 		} else {
 			show(showImmediately.value);
@@ -72,17 +82,17 @@ export const NavToggle = defineComponent((_, { on, emit }) => {
 	}
 
 	function animStart(e: Event) {
-		if (e.target !== nav) {
+		if (e.target !== navElement.value) {
 			return;
 		}
 
-		if (animStarted) {
+		if (animStarted.value) {
 			return;
 		}
 
-		animStarted = true;
+		animStarted.value = true;
 
-		if (isOpen) {
+		if (isOpen.value) {
 			html.classList.add(`${navName.value}-anim`);
 		} else {
 			html.classList.add(`${navName.value}-hide-anim`);
@@ -90,17 +100,17 @@ export const NavToggle = defineComponent((_, { on, emit }) => {
 	}
 
 	function animEnd(e: Event) {
-		if (e.target !== nav) {
+		if (e.target !== navElement.value) {
 			return;
 		}
 
-		if (!animStarted) {
+		if (!animStarted.value) {
 			return;
 		}
 
-		animStarted = false;
+		animStarted.value = false;
 
-		if (isOpen) {
+		if (isOpen.value) {
 			html.classList.remove(`${navName.value}-anim`);
 		} else {
 			html.classList.remove(`${navName.value}-hide-anim`);
@@ -108,7 +118,7 @@ export const NavToggle = defineComponent((_, { on, emit }) => {
 	}
 
 	function show(immediately = false) {
-		isOpen = true;
+		isOpen.value = true;
 
 		if (immediately) {
 			html.classList.add(`${navName.value}-show-immediately`);
@@ -119,17 +129,17 @@ export const NavToggle = defineComponent((_, { on, emit }) => {
 		}
 
 		html.classList.add(`${navName.value}-visible`);
-		nav?.setAttribute('aria-expanded', 'true');
+		_.setAttribute('aria-expanded', 'true');
 
-		emit('nav-toggle:visible', nav);
+		emit('nav-toggle:visible', _);
 		emitEvent(window as any, 'nav-toggle:visible', {
-			element: nav,
+			element: _,
 			navName: navName.value,
 		});
 	}
 
 	function hide(immediately = false) {
-		isOpen = false;
+		isOpen.value = false;
 
 		if (immediately) {
 			html.classList.add(`${navName.value}-hide-immediately`);
@@ -140,12 +150,23 @@ export const NavToggle = defineComponent((_, { on, emit }) => {
 		}
 
 		html.classList.remove(`${navName.value}-visible`);
-		nav?.setAttribute('aria-expanded', 'false');
+		_.setAttribute('aria-expanded', 'false');
 
-		emit('nav-toggle:hidden', nav);
+		emit('nav-toggle:hidden', _);
 		emitEvent(window as any, 'nav-toggle:hidden', {
-			element: nav,
+			element: _,
 			navName: navName.value,
 		});
 	}
+
+	return {
+		show,
+		hide,
+		isOpen,
+		animStarted,
+		navElement,
+		navName,
+		showImmediately,
+		hideImmediately,
+	};
 });

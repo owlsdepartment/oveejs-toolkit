@@ -4,15 +4,6 @@
 
 See [Components registration](/docs/registration.md#components) or use this:
 
-```ts
-import { NavToggle } from '@ovee.js/toolkit';
-
-export default [
-    // ... other components ...
-    NavToggle
-];
-```
-
 ## Usage example
 
 ### Basic usage
@@ -45,16 +36,19 @@ Example:
 | --- | --- | --- | --- |
 | `data-nav-toggle` | `string` | `menu` | Specify the prefix describing what is toggled. Prefix will be passed to `HTML` class `"${prefix}-visible"` for kind of scope. The best practice is to use the name of an element which will show/hide |
 | `data-nav` | `string` | `undefined` | Pass **selector** `(class/id/tag)` of the element which you want to toggle. In this example: `.menu` |
-| `data-show-immediately` | `boolean` | `false` | Set to true to show element immediately |
-| `data-hide-immediately` | `boolean` | `false` | Set to true to hide element immediately |
+| `data-show-immediately` | `boolean` | `false` | Set to `true` to show element immediately |
+| `data-hide-immediately` | `boolean` | `false` | Set to `true` to hide element immediately |
 
-## Methods
+## Returns
 
-Main methods used in this component are:
-
-- `this.show();` - Shows element which we toggle and adds global classes to `HTML` tag.
-
-- `this.hide();` - Hides element which we toggle and removes global classes from `HTML` tag.
+- `show(immediately: boolean = false)`: Shows the navigation. If immediately is `true`, the navigation is shown without animation.
+- `hide(immediately: boolean = false)`: Hides the navigation. If immediately is `true`, the navigation is hidden without animation.
+- `isOpen`: Reactive reference indicating whether the navigation is open.
+- `animStarted`: Reactive reference indicating whether an animation has started.
+- `navElement`: Computed reference to the navigation element.
+- `navName`: Computed reference to the navigation name.
+- `showImmediately`: Computed reference to the `showImmediately` data attribute.
+- `hideImmediately`: Computed reference to the `hideImmediately` data attribute.
 
 ## Events
 

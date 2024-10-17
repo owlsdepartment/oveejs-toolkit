@@ -1,4 +1,4 @@
-import { computed, ComputedRef, defineModule, onInit, Ref, ref, useApp } from 'ovee.js';
+import { computed, ComputedRef, defineModule, onInit, ref } from 'ovee.js';
 
 declare module 'ovee.js' {
 	interface App {

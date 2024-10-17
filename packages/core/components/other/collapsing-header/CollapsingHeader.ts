@@ -1,221 +1,266 @@
-import { isNumber, throttle } from 'lodash';
-import { Component, dataParam, register } from 'ovee.js';
+import { defaults, isNumber, throttle } from 'lodash';
+import { computed, defineComponent, onMounted, ref, useDataAttr } from 'ovee.js';
+
+export interface CollapsingHeaderOptions {
+	throttle?: number;
+	onScroll?: (currentPosition: number, isScrollingDown: boolean, pastTrigger: boolean) => void;
+}
 
 export type TriggerOffsetConst = 'window' | 'header' | 'none' | 'default';
 export type TriggerOffset = TriggerOffsetConst | string;
 
 const calcOffsetMap: Record<
 	TriggerOffsetConst | 'triggerPoint',
-	(self: CollapsingHeader) => number | undefined
+	(props: {
+		multiplier: number;
+		headerHeight: number;
+		collapsingHeader?: string;
+		numberOffset: number;
+		triggerOffset: string;
+		triggerElement: HTMLElement | null;
+	}) => number
 > = {
-	window: self => {
-		return window.innerHeight * self.multiplier;
+	window: props => {
+		return window.innerHeight * props.multiplier;
 	},
-	header: self => {
-		return self.headerHeight * self.multiplier;
+	header: props => {
+		return props.headerHeight * props.multiplier;
 	},
-	none: self => {
-		return self.collapsingHeader === 'sticky' ? self.headerHeight : 0;
+	none: props => {
+		return props.collapsingHeader === 'sticky' ? props.headerHeight : 0;
 	},
-	default: self => {
-		return self.numberOffset;
+	default: props => {
+		return props.numberOffset;
 	},
-	triggerPoint: self => {
-		self.triggerEl = self.html.querySelector(self.triggerOffset);
-
-		if (self.triggerEl) {
-			return self.triggerEl.getBoundingClientRect().top;
+	triggerPoint: props => {
+		if (props.triggerElement) {
+			return props.triggerElement.getBoundingClientRect().top;
 		}
 
-		return self.numberOffset;
+		return props.numberOffset;
 	},
 };
 
-export interface CollapsingHeaderOptions {
-	throttle: number;
-}
-
-@register('collapsing-header')
-export class CollapsingHeader extends Component<HTMLElement, CollapsingHeaderOptions> {
-	static defaultOptions(): CollapsingHeaderOptions {
-		return {
+export const CollapsingHeader = defineComponent<HTMLElement, CollapsingHeaderOptions>(
+	(element, { options, on }) => {
+		const html = document.documentElement;
+		const headerOptions = defaults(options, {
 			throttle: 100,
+		});
+
+		const htmlUpdate = ref(0);
+		const currentPosition = ref(0);
+		const lastPosition = ref(0);
+		const numberOffset = ref(0);
+		const headerHeight = ref(0);
+		const isScrollingDown = ref(true);
+		const pastTrigger = ref(false);
+
+		let scrollListener: () => void;
+
+		const collapsingHeader = useDataAttr('collapsingHeader');
+		const offsetMultiplier = useDataAttr('offsetMultiplier');
+		const _triggerOffset = useDataAttr('triggerOffset');
+		const _throttleValue = useDataAttr('throttleValue');
+
+		const triggerOffset = computed(() => {
+			return _triggerOffset.value ?? 'default';
+		});
+
+		const throttleValue = computed(() => {
+			const value = _throttleValue.value ?? `${headerOptions.throttle}`;
+			const parsedValue = JSON.parse(value);
+
+			return isNumber(parsedValue) && !isNaN(parsedValue) ? parsedValue : headerOptions.throttle;
+		});
+
+		const isShown = computed(() => {
+			htmlUpdate.value;
+			return html.classList.contains('header-visible');
+		});
+
+		const isModified = computed(() => {
+			htmlUpdate.value;
+			return html.classList.contains('header-modified');
+		});
+
+		const isCollapsed = computed(() => {
+			htmlUpdate.value;
+			return html.classList.contains('header-collapsed');
+		});
+
+		const multiplier = computed(() => {
+			return offsetMultiplier.value ? parseFloat(offsetMultiplier.value) : 1;
+		});
+
+		const triggerElement = computed(() => {
+			return document.querySelector<HTMLElement>(triggerOffset.value);
+		});
+
+		onMounted(init);
+
+		function init() {
+			headerHeight.value = element.getBoundingClientRect().height;
+
+			let scrollCallback: () => void;
+
+			if (collapsingHeader.value === 'sticky') {
+				numberOffset.value = window.innerHeight;
+				scrollCallback = scrollSticky;
+			} else if (collapsingHeader.value === 'fixed') {
+				scrollCallback = scrollFixed;
+			} else {
+				scrollCallback = scrollCollapsing;
+			}
+
+			scrollListener = throttle(scrollCallback, throttleValue.value);
+
+			calcOffsets();
+			bind();
+		}
+
+		function show() {
+			if (!isShown.value) {
+				updateHtmlClasses('header-visible', 'add');
+			}
+		}
+
+		function hide() {
+			if (isShown.value) {
+				updateHtmlClasses('header-visible', 'remove');
+			}
+		}
+
+		function collapse() {
+			if (!isCollapsed.value) {
+				updateHtmlClasses('header-collapsed', 'add');
+			}
+		}
+
+		function uncollapse() {
+			if (isCollapsed.value) {
+				updateHtmlClasses('header-collapsed', 'remove');
+			}
+		}
+
+		function addModifier() {
+			if (!isModified.value) {
+				updateHtmlClasses('header-modified', 'add');
+			}
+		}
+
+		function removeModifier() {
+			if (isModified.value) {
+				updateHtmlClasses('header-modified', 'remove');
+			}
+		}
+
+		function updateHtmlClasses(className: string, action: 'add' | 'remove') {
+			htmlUpdate.value += 1;
+			html.classList[action](className);
+		}
+
+		function calcOffsets() {
+			const props = {
+				multiplier: multiplier.value,
+				collapsingHeader: collapsingHeader.value,
+				headerHeight: headerHeight.value,
+				numberOffset: numberOffset.value,
+				triggerOffset: triggerOffset.value,
+				triggerElement: triggerElement.value,
+			};
+
+			if (triggerOffset.value in calcOffsetMap) {
+				numberOffset.value =
+					calcOffsetMap?.[triggerOffset.value as TriggerOffsetConst](props) ?? numberOffset.value;
+			} else {
+				numberOffset.value = calcOffsetMap.triggerPoint(props) ?? numberOffset.value;
+			}
+		}
+
+		function scrollStart() {
+			currentPosition.value = window.scrollY || document.documentElement.scrollTop;
+			isScrollingDown.value = !(currentPosition.value <= lastPosition.value);
+			pastTrigger.value = currentPosition.value > numberOffset.value;
+
+			if (headerOptions.onScroll) {
+				headerOptions.onScroll(currentPosition.value, isScrollingDown.value, pastTrigger.value);
+			}
+		}
+
+		function scrollEnd() {
+			lastPosition.value = currentPosition.value;
+		}
+
+		function scrollSticky() {
+			scrollStart();
+
+			if (!isScrollingDown.value && pastTrigger.value) {
+				show();
+			} else {
+				hide();
+			}
+
+			if (pastTrigger.value) {
+				addModifier();
+			} else {
+				removeModifier();
+			}
+
+			scrollEnd();
+		}
+
+		function scrollFixed() {
+			scrollStart();
+
+			if (pastTrigger.value) {
+				addModifier();
+			} else {
+				removeModifier();
+			}
+
+			scrollEnd();
+		}
+
+		function scrollCollapsing() {
+			scrollStart();
+
+			if (!isScrollingDown.value) {
+				uncollapse();
+			} else {
+				collapse();
+			}
+
+			if (pastTrigger.value) {
+				addModifier();
+			} else {
+				removeModifier();
+			}
+
+			scrollEnd();
+		}
+
+		function bind() {
+			on('scroll load ajaxload', scrollListener, { target: window });
+			on('resize', calcOffsets, { target: window });
+		}
+
+		return {
+			currentPosition,
+			lastPosition,
+			numberOffset,
+			headerHeight,
+			pastTrigger,
+			isScrollingDown,
+			isCollapsed,
+			isShown,
+			isModified,
+			show,
+			hide,
+			collapse,
+			uncollapse,
+			addModifier,
+			removeModifier,
 		};
 	}
-
-	@dataParam()
-	collapsingHeader: string;
-
-	@dataParam()
-	triggerOffset: TriggerOffset = 'default';
-
-	@dataParam()
-	offsetMultiplier: string;
-
-	@dataParam('throttleValue')
-	_throttleValue = `${this.options.throttle}`;
-
-	html: HTMLElement;
-	triggerEl: HTMLElement | null;
-
-	currentPosition = 0;
-	lastPosition = 0;
-	headerHeight: number;
-	numberOffset = 0;
-
-	isScrollingDown = true;
-	pastTrigger = false;
-
-	scrollListener: () => void;
-
-	get throttleValue(): number {
-		const parsed = JSON.parse(this._throttleValue);
-
-		return isNumber(parsed) && !isNaN(parsed) ? parsed : this.options.throttle;
-	}
-
-	get isShown() {
-		return this.html.classList.contains('header-visible');
-	}
-
-	get isModified() {
-		return this.html.classList.contains('header-modified');
-	}
-
-	get isCollapsed() {
-		return this.html.classList.contains('header-collapsed');
-	}
-
-	get multiplier() {
-		return this.offsetMultiplier ? parseFloat(parseFloat(this.offsetMultiplier).toPrecision(2)) : 1;
-	}
-
-	get options() {
-		return this.$options;
-	}
-
-	init() {
-		this.html = document.documentElement;
-		this.headerHeight = this.$element.getBoundingClientRect().height;
-
-		if (this.collapsingHeader === 'sticky') {
-			this.numberOffset = window.innerHeight;
-			this.scrollListener = throttle(this.scrollSticky, this.throttleValue);
-		} else if (this.collapsingHeader === 'fixed') {
-			this.scrollListener = throttle(this.scrollFixed, this.throttleValue);
-		} else {
-			this.scrollListener = throttle(this.scrollCollapsing, this.throttleValue);
-		}
-
-		this.calcOffsets();
-		this.bind();
-	}
-
-	show() {
-		if (!this.isShown) {
-			this.html.classList.add('header-visible');
-		}
-	}
-
-	hide() {
-		if (this.isShown) {
-			this.html.classList.remove('header-visible');
-		}
-	}
-
-	collapse() {
-		if (!this.isCollapsed) {
-			this.html.classList.add('header-collapsed');
-		}
-	}
-
-	uncollapse() {
-		if (this.isCollapsed) {
-			this.html.classList.remove('header-collapsed');
-		}
-	}
-
-	addModifier() {
-		if (!this.isModified) {
-			this.html.classList.add('header-modified');
-		}
-	}
-
-	removeModifier() {
-		if (this.isModified) {
-			this.html.classList.remove('header-modified');
-		}
-	}
-
-	calcOffsets() {
-		if (this.triggerOffset in calcOffsetMap) {
-			this.numberOffset =
-				calcOffsetMap[this.triggerOffset as TriggerOffsetConst](this) ?? this.numberOffset;
-		} else {
-			this.numberOffset = calcOffsetMap.triggerPoint(this) ?? this.numberOffset;
-		}
-	}
-
-	scrollStart() {
-		this.currentPosition = window.pageYOffset || document.documentElement.scrollTop;
-		this.isScrollingDown = !(this.currentPosition < this.lastPosition);
-		this.pastTrigger = this.currentPosition > this.numberOffset;
-	}
-
-	scrollEnd() {
-		this.lastPosition = this.currentPosition;
-	}
-
-	scrollSticky() {
-		this.scrollStart();
-
-		if (!this.isScrollingDown && this.pastTrigger) {
-			this.show();
-		} else {
-			this.hide();
-		}
-
-		if (this.pastTrigger) {
-			this.addModifier();
-		} else {
-			this.removeModifier();
-		}
-
-		this.scrollEnd();
-	}
-
-	scrollFixed() {
-		this.scrollStart();
-
-		if (this.pastTrigger) {
-			this.addModifier();
-		} else {
-			this.removeModifier();
-		}
-
-		this.scrollEnd();
-	}
-
-	scrollCollapsing() {
-		this.scrollStart();
-
-		if (!this.isScrollingDown) {
-			this.uncollapse();
-		} else {
-			this.collapse();
-		}
-
-		if (this.pastTrigger) {
-			this.addModifier();
-		} else {
-			this.removeModifier();
-		}
-
-		this.scrollEnd();
-	}
-
-	bind() {
-		this.$on('scroll load ajaxload', this.scrollListener, { target: window });
-		this.$on('resize', this.calcOffsets, { target: window });
-	}
-}
+);

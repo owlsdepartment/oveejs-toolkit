@@ -1,162 +1,151 @@
-import { bind, Component, dataParam, emitEvent, Logger, register } from 'ovee.js';
+import { computed, defineComponent, emitEvent, Logger, useDataAttr } from 'ovee.js';
 
 type toggleEvent = CustomEvent<boolean>;
 
 const logger = new Logger('NavToggle');
 const DEFAULT_NAV_NAME = 'menu';
 
-@register('nav-toggle')
-export class NavToggle extends Component {
-	nav: HTMLElement;
-	animStarted: boolean;
-	html = document.documentElement;
+export const NavToggle = defineComponent((_, { on, emit }) => {
+	const navName = useDataAttr('navToggle');
+	const navSelector = useDataAttr('nav');
 
-	@dataParam('navToggle')
-	navName: string;
+	const _showImmediately = useDataAttr('showImmediately');
+	const showImmediately = computed(() => {
+		return _showImmediately.value === 'true';
+	});
 
-	@dataParam('nav')
-	navSelector: string;
+	const _hideImmediately = useDataAttr('hideImmediately');
+	const hideImmediately = computed(() => {
+		return _hideImmediately.value === 'true';
+	});
 
-	@dataParam('showImmediately')
-	protected _showImmediately: string;
+	let isOpen = false;
 
-	@dataParam('hideImmediately')
-	protected _hideImmediately: string;
-
-	isOpen = false;
-
-	get showImmediately() {
-		return this._showImmediately === 'true';
+	if (!navName.value) {
+		navName.value = DEFAULT_NAV_NAME;
 	}
 
-	get hideImmediately() {
-		return this._hideImmediately === 'true';
+	if (!navSelector.value) {
+		logger.error(`Attribute 'data-nav' with value is required`);
+		return;
 	}
 
-	init() {
-		if (!this.navName) {
-			this.navName = DEFAULT_NAV_NAME;
+	const nav = document.querySelector<HTMLElement>(navSelector.value);
+	let animStarted: boolean;
+	const html = document.documentElement;
+
+	if (!nav) {
+		logger.error(`Could not find nav with selector: '${navSelector.value}'`);
+		return;
+	}
+
+	bind();
+
+	function bind() {
+		on('click', clickHandler);
+		on('nav-toggle:show', onNavShow);
+		on('nav-toggle:hide', onNavHide);
+
+		if (nav) {
+			on('transitionstart', animStart, { target: nav });
+			on('transitionend', animEnd, { target: nav });
 		}
-
-		if (!this.navSelector) {
-			logger.error(`Attribute 'data-nav' with value is required`);
-			return;
-		}
-
-		const nav = document.querySelector<HTMLElement>(this.navSelector);
-
-		if (!nav) {
-			logger.error(`Could not find nav with selector: '${this.navSelector}'`);
-			return;
-		}
-
-		this.nav = nav;
-
-		this.bind();
 	}
 
-	bind() {
-		this.$on('nav-toggle:show', this.onNavShow);
-		this.$on('nav-toggle:hide', this.onNavHide);
-		this.$on('transitionstart', this.animStart, { target: this.nav });
-		this.$on('transitionend', this.animEnd, { target: this.nav });
-	}
-
-	@bind('click')
-	onClick(e: Event) {
+	function clickHandler(e: Event) {
 		e.preventDefault();
 		e.stopPropagation();
 
-		if (this.isOpen) {
-			this.hide(this.hideImmediately);
+		if (isOpen) {
+			hide(hideImmediately.value);
 		} else {
-			this.show(this.showImmediately);
+			show(showImmediately.value);
 		}
 	}
 
-	onNavShow(e: toggleEvent) {
-		this.show(e.detail);
+	function onNavShow(e: toggleEvent) {
+		show(e.detail);
 	}
 
-	onNavHide(e: toggleEvent) {
-		this.hide(e.detail);
+	function onNavHide(e: toggleEvent) {
+		hide(e.detail);
 	}
 
-	animStart(e: Event) {
-		if (e.target !== this.nav) {
+	function animStart(e: Event) {
+		if (e.target !== nav) {
 			return;
 		}
 
-		if (this.animStarted) {
+		if (animStarted) {
 			return;
 		}
 
-		this.animStarted = true;
+		animStarted = true;
 
-		if (this.isOpen) {
-			this.html.classList.add(`${this.navName}-anim`);
+		if (isOpen) {
+			html.classList.add(`${navName.value}-anim`);
 		} else {
-			this.html.classList.add(`${this.navName}-hide-anim`);
+			html.classList.add(`${navName.value}-hide-anim`);
 		}
 	}
 
-	animEnd(e: Event) {
-		if (e.target !== this.nav) {
+	function animEnd(e: Event) {
+		if (e.target !== nav) {
 			return;
 		}
 
-		if (!this.animStarted) {
+		if (!animStarted) {
 			return;
 		}
 
-		this.animStarted = false;
+		animStarted = false;
 
-		if (this.isOpen) {
-			this.html.classList.remove(`${this.navName}-anim`);
+		if (isOpen) {
+			html.classList.remove(`${navName.value}-anim`);
 		} else {
-			this.html.classList.remove(`${this.navName}-hide-anim`);
+			html.classList.remove(`${navName.value}-hide-anim`);
 		}
 	}
 
-	show(immediately = false) {
-		this.isOpen = true;
+	function show(immediately = false) {
+		isOpen = true;
 
 		if (immediately) {
-			this.html.classList.add(`${this.navName}-show-immediately`);
+			html.classList.add(`${navName.value}-show-immediately`);
 
 			requestAnimationFrame(() => {
-				this.html.classList.remove(`${this.navName}-show-immediately`);
+				html.classList.remove(`${navName.value}-show-immediately`);
 			});
 		}
 
-		this.html.classList.add(`${this.navName}-visible`);
-		this.$element.setAttribute('aria-expanded', 'true');
+		html.classList.add(`${navName.value}-visible`);
+		nav?.setAttribute('aria-expanded', 'true');
 
-		this.$emit('nav-toggle:visible', this.$element);
+		emit('nav-toggle:visible', nav);
 		emitEvent(window as any, 'nav-toggle:visible', {
-			element: this.$element,
-			navName: this.navName,
+			element: nav,
+			navName: navName.value,
 		});
 	}
 
-	hide(immediately = false) {
-		this.isOpen = false;
+	function hide(immediately = false) {
+		isOpen = false;
 
 		if (immediately) {
-			this.html.classList.add(`${this.navName}-hide-immediately`);
+			html.classList.add(`${navName.value}-hide-immediately`);
 
 			requestAnimationFrame(() => {
-				this.html.classList.remove(`${this.navName}-hide-immediately`);
+				html.classList.remove(`${navName.value}-hide-immediately`);
 			});
 		}
 
-		this.html.classList.remove(`${this.navName}-visible`);
-		this.$element.setAttribute('aria-expanded', 'false');
+		html.classList.remove(`${navName.value}-visible`);
+		nav?.setAttribute('aria-expanded', 'false');
 
-		this.$emit('nav-toggle:hidden', this.$element);
+		emit('nav-toggle:hidden', nav);
 		emitEvent(window as any, 'nav-toggle:hidden', {
-			element: this.$element,
-			navName: this.navName,
+			element: nav,
+			navName: navName.value,
 		});
 	}
-}
+});

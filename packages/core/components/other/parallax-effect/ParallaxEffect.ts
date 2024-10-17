@@ -1,102 +1,108 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger.js';
-import { Component, dataParam, Logger, register } from 'ovee.js';
+import { defaults, omit } from 'lodash';
+import {
+	computed,
+	defineComponent,
+	Logger,
+	onMounted,
+	onUnmounted,
+	ShallowRef,
+	shallowRef,
+	useDataAttr,
+} from 'ovee.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export interface ParallaxTweenVars {
-	x?: gsap.TweenValue;
-	y?: gsap.TweenValue;
-	xPercent?: gsap.TweenValue;
-	yPercent?: gsap.TweenValue;
-	ease?: string | gsap.EaseFunction;
+export interface ParallaxEffectOptions extends ScrollTrigger.StaticVars {
+	target?: gsap.DOMTarget;
+	desktopBreakpoint?: string;
+	tabletBreakpoint?: string;
+	mobileBreakpoint?: string;
+	disableOnMobile?: boolean;
+	disableOnTablet?: boolean;
+	tweenVars?: gsap.TweenVars;
 }
 
-export interface ParallaxEffectOptions extends ScrollTrigger.StaticVars {
-	target: gsap.DOMTarget;
-	disableOnMobile: boolean;
-	disableOnTablet: boolean;
-	tweenVars: ParallaxTweenVars;
+export interface ParallaxEffectReturn {
+	scrollTrigger: ShallowRef<ScrollTrigger | undefined | null>;
+	tween: ShallowRef<gsap.core.Timeline | undefined | null>;
+	matchMedia: ShallowRef<gsap.MatchMedia | undefined | null>;
+	cleanup: () => void;
 }
 
 const logger = new Logger('ParallaxEffect');
 
-@register('parallax-effect')
-export class ParallaxEffect extends Component<HTMLElement, ParallaxEffectOptions> {
-	static defaultOptions(): ParallaxEffectOptions {
-		return {
+export const ParallaxEffect = defineComponent<
+	HTMLElement,
+	ParallaxEffectOptions,
+	ParallaxEffectReturn
+>((element, { options }) => {
+	const tl = shallowRef<gsap.core.Timeline | null>();
+	const st = shallowRef<ScrollTrigger | null>();
+	const mm = shallowRef<gsap.MatchMedia | null>();
+
+	const inlineParallaxOptions = useDataAttr('parallaxOptions');
+
+	const parallaxOptions = computed(() => {
+		const baseOptions = defaults({}, options, {
 			scrub: true,
-			target: '',
+			desktopBreakpoint: '(min-width: 1200px)',
+			tabletBreakpoint: '(max-width: 1199px)',
+			mobileBreakpoint: '(max-width: 767px), (max-width: 1023px) and (orientation: landscape)',
 			disableOnMobile: true,
 			disableOnTablet: true,
 			tweenVars: {
 				y: 100,
 			},
-		};
-	}
+		});
 
-	tl: gsap.core.Timeline;
-	st: ScrollTrigger;
-
-	@dataParam('parallaxOptions')
-	_parallaxOptions = '';
-
-	get options() {
-		return this.$options;
-	}
-
-	get baseOptions(): ParallaxEffectOptions {
-		const { options } = this;
-
-		if (!options.target) {
-			options.target = this.$element;
+		if (!baseOptions.target) {
+			baseOptions.target = element;
 		}
 
-		return options;
-	}
-
-	get parallaxConfig(): ParallaxEffectOptions {
-		const { baseOptions } = this;
-
-		if (!this._parallaxOptions) {
+		if (!inlineParallaxOptions.value) {
 			return baseOptions;
 		}
 
-		let elementOptions: ParallaxEffectOptions;
+		let inlineOptions: ParallaxEffectOptions;
 
 		try {
-			elementOptions = JSON.parse(this._parallaxOptions);
+			inlineOptions = JSON.parse(inlineParallaxOptions.value);
 		} catch (e) {
-			logger.error('Invalid JSON Config:', this._parallaxOptions);
+			logger.error('Invalid JSON Config:', inlineParallaxOptions.value);
 
 			return baseOptions;
 		}
 
 		return {
 			...baseOptions,
-			...elementOptions,
+			...inlineOptions,
 		};
+	});
+
+	onMounted(createParallax);
+
+	function cleanup() {
+		tl.value?.kill();
+		st.value?.kill();
+		mm.value?.kill();
+		tl.value = null;
+		st.value = null;
+		mm.value = null;
 	}
 
-	get desktopBreakpoint() {
-		return '(min-width: 1200px)';
-	}
-
-	get tabletBreakpoint() {
-		return '(max-width: 1199px)';
-	}
-
-	get mobileBreakpoint() {
-		return '(max-width: 767px), (max-width: 1023px) and (orientation: landscape)';
-	}
-
-	init() {
-		this.createParallax();
-	}
-
-	createParallax(): void {
-		const { parallaxConfig, desktopBreakpoint, tabletBreakpoint, mobileBreakpoint } = this;
-		const { disableOnMobile, disableOnTablet, tweenVars, target, trigger } = parallaxConfig;
+	function createParallax() {
+		const {
+			desktopBreakpoint,
+			tabletBreakpoint,
+			mobileBreakpoint,
+			disableOnMobile,
+			disableOnTablet,
+			tweenVars,
+			target,
+			trigger,
+		} = parallaxOptions.value;
 
 		let breakpoint = desktopBreakpoint;
 
@@ -114,44 +120,56 @@ export class ParallaxEffect extends Component<HTMLElement, ParallaxEffectOptions
 			return;
 		}
 
-		const to: gsap.TweenVars = {};
+		const to: ParallaxEffectOptions['tweenVars'] = {};
 
 		for (const prop in tweenVars) {
 			if (!Object.prototype.hasOwnProperty.call(tweenVars, prop)) {
 				return;
 			}
 
-			const value = tweenVars[prop as keyof ParallaxTweenVars];
+			const value = tweenVars[prop as keyof ParallaxEffectOptions['tweenVars']];
 
 			to[prop] = value;
 		}
 
-		ScrollTrigger.matchMedia({
-			[breakpoint]: () => {
-				this.tl = gsap.timeline({
-					paused: true,
-				});
+		mm.value = gsap.matchMedia();
 
-				this.tl.to(target, to);
+		mm.value.add(breakpoint, () => {
+			tl.value = gsap.timeline({
+				paused: true,
+			});
 
-				if (!trigger) {
-					parallaxConfig.trigger = target;
-				}
+			tl.value.to(target, to);
 
-				this.st = ScrollTrigger.create({
-					...parallaxConfig,
-					animation: this.tl,
-				});
+			if (!trigger) {
+				parallaxOptions.value.trigger = target;
+			}
 
-				return () => {
-					this.tl.kill();
-				};
-			},
+			st.value = ScrollTrigger.create({
+				...omit(parallaxOptions.value, [
+					'target',
+					'tweenVars',
+					'desktopBreakpoint',
+					'tabletBreakpoint',
+					'mobileBreakpoint',
+					'disableOnMobile',
+					'disableOnTablet',
+				]),
+				animation: tl.value,
+			});
+
+			return () => {
+				cleanup();
+			};
 		});
 	}
 
-	destroy() {
-		this.tl?.kill();
-		this.st?.kill();
-	}
-}
+	onUnmounted(cleanup);
+
+	return {
+		scrollTrigger: st,
+		tween: tl,
+		matchMedia: mm,
+		cleanup,
+	};
+});

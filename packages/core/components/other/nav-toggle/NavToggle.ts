@@ -5,7 +5,7 @@ type toggleEvent = CustomEvent<boolean>;
 const logger = new Logger('NavToggle');
 const DEFAULT_NAV_NAME = 'menu';
 
-export const NavToggle = defineComponent((_, { on, emit }) => {
+export const NavToggle = defineComponent((element, { on, emit }) => {
 	const html = document.documentElement;
 
 	const isOpen = ref(false);
@@ -129,11 +129,11 @@ export const NavToggle = defineComponent((_, { on, emit }) => {
 		}
 
 		html.classList.add(`${navName.value}-visible`);
-		_.setAttribute('aria-expanded', 'true');
+		element.setAttribute('aria-expanded', 'true');
 
-		emit('nav-toggle:visible', _);
+		emit('nav-toggle:visible', element);
 		emitEvent(window as any, 'nav-toggle:visible', {
-			element: _,
+			element: element,
 			navName: navName.value,
 		});
 	}
@@ -150,11 +150,11 @@ export const NavToggle = defineComponent((_, { on, emit }) => {
 		}
 
 		html.classList.remove(`${navName.value}-visible`);
-		_.setAttribute('aria-expanded', 'false');
+		element.setAttribute('aria-expanded', 'false');
 
-		emit('nav-toggle:hidden', _);
+		emit('nav-toggle:hidden', element);
 		emitEvent(window as any, 'nav-toggle:hidden', {
-			element: _,
+			element: element,
 			navName: navName.value,
 		});
 	}

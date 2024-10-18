@@ -1,9 +1,9 @@
+import { MaybeElement } from '@ovee.js/toolkit/shared/types';
 import { computed, isDefined, MaybeRefOrGetter, toValue, watch } from 'ovee.js';
 
 export type IntersectionCallback = (entry: IntersectionObserverEntry) => void;
 export type ObserversMap = Map<string, ObserverEntry>;
 export type Unobserve = () => void;
-export type MaybeElement = HTMLElement | SVGElement | Element | undefined | null;
 
 const rootsMap = new Map<Element | Document | null | undefined, ObserversMap>();
 

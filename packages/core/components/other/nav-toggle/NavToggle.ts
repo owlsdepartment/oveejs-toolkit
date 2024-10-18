@@ -1,162 +1,172 @@
-import { bind, Component, dataParam, emitEvent, Logger, register } from 'ovee.js';
+import { computed, defineComponent, emitEvent, Logger, onMounted, ref, useDataAttr } from 'ovee.js';
 
 type toggleEvent = CustomEvent<boolean>;
 
 const logger = new Logger('NavToggle');
 const DEFAULT_NAV_NAME = 'menu';
 
-@register('nav-toggle')
-export class NavToggle extends Component {
-	nav: HTMLElement;
-	animStarted: boolean;
-	html = document.documentElement;
+export const NavToggle = defineComponent((element, { on, emit }) => {
+	const html = document.documentElement;
 
-	@dataParam('navToggle')
-	navName: string;
+	const isOpen = ref(false);
+	const animStarted = ref(false);
 
-	@dataParam('nav')
-	navSelector: string;
+	const _navSelector = useDataAttr('nav');
+	const _navName = useDataAttr('navToggle');
+	const _showImmediately = useDataAttr('showImmediately');
+	const _hideImmediately = useDataAttr('hideImmediately');
 
-	@dataParam('showImmediately')
-	protected _showImmediately: string;
-
-	@dataParam('hideImmediately')
-	protected _hideImmediately: string;
-
-	isOpen = false;
-
-	get showImmediately() {
-		return this._showImmediately === 'true';
-	}
-
-	get hideImmediately() {
-		return this._hideImmediately === 'true';
-	}
-
-	init() {
-		if (!this.navName) {
-			this.navName = DEFAULT_NAV_NAME;
-		}
-
-		if (!this.navSelector) {
+	const navElement = computed(() => {
+		if (!_navSelector.value) {
 			logger.error(`Attribute 'data-nav' with value is required`);
+
 			return;
 		}
 
-		const nav = document.querySelector<HTMLElement>(this.navSelector);
+		const nav = document.querySelector<HTMLElement>(_navSelector.value);
 
 		if (!nav) {
-			logger.error(`Could not find nav with selector: '${this.navSelector}'`);
+			logger.error(`Could not find nav with selector: '${_navSelector.value}'`);
+
 			return;
 		}
 
-		this.nav = nav;
+		return nav;
+	});
 
-		this.bind();
+	const navName = computed(() => {
+		return _navName.value ?? DEFAULT_NAV_NAME;
+	});
+
+	const showImmediately = computed(() => {
+		return _showImmediately.value === 'true';
+	});
+
+	const hideImmediately = computed(() => {
+		return _hideImmediately.value === 'true';
+	});
+
+	onMounted(() => {
+		if (!navElement.value) {
+			return;
+		}
+
+		bind();
+	});
+
+	function bind() {
+		on('click', clickHandler);
+		on('nav-toggle:show', onNavShow);
+		on('nav-toggle:hide', onNavHide);
+		on('transitionstart', animStart, { target: navElement.value });
+		on('transitionend', animEnd, { target: navElement.value });
 	}
 
-	bind() {
-		this.$on('nav-toggle:show', this.onNavShow);
-		this.$on('nav-toggle:hide', this.onNavHide);
-		this.$on('transitionstart', this.animStart, { target: this.nav });
-		this.$on('transitionend', this.animEnd, { target: this.nav });
-	}
-
-	@bind('click')
-	onClick(e: Event) {
+	function clickHandler(e: Event) {
 		e.preventDefault();
 		e.stopPropagation();
 
-		if (this.isOpen) {
-			this.hide(this.hideImmediately);
+		if (isOpen.value) {
+			hide(hideImmediately.value);
 		} else {
-			this.show(this.showImmediately);
+			show(showImmediately.value);
 		}
 	}
 
-	onNavShow(e: toggleEvent) {
-		this.show(e.detail);
+	function onNavShow(e: toggleEvent) {
+		show(e.detail);
 	}
 
-	onNavHide(e: toggleEvent) {
-		this.hide(e.detail);
+	function onNavHide(e: toggleEvent) {
+		hide(e.detail);
 	}
 
-	animStart(e: Event) {
-		if (e.target !== this.nav) {
+	function animStart(e: Event) {
+		if (e.target !== navElement.value) {
 			return;
 		}
 
-		if (this.animStarted) {
+		if (animStarted.value) {
 			return;
 		}
 
-		this.animStarted = true;
+		animStarted.value = true;
 
-		if (this.isOpen) {
-			this.html.classList.add(`${this.navName}-anim`);
+		if (isOpen.value) {
+			html.classList.add(`${navName.value}-anim`);
 		} else {
-			this.html.classList.add(`${this.navName}-hide-anim`);
+			html.classList.add(`${navName.value}-hide-anim`);
 		}
 	}
 
-	animEnd(e: Event) {
-		if (e.target !== this.nav) {
+	function animEnd(e: Event) {
+		if (e.target !== navElement.value) {
 			return;
 		}
 
-		if (!this.animStarted) {
+		if (!animStarted.value) {
 			return;
 		}
 
-		this.animStarted = false;
+		animStarted.value = false;
 
-		if (this.isOpen) {
-			this.html.classList.remove(`${this.navName}-anim`);
+		if (isOpen.value) {
+			html.classList.remove(`${navName.value}-anim`);
 		} else {
-			this.html.classList.remove(`${this.navName}-hide-anim`);
+			html.classList.remove(`${navName.value}-hide-anim`);
 		}
 	}
 
-	show(immediately = false) {
-		this.isOpen = true;
+	function show(immediately = false) {
+		isOpen.value = true;
 
 		if (immediately) {
-			this.html.classList.add(`${this.navName}-show-immediately`);
+			html.classList.add(`${navName.value}-show-immediately`);
 
 			requestAnimationFrame(() => {
-				this.html.classList.remove(`${this.navName}-show-immediately`);
+				html.classList.remove(`${navName.value}-show-immediately`);
 			});
 		}
 
-		this.html.classList.add(`${this.navName}-visible`);
-		this.$element.setAttribute('aria-expanded', 'true');
+		html.classList.add(`${navName.value}-visible`);
+		element.setAttribute('aria-expanded', 'true');
 
-		this.$emit('nav-toggle:visible', this.$element);
+		emit('nav-toggle:visible', element);
 		emitEvent(window as any, 'nav-toggle:visible', {
-			element: this.$element,
-			navName: this.navName,
+			element: element,
+			navName: navName.value,
 		});
 	}
 
-	hide(immediately = false) {
-		this.isOpen = false;
+	function hide(immediately = false) {
+		isOpen.value = false;
 
 		if (immediately) {
-			this.html.classList.add(`${this.navName}-hide-immediately`);
+			html.classList.add(`${navName.value}-hide-immediately`);
 
 			requestAnimationFrame(() => {
-				this.html.classList.remove(`${this.navName}-hide-immediately`);
+				html.classList.remove(`${navName.value}-hide-immediately`);
 			});
 		}
 
-		this.html.classList.remove(`${this.navName}-visible`);
-		this.$element.setAttribute('aria-expanded', 'false');
+		html.classList.remove(`${navName.value}-visible`);
+		element.setAttribute('aria-expanded', 'false');
 
-		this.$emit('nav-toggle:hidden', this.$element);
+		emit('nav-toggle:hidden', element);
 		emitEvent(window as any, 'nav-toggle:hidden', {
-			element: this.$element,
-			navName: this.navName,
+			element: element,
+			navName: navName.value,
 		});
 	}
-}
+
+	return {
+		show,
+		hide,
+		isOpen,
+		animStarted,
+		navElement,
+		navName,
+		showImmediately,
+		hideImmediately,
+	};
+});

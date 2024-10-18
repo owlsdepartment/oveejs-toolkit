@@ -34,3 +34,15 @@ See [Components registration](/docs/registration.md#components)
 	</div>
 </base-slider>
 ```
+
+## Options
+
+The `BaseSlider` component accepts [options](https://swiperjs.com/swiper-api#parameters) that are passed to the Swiper instance. Here are some of the default options:
+
+- `effect: string`: The transition effect. Default is 'slide'.
+- `speed: number`: The transition speed in milliseconds. Default is 600.
+- `on: object` Event handlers for Swiper events. By default, it includes:
+ - `transitionEnd`: Emits `base-slider:slide-change` event.
+ - `sliderFirstMove`: Emits `base-slider:slide-drag` event.
+ 
+You can override these options by passing them to the component.

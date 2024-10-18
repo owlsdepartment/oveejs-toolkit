@@ -26,7 +26,10 @@ HTML Markup:
 To specify google maps API key for all components, you can do this when registering component.
 
 ```ts
-app.registerComponent(GoogleMap, { gmapsKey: 'MY_KEY' });
+import { GoogleMap } from '@ovee.js/toolkit-integrations/google-map';
+
+createApp()
+    .component(GoogleMap, { gmapsKey: 'MY_KEY' })
 ```
 
 You can also do this for specific component.
@@ -42,6 +45,8 @@ You can also do this for specific component.
 You can also change other map configs, like this.
 
 ```ts
+import { GoogleMap } from '@ovee.js/toolkit-integrations/google-map'
+
 const MAP_STYLES = [
 	{
 		featureType: 'all',
@@ -57,10 +62,52 @@ const MAP_STYLES = [
 	}
 ];
 
-app.registerComponent(GoogleMap, { styles: MAP_STYLES });
+createApp()
+    .component(GoogleMap, { 
+		styles: MAP_STYLES, 
+		zoom: 8,
+		onMapInitialized: (map, markerLibrary) => {
+       		console.log('Map initialized', map, markerLibrary);
+    	} 
+	})
 ```
 
 All component options can be found [here](#options).
+
+### Composable
+
+```ts
+import { GoogleMap } from '@ovee.js/toolkit-integrations/google-map'
+import { watch } from 'ovee.js';
+
+export const MyComponent = defineComponent(() => {
+	const marker = shallowRef();
+	const { markerLibrary, map } = useComponent(GoogleMap);
+	
+
+	watch(markerLibrary, (markerLib) => {
+		if(!markerLib || marker.value) {
+			return;
+		}
+
+		marker.value = new markerLib.AdvancedMarkerElement({
+			map: map.value,
+			position: { lat: -25.344, lng: 131.031 },
+			title: 'Title',
+		});
+	})
+})
+```
+
+#### Returns
+
+- `loader` - The map loader instance.
+- `mapsLibrary` - The Google Maps library instance.
+- `markerLibrary` - The Google Maps marker library instance.
+- `map` - The Google Map instance.
+- `lat` - The latitude value.
+- `lng` - The longitude value.
+- `isMapLoaded` - Boolean indicating if the map is loaded.
 
 ## API
 
@@ -77,36 +124,7 @@ All of this params can be set via default component options during registration
 
 ### Options
 
-All options are the same as official [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) with addition of `gmapsKey`, where you can pass API key for google maps.
+All options are the same as official [MapOptions](https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions) with the following additional properties:
 
-```ts
-interface GoogleMapOptions extends google.maps.MapOptions {
-	gmapsKey?: string;
-}
-```
-
-### Fields and Methods
-
-When extending `GoogleMaps`, you can specify your options overriding `get options` getter
-
-```ts
-class MyMap extends GoogleMaps {
-	get options() {
-		return {
-			...super.options,
-
-			zoomControl: false,
-		}
-	}
-}
-```
-
-To add custom behaviour after map is initialized, like adding markers, you can override method `onMapInitialized`, that adds center marker by default.
-
-```ts
-class MyMap extends GoogleMaps {
-	onMapInitialized() {
-		// add markers
-	}
-}
-```
+- `gmapsKey?: string` - Google Maps API key.
+- `onMapInitialized?: (map?: google.maps.Map | null, markerLibrary?: google.maps.MarkerLibrary) => void` - Callback function called when the map is initialized.

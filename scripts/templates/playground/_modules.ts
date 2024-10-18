@@ -1,7 +1,8 @@
 // import modules to test
 // import {} from '@ovee.js/toolkit';
-import { ClassConstructor, Module } from 'ovee.js';
+import { AnyModule, ModuleOptions } from 'ovee.js';
 
-const modules: ClassConstructor<Module>[] = [];
+const modules: Record<string, AnyModule | [AnyModule] | [AnyModule, ModuleOptions | undefined]> =
+	{};
 
 export default modules;

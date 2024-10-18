@@ -1,79 +1,89 @@
-import { LazyLoad, LazyLoadOptions } from '@ovee.js/toolkit-integrations/lazy-load';
-import { register } from 'ovee.js';
+import { useInViewport } from '@ovee.js/toolkit/composables';
+import { useLazyLoad } from '@ovee.js/toolkit-integrations/lazy-load';
+import { defineComponent, ref } from 'ovee.js';
+import { ILazyLoadOptions } from 'vanilla-lazyload';
 
-@register('video-autoplay')
-export class VideoAutoplay extends LazyLoad {
-	playPromise: Promise<void> = Promise.resolve();
-	loadPromise: Promise<void>;
-	loadPromiseResolve: CallableFunction;
+interface VideoAutoplayOptions extends ILazyLoadOptions {
+	shouldRemoveInViewportClass?: boolean;
+	onPlay?: (element: HTMLVideoElement) => void;
+	onPause?: (element: HTMLVideoElement) => void;
+}
 
-	init() {
-		this.isLoadingInitialized = this.videoElement.dataset.src === undefined;
+export const VideoAutoplay = defineComponent<HTMLVideoElement, VideoAutoplayOptions>(
+	(element, { options }) => {
+		const isPlaying = ref(false);
 
-		this.loadPromise = new Promise(resolve => {
-			if (this.isLoadingInitialized) {
-				this.$element.classList.add(this.options?.class_loaded ?? 'loaded');
-
-				resolve();
+		let playPromise: Promise<void> = Promise.resolve();
+		let loadPromiseResolve: CallableFunction;
+		const loadedClass = options?.class_loaded ?? 'loaded';
+		const hasLazyLoad = element.dataset.src !== undefined;
+		const loadPromise = new Promise<void>(resolve => {
+			if (hasLazyLoad) {
+				loadPromiseResolve = resolve;
 			} else {
-				this.loadPromiseResolve = resolve;
+				element.classList.add(loadedClass);
+				resolve();
 			}
 		});
 
-		super.init();
-	}
-
-	get observerOptions(): IntersectionObserverInit {
-		return {
+		useLazyLoad({
+			unobserve_entered: true,
+			...(options ?? {}),
 			threshold: 0,
-		};
-	}
-
-	get options(): LazyLoadOptions {
-		return {
-			...super.options,
-			callback_loaded: () => {
-				this.loadPromiseResolve?.();
+			callback_loaded: (el, instance) => {
+				loadPromiseResolve?.();
+				options?.callback_loaded?.(el, instance);
 			},
+		});
+
+		useInViewport(
+			entry => {
+				if (entry.isIntersecting) {
+					play();
+				} else {
+					pause();
+				}
+			},
+			{
+				threshold: 0,
+				once: false,
+				shouldRemoveClass: options?.shouldRemoveInViewportClass ?? false,
+			}
+		);
+
+		function isVideoLoaded() {
+			return element.classList.contains(loadedClass) || element.dataset.llStatus === 'loaded';
+		}
+
+		async function play() {
+			await loadPromise;
+
+			isPlaying.value = true;
+			playPromise = element.play();
+			options?.onPlay?.(element);
+		}
+
+		async function pause() {
+			if (!isVideoLoaded()) {
+				return;
+			}
+
+			if (!playPromise) {
+				playPromise = Promise.resolve();
+			}
+
+			await playPromise;
+
+			isPlaying.value = false;
+
+			element.pause();
+			options?.onPause?.(element);
+		}
+
+		return {
+			play,
+			pause,
+			isPlaying,
 		};
 	}
-
-	get videoElement() {
-		return this.$element as HTMLVideoElement;
-	}
-
-	get isVideoLoaded() {
-		const { videoElement } = this;
-
-		return videoElement.classList.contains('loaded') || videoElement.dataset.llStatus === 'loaded';
-	}
-
-	onIntersection(entry: IntersectionObserverEntry) {
-		super.onIntersection(entry);
-
-		if (entry.isIntersecting) {
-			this.play();
-		} else {
-			this.pause();
-		}
-	}
-
-	async play() {
-		await this.loadPromise;
-
-		this.playPromise = this.videoElement.play();
-	}
-
-	async pause() {
-		if (!this.isVideoLoaded) {
-			return;
-		}
-
-		if (!this.playPromise) {
-			this.playPromise = Promise.resolve();
-		}
-
-		await this.playPromise;
-		this.videoElement?.pause();
-	}
-}
+);

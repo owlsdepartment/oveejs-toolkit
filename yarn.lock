@@ -253,12 +253,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@googlemaps/js-api-loader@npm:^1.14.3":
-  version: 1.14.3
-  resolution: "@googlemaps/js-api-loader@npm:1.14.3"
-  dependencies:
-    fast-deep-equal: ^3.1.3
-  checksum: 55ec4519c3bd99a489fc55715bfe5c12a617eff75101c16f237d2c8d56852f607bb74d50ca2204fe371d6b793741db57e4c487658f0d284a5d3bd2ecbcc2a15d
+"@googlemaps/js-api-loader@npm:^1.16.8":
+  version: 1.16.8
+  resolution: "@googlemaps/js-api-loader@npm:1.16.8"
+  checksum: 2f5e2ced6b83fb72f32bcfd32c85558dba967580025a53d593e5a8bb15f63eb866e4f55b86aa7f5810e1616554c02100081a9a217d16d25766e57a128b39e825
   languageName: node
   linkType: hard
 
@@ -355,26 +353,26 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ovee.js/toolkit-integrations@workspace:packages/integrations"
   dependencies:
-    "@googlemaps/js-api-loader": ^1.14.3
+    "@googlemaps/js-api-loader": ^1.16.8
+    "@ovee.js/toolkit": "workspace:^"
     "@types/google.maps": ^3.49.1
-    "@types/lodash": ^4.14.178
+    "@types/lodash": ^4.17.7
     "@types/node": ^17.0.12
-    gsap: ^3.9.1
-    lit-html: ^2.3.1
+    gsap: ^3.12.5
     lodash: ^4.17.21
-    lottie-web: ^5.8.1
-    ovee.js: ~2.2.2
-    swiper: ^8.0.7
-    typescript: ^4.5.5
-    vanilla-lazyload: ^17.5.1
+    lottie-web: ^5.12.2
+    ovee.js: ^3.0.0-alpha.6
+    swiper: ^11.1.12
+    typescript: ^5.6.2
+    vanilla-lazyload: ^19.1.3
   peerDependencies:
-    "@googlemaps/js-api-loader": ^1.14.3
-    "@ovee.js/toolkit": ^0.0.1
+    "@googlemaps/js-api-loader": ^1.16.8
+    "@ovee.js/toolkit": "workspace:^"
     lodash: ^4.17.21
-    lottie-web: ^5.8.1
-    ovee.js: ~2.2.2
-    swiper: ^8.0.7
-    vanilla-lazyload: ^17.5.1
+    lottie-web: ^5.12.2
+    ovee.js: ^3.0.0-alpha.6
+    swiper: ^11.1.12
+    vanilla-lazyload: ^19.1.3
   peerDependenciesMeta:
     "@googlemaps/js-api-loader":
       optional: true
@@ -391,21 +389,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ovee.js/toolkit@workspace:packages/core":
+"@ovee.js/toolkit@workspace:^, @ovee.js/toolkit@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@ovee.js/toolkit@workspace:packages/core"
   dependencies:
-    "@types/lodash": ^4.14.178
+    "@types/lodash": ^4.17.7
     "@types/node": ^17.0.12
-    gsap: ^3.9.1
-    lit-html: ^2.3.1
+    gsap: ^3.12.5
     lodash: ^4.17.21
-    ovee.js: ~2.2.2
-    typescript: ^4.5.5
+    ovee.js: ^3.0.0-alpha.6
+    typescript: ^5.6.2
   peerDependencies:
-    gsap: ^3.9.1
+    gsap: ^3.12.5
     lodash: ^4.17.21
-    ovee.js: ~2.2.2
+    ovee.js: ^3.0.0-alpha.6
   languageName: unknown
   linkType: soft
 
@@ -533,9 +530,9 @@ __metadata:
   linkType: hard
 
 "@types/google.maps@npm:^3.49.1":
-  version: 3.49.1
-  resolution: "@types/google.maps@npm:3.49.1"
-  checksum: c504398f96a407066fb25825ac9486f5f5bd4a44faab78a0cc792541edc7f2eeef62dd6608a4a9cf856fe2cd3815b29e0ec1183293419d19230055fa247e9dd2
+  version: 3.58.0
+  resolution: "@types/google.maps@npm:3.58.0"
+  checksum: 3e97ddd9c4bd4c2cf28fd46331a4a3a012ac2d40f9df22f3bd943616ef5eaddff71ddd5df25ae31129b6c1d9cd33dd0ae89edccc3b8396b1f39f2911c57cf81f
   languageName: node
   linkType: hard
 
@@ -546,10 +543,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.14.178":
-  version: 4.14.182
-  resolution: "@types/lodash@npm:4.14.182"
-  checksum: 7dd137aa9dbabd632408bd37009d984655164fa1ecc3f2b6eb94afe35bf0a5852cbab6183148d883e9c73a958b7fec9a9bcf7c8e45d41195add6a18c34958209
+"@types/lodash@npm:^4.17.7":
+  version: 4.17.7
+  resolution: "@types/lodash@npm:4.17.7"
+  checksum: 09e58a119cd8a70acfb33f8623dc2fc54f74cdce3b3429b879fc2daac4807fe376190a04b9e024dd300f9a3ee1876d6623979cefe619f70654ca0fe0c47679a7
   languageName: node
   linkType: hard
 
@@ -587,13 +584,6 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: dc6a6df507656004e242dcb02c784479deca516d5f4b58a1707e708022b269ae147e1da0521f3e8ad0d63638869d87e0adc023f0bd5454aa6f72ac66c7525cf5
-  languageName: node
-  linkType: hard
-
-"@types/trusted-types@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@types/trusted-types@npm:2.0.2"
-  checksum: 3371eef5f1c50e1c3c07a127c1207b262ba65b83dd167a1c460fc1b135a3fb0c97b9f508efebd383f239cc5dd5b7169093686a692a501fde9c3f7208657d9b0d
   languageName: node
   linkType: hard
 
@@ -714,29 +704,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/reactivity@npm:3.2.36, @vue/reactivity@npm:^3.2.6":
-  version: 3.2.36
-  resolution: "@vue/reactivity@npm:3.2.36"
+"@vue/reactivity@npm:3.5.2, @vue/reactivity@npm:^3.4.15":
+  version: 3.5.2
+  resolution: "@vue/reactivity@npm:3.5.2"
   dependencies:
-    "@vue/shared": 3.2.36
-  checksum: 5246060d2083b8272b8c91d88bd07837d2bd1ff380b3902e9b0de4c9e9e280e0b77eae7830972e45de0bd73918885faee649dbfe6e66391b7ef5a59c4abb5f84
+    "@vue/shared": 3.5.2
+  checksum: 38e055110e05f4e35f93d900646b30d723cea27a63bc5671da8d22d6a4bcca3e574e41ac6fd3d96521b4ab3ccfb886013f501cca4fe3043d6e152228cac16d54
   languageName: node
   linkType: hard
 
-"@vue/runtime-core@npm:^3.2.6":
-  version: 3.2.36
-  resolution: "@vue/runtime-core@npm:3.2.36"
+"@vue/runtime-core@npm:^3.4.15":
+  version: 3.5.2
+  resolution: "@vue/runtime-core@npm:3.5.2"
   dependencies:
-    "@vue/reactivity": 3.2.36
-    "@vue/shared": 3.2.36
-  checksum: c565d77400081a2d4eba400d0f9ec885a2867f92fea96e47fa80c42efe28cfbd8b434fe30ae30997b3f6bb6b3a718ed5b797227f36e925d1acdb660aa8ba29e9
+    "@vue/reactivity": 3.5.2
+    "@vue/shared": 3.5.2
+  checksum: f7740d5885580f8504949c3ed8b944cc2f4926ae82a845e1e14c3b010cbc721f9e51102e832d6a9e7d1633f0efa47f73e7d65f6766523475c44101881ff24007
   languageName: node
   linkType: hard
 
-"@vue/shared@npm:3.2.36":
-  version: 3.2.36
-  resolution: "@vue/shared@npm:3.2.36"
-  checksum: ffce62a32af0371bb9efd98a918183517a1b9267012d6a064a591acd2a2b128062c5fe97c0f6a0dd0aefed3695f01b593cd9ee08cb247efb6a167b738af5bf65
+"@vue/shared@npm:3.5.2":
+  version: 3.5.2
+  resolution: "@vue/shared@npm:3.5.2"
+  checksum: 19e2087b1fd89be5dd0db4704df68bbe752fb28a376e91192956c2e17df66488e1ab5b778c4ab3b4fc171a2131d75fc8ac6fad26cca1ccbc37a83787adf7196e
   languageName: node
   linkType: hard
 
@@ -1394,15 +1384,6 @@ __metadata:
     domhandler: ^4.2.0
     entities: ^2.0.0
   checksum: fbb0b01f87a8a2d18e6e5a388ad0f7ec4a5c05c06d219377da1abc7bb0f674d804f4a8a94e3f71ff15f6cb7dcfc75704a54b261db672b9b3ab03da6b758b0b22
-  languageName: node
-  linkType: hard
-
-"dom7@npm:^4.0.4":
-  version: 4.0.4
-  resolution: "dom7@npm:4.0.4"
-  dependencies:
-    ssr-window: ^4.0.0
-  checksum: b38604f74e915b4d05b6634f9ff239a708c468180f498a28ff67f2a61233697d9bd7192703b788a24541c3591e7f1a6e83a2cbf70bc871a85e033f82e19abc31
   languageName: node
   linkType: hard
 
@@ -2334,10 +2315,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gsap@npm:^3.9.1":
-  version: 3.10.4
-  resolution: "gsap@npm:3.10.4"
-  checksum: 0c965c6e46a02198ba1662e338eb48123d65b49f41263223cfcd326abf734a5fbdeddcaf877ded610735408cd1e8e599da79ab954823daf7fe2f6b53d3807009
+"gsap@npm:^3.12.5":
+  version: 3.12.5
+  resolution: "gsap@npm:3.12.5"
+  checksum: 60b99dc4482992ba86013963ee9a97a5ec62d480495dd85764788913245aa08cfd202c1df4bbc7592e43d5faa885127bec75f77266f2964fe3d3b559ab63f852
   languageName: node
   linkType: hard
 
@@ -2798,15 +2779,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lit-html@npm:^2.3.1":
-  version: 2.3.1
-  resolution: "lit-html@npm:2.3.1"
-  dependencies:
-    "@types/trusted-types": ^2.0.2
-  checksum: 6177f0854001b7e464a994adb6339a5ede4977c189587e49186b8bb10e49feaa57fe08ad14d13c06c2bce2a80671e1de3f08d8f2bdb25b2f265b21e2dd091c5b
-  languageName: node
-  linkType: hard
-
 "locate-path@npm:^5.0.0":
   version: 5.0.0
   resolution: "locate-path@npm:5.0.0"
@@ -2846,10 +2818,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lottie-web@npm:^5.8.1":
-  version: 5.9.4
-  resolution: "lottie-web@npm:5.9.4"
-  checksum: b7da159779791c92dc45bd7861bf37babef43a7139a6b12d0c1596773fbc338562e4547df766a42ce73516fe82ec790e8ddcebe7d4c9d7fa2ee4d42e0072904c
+"lottie-web@npm:^5.12.2":
+  version: 5.12.2
+  resolution: "lottie-web@npm:5.12.2"
+  checksum: af5bc3bc405fd760de8b17a36158d5a8c3e8c586c711d0c63681ddf056b65bc6b54ea36b1fcad782fb02dbe12e696a40e0ba72daf41b8f10ab5b5d1113793636
   languageName: node
   linkType: hard
 
@@ -3267,16 +3239,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ovee.js@npm:~2.2.2":
-  version: 2.2.2
-  resolution: "ovee.js@npm:2.2.2"
+"ovee.js@npm:^3.0.0-alpha.6":
+  version: 3.0.0-alpha.6
+  resolution: "ovee.js@npm:3.0.0-alpha.6"
   dependencies:
-    "@vue/reactivity": ^3.2.6
-    "@vue/runtime-core": ^3.2.6
+    "@vue/reactivity": ^3.4.15
+    "@vue/runtime-core": ^3.4.15
     reflect-metadata: ^0.1.13
-  peerDependencies:
-    lit-html: ^2.3.1
-  checksum: 73c4d4564c37a5a574141c8670904cdf5196d66d681f069d28c2e676f46534d79593455cff4034ef533474b895176a9dd7d831acacbef76947e964241ef6591f
+  checksum: f9631ff921d45b72dab899479b027dd80f2a6b8f33db8ded9c97bacb278de833efbaad3e278b84543f10b6531e5753e68e54e9fd94a26abc96f0e91b96c5991b
   languageName: node
   linkType: hard
 
@@ -3809,7 +3779,7 @@ __metadata:
     "@rollup/plugin-node-resolve": ^13.3.0
     "@rollup/plugin-typescript": ^8.3.2
     "@types/eslint": ^8.4.1
-    "@types/lodash": ^4.14.178
+    "@types/lodash": ^4.17.7
     "@types/node": ^17.0.12
     "@typescript-eslint/eslint-plugin": ^5.10.1
     "@typescript-eslint/parser": ^5.10.1
@@ -3835,7 +3805,7 @@ __metadata:
     stylelint-config-recommended-vue: ^1.1.0
     stylelint-config-standard-scss: ^3.0.0
     stylelint-order: ^5.0.0
-    typescript: ^4.5.5
+    typescript: ^5.6.2
     vite: ^2.7.13
   languageName: unknown
   linkType: soft
@@ -4052,13 +4022,6 @@ __metadata:
   dependencies:
     readable-stream: ^3.0.0
   checksum: 8127ddbedd0faf31f232c0e9192fede469913aa8982aa380752e0463b2e31c2359ef6962eb2d24c125bac59eeec76873678d723b1c7ff696216a1cd071e3994a
-  languageName: node
-  linkType: hard
-
-"ssr-window@npm:^4.0.0, ssr-window@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "ssr-window@npm:4.0.2"
-  checksum: df182600927f4f3225224cf8c02338ea637c9750519505bbfb9a9236741a2a7ec088386fb948bca7b447b8303d9109e7dc7672e3de041c79ac2a0e03665af7d2
   languageName: node
   linkType: hard
 
@@ -4327,13 +4290,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^8.0.7":
-  version: 8.1.6
-  resolution: "swiper@npm:8.1.6"
-  dependencies:
-    dom7: ^4.0.4
-    ssr-window: ^4.0.2
-  checksum: c9d0a3f72cb434b5366a0dd48da545590abc5f198e8b86ce1d892be0a67d09f270060b37e08f4e012a29cf32424b4fbd1eda9fe40ec1a152151558a7a072585c
+"swiper@npm:^11.1.12":
+  version: 11.1.12
+  resolution: "swiper@npm:11.1.12"
+  checksum: c202d7952093e69d59eef0df46cae280f590f7090b20aa9a0babf2b9f705a25a291e46859c169d2c088f98d44b34b72cd33d6a2aa61eb1449e6f9e91052bbe46
   languageName: node
   linkType: hard
 
@@ -4510,7 +4470,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.4.3, typescript@npm:^4.5.5":
+"typescript@npm:^4.4.3":
   version: 4.7.2
   resolution: "typescript@npm:4.7.2"
   bin:
@@ -4520,13 +4480,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
+"typescript@npm:^5.6.2":
+  version: 5.6.3
+  resolution: "typescript@npm:5.6.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: ba302f8822777ebefb28b554105f3e074466b671e7444ec6b75dadc008a62f46f373d9e57ceced1c433756d06c8b7dc569a7eefdf3a9573122a49205ff99021a
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>":
   version: 4.7.2
   resolution: "typescript@patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=493e53"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 09d93fc0983d38eadd9b0427f790b49b4437f45002a87d447be3fbe53120880e87a91dd03e1d900498f99205d6e0b7c9784fe41fca11d56f4bbce371f74bb160
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^5.6.2#~builtin<compat/typescript>":
+  version: 5.6.3
+  resolution: "typescript@patch:typescript@npm%3A5.6.3#~builtin<compat/typescript>::version=5.6.3&hash=493e53"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: ade87bce2363ee963eed0e4ca8a312ea02c81873ebd53609bc3f6dc0a57f6e61ad7e3fb8cbb7f7ab8b5081cbee801b023f7c4823ee70b1c447eae050e6c7622b
   languageName: node
   linkType: hard
 
@@ -4595,10 +4575,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vanilla-lazyload@npm:^17.5.1":
-  version: 17.8.2
-  resolution: "vanilla-lazyload@npm:17.8.2"
-  checksum: 4237c2d99efdb2ff34b0ba5d56c927eb4ae50e297ed28554f4599d0f1388e9f0b688654fada1bb74391b47aab0f957e964f00e971c1bbdd94bc0d0acd586feed
+"vanilla-lazyload@npm:^19.1.3":
+  version: 19.1.3
+  resolution: "vanilla-lazyload@npm:19.1.3"
+  checksum: 561dc24570b4367e92bb0fabdd48acc53035a97e62affe7e396a6c8d24a7af721000629a45570c5eaf478a37eda8855c5588d9f3ed8eaa27ed26bd329bdb8298
   languageName: node
   linkType: hard
 

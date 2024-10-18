@@ -2,14 +2,7 @@
 
 ## Registration and configuration
 
-```ts
-import { InViewport } from '@ovee.js/toolkit';
-
-export default [
-    // ... other components ...
-    InViewport
-];
-```
+See [Components instalation](/docs/components_instalation.md)
 
 ## Usage example
 

@@ -1,55 +1,61 @@
 import gsap from 'gsap';
-import { SplitText as ST } from 'gsap/SplitText';
-import { bind, Component, dataParam, register } from 'ovee.js';
+import { SplitText as SplitTextPlugin } from 'gsap/SplitText';
+import { debounce, omit } from 'lodash';
+import { defineComponent, onUnmounted, shallowRef, useDataAttr } from 'ovee.js';
 
-gsap.registerPlugin(ST);
+gsap.registerPlugin(SplitTextPlugin);
 
-@register('split-text')
-export class SplitText extends Component {
-	@dataParam()
-	splitText: string;
-
-	@dataParam()
-	linesClass: string;
-
-	@dataParam()
-	wordsClass: string;
-
-	@dataParam()
-	charsClass: string;
-
-	text: ST;
-	type = '';
-	allowedTypes = ['lines', 'words', 'chars'];
-	recievedTypes: string[];
-
-	init() {
-		if (!this.splitText) {
-			this.splitText = 'lines';
-		}
-
-		this.recievedTypes = this.splitText.split(/[, ]+/);
-		this.type = this.recievedTypes.filter(el => this.allowedTypes.includes(el)).join(' ');
-
-		if (!this.type) {
-			this.type = 'lines';
-		}
-
-		this.initSplitText();
-	}
-
-	initSplitText() {
-		this.text = new ST(this.$element, {
-			type: this.type,
-			linesClass: this.linesClass ? this.linesClass : '',
-			wordsClass: this.wordsClass ? this.wordsClass : '',
-			charsClass: this.charsClass ? this.charsClass : '',
-		});
-	}
-
-	@bind('resize', { target: window })
-	resizeHandler() {
-		this.text.revert();
-		this.initSplitText();
-	}
+interface SplitTextOptions extends SplitText.Vars {
+	windowResize?: boolean;
 }
+
+export const SplitText = defineComponent<HTMLElement, SplitTextOptions>(
+	(element, { on, off, options }) => {
+		const text = shallowRef<SplitTextPlugin | null>(null);
+
+		const splitTextType = useDataAttr('split-text-type');
+		const linesClass = useDataAttr('lines-class');
+		const wordsClass = useDataAttr('words-class');
+		const charsClass = useDataAttr('chars-class');
+
+		const resizeHandlerDebounced = debounce(resizeHandler, 100);
+
+		initSplitText();
+
+		if (options?.windowResize) {
+			on('resize', resizeHandlerDebounced, {
+				target: window,
+			});
+		}
+
+		onUnmounted(() => {
+			if (options?.windowResize) {
+				off('resize', resizeHandlerDebounced);
+			}
+		});
+
+		function initSplitText() {
+			text.value = new SplitTextPlugin(element, {
+				...omit(options ?? {}, 'windowResize'),
+				type: splitTextType.value ?? options?.type,
+				linesClass: linesClass.value ?? options?.linesClass,
+				wordsClass: wordsClass.value ?? options?.wordsClass,
+				charsClass: charsClass.value ?? options?.charsClass,
+			});
+		}
+
+		function resizeHandler() {
+			cleanup();
+			initSplitText();
+		}
+
+		function cleanup() {
+			text.value?.revert();
+			text.value = null;
+		}
+
+		return {
+			instance: text,
+		};
+	}
+);

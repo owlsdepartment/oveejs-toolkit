@@ -1,18 +1,25 @@
+import { MaybeElement } from '@ovee.js/toolkit/shared/types';
+import { computed, isDefined, MaybeRefOrGetter, toValue, watch } from 'ovee.js';
+
 export type IntersectionCallback = (entry: IntersectionObserverEntry) => void;
 export type ObserversMap = Map<string, ObserverEntry>;
 export type Unobserve = () => void;
 
 const rootsMap = new Map<Element | Document | null | undefined, ObserversMap>();
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {};
+
 /**
  * Allows you to create a new observer or to connect to the existing one.
  * Returns method to unobserve the element.
  */
-export function observeIntersections(
-	element: Element,
+export function useIntersectionObserver(
+	element: MaybeRefOrGetter<MaybeElement | MaybeElement[]>,
 	callback: IntersectionCallback,
 	options: IntersectionObserverInit = {}
 ): Unobserve {
+	let cleanup = noop;
 	const { root = null, rootMargin = '0px 0px 0px 0px', threshold = 0 } = options;
 
 	if (!rootsMap.has(root)) {
@@ -30,9 +37,43 @@ export function observeIntersections(
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const entry = map.get(key)!;
 
-	entry.observe(element, callback);
+	const targets = computed(() => {
+		const _target = toValue(element);
 
-	return () => entry.unobserve(element);
+		if (Array.isArray(_target)) {
+			return _target;
+		}
+
+		return (Array.isArray(_target) ? _target : [_target]).filter(isDefined);
+	});
+
+	const stopWatch = watch(
+		targets,
+		targets => {
+			cleanup();
+
+			targets.forEach(el => {
+				entry.observe(el, callback);
+			});
+
+			cleanup = () => {
+				targets.forEach(el => {
+					entry.unobserve(el);
+				});
+
+				cleanup = noop;
+			};
+		},
+		{
+			immediate: true,
+			flush: 'post',
+		}
+	);
+
+	return () => {
+		cleanup();
+		stopWatch();
+	};
 }
 
 function getObserverKey(rootMargin: string, threshold: number | number[]): string {

@@ -1,16 +1,15 @@
-import { Component, emitEvent, Logger, register } from 'ovee.js';
+import { defaultsDeep } from 'lodash';
 import {
-	Autoplay,
-	EffectFade,
-	Keyboard,
-	Lazy,
-	Navigation,
-	Pagination,
-	Swiper,
-	SwiperOptions,
-	Virtual,
-} from 'swiper';
-import { LazyOptions, NavigationOptions, PaginationOptions, SwiperEvents } from 'swiper/types';
+	defineComponent,
+	Logger,
+	onUnmounted,
+	ref,
+	shallowRef,
+	useQuerySelectorAll,
+} from 'ovee.js';
+import Swiper from 'swiper';
+import { SwiperEvents } from 'swiper/types/swiper-events';
+import { SwiperOptions } from 'swiper/types/swiper-options';
 
 interface SliderElement extends HTMLElement {
 	swiperInstance?: Swiper;
@@ -18,155 +17,80 @@ interface SliderElement extends HTMLElement {
 
 const logger = new Logger('BaseSlider');
 
-@register('base-slider')
-export class BaseSlider extends Component<SliderElement> {
-	swiper: Swiper;
-	count: number;
-	curr: number;
-	swiperContainer: HTMLElement | null;
+export const BaseSlider = defineComponent<SliderElement, Partial<SwiperOptions>>(
+	(element, { options, emit }) => {
+		const swiperInstance = shallowRef<Swiper>();
+		const swiperOptions = ref<SwiperOptions>();
+		const swiperContainer = shallowRef(element.querySelector<HTMLElement>('.swiper-container'));
+		const swiperSlides = useQuerySelectorAll<HTMLElement>('.slider__slide');
 
-	init() {
-		this.count = this.$element.querySelectorAll('.slider__slide').length;
-		this.curr = 1;
-
-		if (this.count < 1) {
+		if (swiperSlides.value.length < 1) {
 			return logger.warn('No slider items were found.');
 		}
 
-		this.prepareDom();
-		this.createSlider();
-		this.bind();
-	}
+		prepareDom();
+		createSlider();
 
-	prepareDom() {
-		this.swiperContainer = this.$element.querySelector('.swiper-container');
+		onUnmounted(() => {
+			swiperInstance.value?.destroy();
+		});
 
-		if (!this.swiperContainer) {
-			const container = document.createElement('div');
-			container.className = 'swiper-container';
-			container.innerHTML = '<div class="swiper-wrapper"></div>';
+		function getSwiperOptions(): SwiperOptions {
+			const effect = 'slide';
+			const speed = 600;
 
-			this.$element.appendChild(container);
+			const on: Partial<SwiperEvents> = {
+				transitionEnd: () => {
+					emit('base-slider:slide-change');
+				},
+				sliderFirstMove: () => {
+					emit('base-slider:slide-drag');
+				},
+			};
 
-			// if ( !container ) return;
-
-			const slides = Array.from(this.$element.querySelectorAll('.slider__slide'));
-
-			(container.querySelector('.swiper-wrapper') as HTMLElement).append(...slides);
-			container.querySelectorAll('.slider__slide').forEach((slide: HTMLElement, index) => {
-				slide.classList.add('swiper-slide');
-				slide.dataset.slideNumber = `${index}`;
+			return defaultsDeep(options, {
+				effect,
+				speed,
+				on,
 			});
-
-			this.swiperContainer = container;
 		}
-	}
 
-	get swiperOptions(): SwiperOptions {
-		const keyboard = true;
-		const effect = 'slide';
-		const speed = 600;
-		const lazyload = !!(this.swiperContainer && this.swiperContainer.querySelector('.swiper-lazy'));
-		const lazy: LazyOptions | boolean = lazyload
-			? {
-					loadPrevNext: lazyload,
-					loadPrevNextAmount: 2,
-					checkInView: true,
-			  }
-			: false;
+		function prepareDom() {
+			if (!swiperContainer.value) {
+				const container = document.createElement('div');
+				container.className = 'swiper';
+				container.innerHTML = '<div class="swiper-wrapper"></div>';
 
-		const on: Partial<SwiperEvents> = {
-			lazyImageReady: (swiper, slideEl, imageEl) => {
-				imageEl.setAttribute('data-ll-status', 'loaded');
+				element.appendChild(container);
 
-				if (imageEl.parentElement) {
-					imageEl.parentElement.classList.add('media-loaded');
-				}
+				swiperSlides.value.forEach((slide, index) => {
+					slide.classList.add('swiper-slide');
+					slide.dataset.slideNumber = `${index}`;
+				});
 
-				const slideIndex = slideEl.dataset.swiperSlideIndex;
-				if (slideIndex) {
-					const { slides } = swiper;
-					const duplicatedIDs: number[] = [];
+				container.querySelector<HTMLElement>('.swiper-wrapper')?.append(...swiperSlides.value);
 
-					let i = 0;
-					slides.forEach((slide: HTMLElement) => {
-						if (slide.dataset.swiperSlideIndex === slideIndex) {
-							duplicatedIDs.push(i);
-						}
-						i++;
-					});
+				swiperContainer.value = container;
+			}
+		}
 
-					if (duplicatedIDs) {
-						duplicatedIDs.forEach(id => {
-							swiper.lazy.loadInSlide(id);
-						});
-					}
-				}
-			},
-			transitionEnd: () => {
-				emitEvent(window as any, 'slide-change');
-			},
-			sliderFirstMove: () => {
-				emitEvent(window as any, 'slide-drag');
-			},
-		};
+		function createSlider() {
+			if (!swiperContainer.value) {
+				logger.warn('No slider container was found.');
+				return;
+			}
 
-		const navigation: NavigationOptions | boolean = {
-			prevEl: this.$element.querySelector('.button--prev') as HTMLElement,
-			nextEl: this.$element.querySelector('.button--next') as HTMLElement,
-		};
+			swiperOptions.value = getSwiperOptions();
 
-		const pagination: PaginationOptions | boolean = {
-			el: this.$element.querySelector('.slider__pagination') as HTMLElement,
-			clickable: false,
-			type: 'fraction',
-			renderFraction(currentClass: any, totalClass: any) {
-				return `<span class="${currentClass}"></span><span> OF </span><span class="${totalClass}"></span>`;
-			},
-			modifierClass: 'slider__pagination--',
-			clickableClass: 'is-clickable',
-		};
+			swiperInstance.value = new Swiper(swiperContainer.value, swiperOptions.value);
+			element.swiperInstance = swiperInstance.value;
+
+			emit('base-slider:initialized', swiperInstance.value);
+		}
 
 		return {
-			keyboard,
-			effect,
-			speed,
-			preloadImages: !lazyload,
-			lazy,
-			navigation,
-			pagination,
-			on,
+			swiperInstance,
+			swiperOptions,
 		};
 	}
-
-	createSlider() {
-		Swiper.use([Keyboard, EffectFade, Lazy, Navigation, Pagination, Autoplay, Virtual]);
-
-		const options = this.swiperOptions;
-
-		if (this.swiperContainer) {
-			this.swiper = new Swiper(this.swiperContainer, options);
-		}
-
-		this.$element.swiperInstance = this.swiper;
-		this.$emit('sliderInitialized', this.swiper);
-	}
-
-	bind() {
-		this.$on(
-			'imageload',
-			() => {
-				if (this.swiper) {
-					this.swiper.update();
-				}
-			},
-			{ target: 'img' }
-		);
-	}
-
-	destroy() {
-		if (this.swiper) {
-			this.swiper.destroy();
-		}
-	}
-}
+);

@@ -44,16 +44,18 @@ Every tool has seperate `README` with specific guide on how to install it, use i
  - [InViewport](./components/utils/in-viewport/README.md)
 
 ### Modules
+
  - [CustomCursor](./modules/custom-cursor/README.md)
- - [Viewport](./modules/viewport/README.md)
+ - [ViewportUnits](./modules/viewport/README.md)
 
-### Mixins
+### Composables
 
- - [WithInViewport](./mixins/WithInViewport/README.md)
+ - [useInViewport](./composables/useInViewport/README.md) 
+ - [useIntersectionObserver](./composables/useIntersectionObserver/README.md) 
+  - [useMediaQuery](./composables/useMediaQuery/README.md) 
 
 ### Tools
 
- - [observeIntersections](./tools/observeIntersections/README.md)
  - [OveeStore](./tools/store/README.md)
 
 [<- Root](/README.md)

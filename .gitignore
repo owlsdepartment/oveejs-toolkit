@@ -35,6 +35,9 @@ typings/
 # TypeScript cache
 *.tsbuildinfo
 
+# Vite config temp
+vite.config.ts.timestamp-*.js
+
 # Optional npm cache directory
 .npm
 
@@ -47,6 +50,10 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
+# pnpm
+pnpm-debug.log*
+.pnpm-store/
+
 # dotenv environment variables file
 .env
 .env.test
@@ -57,6 +64,12 @@ typings/
 # Custom dists
 dist/
 packages/**/dist/
+
+# Local MCP cache (Ovee v3 clone + docs)
+.cache/
+
+scripts/mcp-ovee/node_modules/
+scripts/mcp-ovee/package-lock.json
 
 # Platform Specific
 .DS_Store

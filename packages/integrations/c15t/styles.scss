@@ -1,0 +1,46 @@
+$c15t_consent_z_index: 9000 !default;
+
+@layer ovee-toolkit {
+	.c15t-consent {
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: $c15t_consent_z_index;
+		visibility: hidden;
+		transition:
+			opacity 0.2s ease,
+			visibility 0.2s ease;
+		pointer-events: none;
+		opacity: 0;
+
+		&.is-visible {
+			visibility: visible;
+			pointer-events: auto;
+			opacity: 1;
+		}
+
+		[data-c15t-dialog][hidden] {
+			display: none !important;
+		}
+	}
+
+	.c15t-consent-edit {
+		position: fixed;
+		bottom: 1.2rem;
+		left: 1.2rem;
+		z-index: $c15t_consent_z_index;
+		visibility: hidden;
+		transition:
+			opacity 0.2s ease,
+			visibility 0.2s ease;
+		pointer-events: none;
+		opacity: 0;
+
+		&.is-visible {
+			visibility: visible;
+			pointer-events: auto;
+			opacity: 1;
+		}
+	}
+}

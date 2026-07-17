@@ -4,28 +4,705 @@
 	<meta charset="UTF-8" />
 	<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Ovee UI</title>
+	<title>Owls UI — demo</title>
+	<style>
+		.nav-fullscreen {
+			position: fixed;
+			inset: 0;
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+		}
+	</style>
 </head>
 
 <body id="app">
-	<main class="main">
-		<div class="main__content">
-			<h1 class="main__title">
-				Owls UI Playground
-			</h1>
-	
-			<h4 class="main__description">
-				This project uses <b>Ovee</b> with <a href="https://vitejs.dev" target="_blank">Vite</a> for quick and simple setup
-				<br>
-				<br>
-				For full Ovee documentation
-	
-				<a class="main__docs" href="https://owlsdepartment.github.io/ovee/v3" target="_blank">
-					click here
-				</a>
-			</h4>
+	<div class="dialog-root" aria-hidden="true"></div>
+
+	<header class="header demo-header" data-collapsing-header>
+		<div class="header__container demo-header__inner">
+			<a class="demo-header__brand" href="#demo-overview">Owls UI</a>
+
+			<nav class="site-nav" aria-label="Primary">
+				<ul class="site-nav__list">
+					<li class="site-nav__item"><a class="site-nav__link" href="#demo-overview">Overview</a></li>
+					<li class="site-nav__item"><a class="site-nav__link" href="#demo-core">Components</a></li>
+					<li class="site-nav__item"><a class="site-nav__link" href="#demo-integrations">Integrations</a></li>
+					<li class="site-nav__item"><a class="site-nav__link" href="#demo-motion">Motion</a></li>
+					<li class="site-nav__item"><a class="site-nav__link" href="#demo-more">Modules &amp; tools</a></li>
+				</ul>
+			</nav>
+
+			<button
+				id="demo-fullscreen-nav-toggle"
+				type="button"
+				class="demo-burger"
+				aria-label="Open menu"
+				aria-controls="demo-fullscreen-nav"
+				aria-expanded="false"
+				data-nav-toggle="overlay"
+				data-nav="#demo-fullscreen-nav"
+			>
+				<span class="demo-burger__lines" aria-hidden="true">
+					<span class="demo-burger__bar"></span>
+					<span class="demo-burger__bar"></span>
+					<span class="demo-burger__bar"></span>
+				</span>
+			</button>
 		</div>
+	</header>
+
+	<main class="demo-main">
+		<section id="demo-overview" class="demo-section">
+			<span class="demo-tag">Overview</span>
+			<h1 class="demo-section__title">Owls UI demo</h1>
+			<p class="demo-section__lead">
+				Living catalog of <strong>@ovee.js/toolkit</strong>, integrations, modules, and tools wired for Ovee v3.
+				Each widget below is isolated in a <strong>demo block</strong> with optional <strong>code</strong> and, where it matters, <strong>variants</strong>.
+			</p>
+			<p class="demo-section__lead">
+				For Ovee docs see
+				<a href="https://owlsdepartment.github.io/ovee/v3" target="_blank" rel="noreferrer">owlsdepartment.github.io/ovee/v3</a>.
+			</p>
+		</section>
+
+		<section id="demo-core" class="demo-section">
+			<span class="demo-tag">Core</span>
+			<h2 class="demo-section__title">Base components</h2>
+			<p class="demo-section__lead">Accordion, dialog, and cookies — toolkit defaults plus registration options.</p>
+
+			<div class="demo-section__demos">
+				<div class="demo-block" data-demo-block data-demo-snippet="accordion">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">BaseAccordion</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">
+						Toggle between two registrations: <code>autoCollapse</code> (smooth GSAP) and <code>immediate</code> (no open/close animation).
+					</p>
+					<div data-demo-variant-group>
+						<div class="demo-toggle-group" role="group" aria-label="Accordion variant">
+							<button type="button" class="demo-toggle is-selected" data-demo-variant="auto" aria-pressed="true">autoCollapse</button>
+							<button type="button" class="demo-toggle" data-demo-variant="immediate" aria-pressed="false">immediate</button>
+						</div>
+						<div class="demo-variant-panels">
+							<div class="demo-variant-panel" data-demo-variant-panel="auto">
+								<div class="demo-block__preview">
+									<div data-base-accordion>
+										<div data-accordion-item>
+											<div data-accordion-trigger class="demo-accordion-trigger">Panel A</div>
+											<div data-accordion-content class="demo-accordion-panel">
+												<p>Only one section stays open at a time.</p>
+											</div>
+										</div>
+										<div data-accordion-item>
+											<div data-accordion-trigger class="demo-accordion-trigger">Panel B</div>
+											<div data-accordion-content class="demo-accordion-panel">
+												<p>Open this, and the other panel animates closed.</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="demo-variant-panel" data-demo-variant-panel="immediate" hidden>
+								<div class="demo-block__preview">
+									<div data-base-accordion-immediate>
+										<div data-accordion-item>
+											<div data-accordion-trigger class="demo-accordion-trigger">Fast panel 1</div>
+											<div data-accordion-content class="demo-accordion-panel">
+												<p><code>immediate: true</code> — state changes without duration.</p>
+											</div>
+										</div>
+										<div data-accordion-item>
+											<div data-accordion-trigger class="demo-accordion-trigger">Fast panel 2</div>
+											<div data-accordion-content class="demo-accordion-panel">
+												<p>Useful for reduced motion or layout tests.</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+
+				<div class="demo-block" data-demo-block data-demo-snippet="dialog">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">BaseDialog</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">
+						Content is moved from the host into <code>.dialog-root</code>. The default JSX wrapper includes the close control.
+					</p>
+					<div class="demo-block__preview">
+						<div class="demo-actions">
+							<button type="button" class="demo-btn" id="demo-dialog-open">Open dialog</button>
+						</div>
+						<div id="demo-base-dialog-host" data-base-dialog>
+							<article class="demo-dialog-body">
+								<h3 style="font-size: 2rem; margin-bottom: 1rem;">Modal</h3>
+								<p style="font-size: 1.45rem; line-height: 1.55; color: rgba(17,17,17,0.8);">
+									Markup started inside <code>#demo-base-dialog-host</code>; <code>BaseDialog</code> portals it into the overlay when opened.
+								</p>
+							</article>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+
+				<div class="demo-block" data-demo-block data-demo-snippet="cookies">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">BaseCookies</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">
+						Headless consent banner with basic/manage dialogs, consent groups, and optional GTM Consent Mode sync from the <code>CookiesConsent</code> module.
+						Floating control: bottom-right <strong>BaseCookies settings</strong>.
+					</p>
+					<div class="demo-block__preview demo-block__preview--note" id="demo-cookies-status">
+						<p style="font-size: 1.35rem; line-height: 1.5; color: rgba(26,35,50,0.78); margin-bottom: 1rem;">
+							Storage key: <code data-demo-cookie-state="key">cookies_consent</code>,
+							decided: <strong data-demo-cookie-state="decided">no</strong>
+						</p>
+						<p style="font-size: 1.3rem; line-height: 1.45; color: rgba(26,35,50,0.72); margin-bottom: 1rem;">
+							analytics: <span data-demo-cookie-state="analytics_storage">denied</span>,
+							ad_storage: <span data-demo-cookie-state="ad_storage">denied</span>,
+							ad_user_data: <span data-demo-cookie-state="ad_user_data">denied</span>,
+							ad_personalization: <span data-demo-cookie-state="ad_personalization">denied</span>
+						</p>
+						<div class="demo-actions">
+							<button type="button" class="demo-btn demo-btn--ghost" id="demo-cookies-open">Open basic</button>
+							<button type="button" class="demo-btn demo-btn--ghost" id="demo-cookies-manage">Open manage</button>
+							<button type="button" class="demo-btn demo-btn--ghost" id="demo-cookies-reset">Reset consent</button>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="demo-motion" class="demo-section">
+			<span class="demo-tag">Motion</span>
+			<h2 class="demo-section__title">In viewport &amp; parallax</h2>
+			<p class="demo-section__lead">IntersectionObserver hook and ScrollTrigger-driven parallax.</p>
+
+			<div class="demo-section__demos">
+				<div class="demo-block" data-demo-block data-demo-snippet="inViewport">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">InViewport</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">Host receives <code>.is-in-viewport</code> when the observed target crosses the threshold.</p>
+					<div class="demo-block__preview">
+						<div class="demo-reveal" data-in-viewport data-threshold="0.25">
+							Scroll this card into view — it fades in.
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+
+				<div class="demo-block" data-demo-block data-demo-snippet="parallax">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">ParallaxEffect</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">GSAP ScrollTrigger layer; disabled on small breakpoints by default in the composable.</p>
+					<div class="demo-block__preview">
+						<div class="demo-parallax-wrap">
+							<div data-parallax-effect class="demo-parallax-layer">Parallax layer</div>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="demo-integrations" class="demo-section">
+			<span class="demo-tag">Integrations</span>
+			<h2 class="demo-section__title">Swiper, lazy load, Lottie, video</h2>
+			<p class="demo-section__lead">Peer dependencies are installed in this demo app where needed.</p>
+
+			<div class="demo-section__demos">
+				<div class="demo-block" data-demo-block data-demo-snippet="slider">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">BaseSlider</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">Swiper wrapper — pass options via component registration in <code>components.ts</code>.</p>
+					<div class="demo-block__preview">
+						<div data-base-slider class="demo-slider">
+							<div class="slider__slide">Slide A</div>
+							<div class="slider__slide">Slide B</div>
+							<div class="slider__slide">Slide C</div>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+
+				<div class="demo-block" data-demo-block data-demo-snippet="splitText">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">SplitText</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">GSAP SplitText integration with reactive re-splitting on resize.</p>
+					<div class="demo-block__preview">
+						<p
+							class="demo-split"
+							data-split-text
+							data-split-text-type="lines,words"
+							data-lines-class="split-text__line"
+							data-words-class="split-text__word"
+						>
+							SplitText is now in standard GSAP.
+							This paragraph is split into lines and words.
+						</p>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+
+				<div class="demo-block" data-demo-block data-demo-snippet="lazy">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">LazyLoad</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">vanilla-lazyload on the host element with <code>data-src</code>.</p>
+					<div class="demo-block__preview">
+						<div class="demo-lazy">
+							<img
+								data-lazy-load
+								data-src="https://picsum.photos/id/29/960/540"
+								src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='960' height='540'/%3E"
+								width="960"
+								height="540"
+								alt="Lazy-loaded photo"
+							/>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+
+				<div class="demo-block" data-demo-block data-demo-snippet="lottie">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">LottiePlayer</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">Loads JSON from <code>data-path</code> via lottie-web.</p>
+					<div class="demo-block__preview">
+						<div class="demo-lottie">
+							<div
+								class="demo-lottie-inner"
+								data-lottie-player
+								data-path="https://assets2.lottiefiles.com/packages/lf20_UJNc2t.json"
+								data-loop="true"
+								data-autoplay="true"
+							></div>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+
+				<div class="demo-block" data-demo-block data-demo-snippet="video">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">VideoAutoplay</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">Plays while in view; sample file is CC0 from MDN (no hotlink restrictions).</p>
+					<div class="demo-block__preview">
+						<div class="demo-video-wrap">
+							<video
+								class="demo-video"
+								data-video-autoplay
+								src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+								muted
+								playsinline
+								loop
+								controls
+							></video>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+				<div class="demo-block" data-demo-block data-demo-snippet="c15t">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">C15tConsent</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">
+						GDPR/RODO-compliant headless consent manager via <a href="https://c15t.com" target="_blank" rel="noopener">c15t</a>.
+						Offline mode; <code>autoOpen: false</code> in this demo so it does not stack over BaseCookies.
+						Floating control: bottom-left <strong>c15t settings</strong> — open via the buttons below.
+					</p>
+					<div class="demo-block__preview demo-block__preview--note" id="demo-c15t-status">
+						<p style="font-size: 1.35rem; line-height: 1.5; color: rgba(26,35,50,0.78); margin-bottom: 1rem;">
+							decided: <strong data-demo-c15t-state="decided">no</strong>,
+							active UI: <code data-demo-c15t-state="ui">none</code>
+						</p>
+						<div class="demo-actions">
+							<button type="button" class="demo-btn demo-btn--ghost" id="demo-c15t-open-banner">Open banner</button>
+							<button type="button" class="demo-btn demo-btn--ghost" id="demo-c15t-open-prefs">Open preferences</button>
+							<button type="button" class="demo-btn demo-btn--ghost" id="demo-c15t-reset">Reset consent</button>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="demo-more" class="demo-section">
+			<span class="demo-tag">Runtime</span>
+			<h2 class="demo-section__title">Modules, cursor, tools</h2>
+			<p class="demo-section__lead">Global module behavior and small imperative helpers.</p>
+
+			<div class="demo-section__demos">
+				<div class="demo-block" data-demo-block data-demo-snippet="viewport">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">ViewportUnits</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">Updates CSS variables on <code>&lt;html&gt;</code> on resize.</p>
+					<div class="demo-block__preview">
+						<div class="demo-vu">
+							<div class="demo-vu__card"><code>--vh</code>: <span id="demo-vh-value">—</span></div>
+							<div class="demo-vu__card"><code>--vw</code>: <span id="demo-vw-value">—</span></div>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+
+				<div class="demo-block" data-demo-block data-demo-snippet="cursor">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">CustomCursor + CursorModifier</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">
+						Module injects the cursor (desktop pointer only). Elements with <code>data-cursor-modifier</code> can set
+						<code>data-cursor-mode</code>, <code>data-cursor-theme</code>, <code>data-cursor-text</code> — see
+						<code>updateCursorModifiers</code> in the module.
+					</p>
+					<div class="demo-block__preview">
+						<div class="demo-actions demo-cursor-controls">
+							<button type="button" class="demo-btn demo-btn--ghost" id="demo-cursor-toggle">
+								Use default cursor
+							</button>
+						</div>
+						<div class="demo-cursor-row">
+							<a class="demo-cursor-chip" href="#" data-cursor-modifier data-cursor-mode="text" data-cursor-text="Text mode"
+								>Text mode</a
+							>
+							<a class="demo-cursor-chip" href="#" data-cursor-modifier>Link hover</a>
+							<a class="demo-cursor-chip" href="#" data-cursor-modifier data-cursor-mode="text" data-cursor-text="Hello"
+								>Hello</a
+							>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+
+				<div class="demo-block" data-demo-block data-demo-snippet="store">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">createStore</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">Reactive keyed store from toolkit tools.</p>
+					<div class="demo-block__preview">
+						<div class="demo-store-count" id="demo-store-count">0</div>
+						<div class="demo-actions">
+							<button type="button" class="demo-btn" id="demo-store-inc">Increment</button>
+							<button type="button" class="demo-btn demo-btn--ghost" id="demo-store-reset">Reset</button>
+						</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+
+				<div class="demo-block" data-demo-block data-demo-snippet="fade">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">fadeToggle</h3>
+						<button type="button" class="demo-block__code-btn" data-demo-code-toggle aria-expanded="false">Show code</button>
+					</div>
+					<p class="demo-block__desc">GSAP visibility helper from <code>@ovee.js/toolkit</code> animations.</p>
+					<div class="demo-block__preview">
+						<button type="button" class="demo-btn demo-btn--ghost" id="demo-fade-toggle">Toggle box</button>
+						<div class="demo-fade-target" id="demo-fade-target">Target</div>
+					</div>
+					<div class="demo-block__code" hidden>
+						<pre class="demo-block__pre"><code></code></pre>
+					</div>
+				</div>
+
+				<div class="demo-block">
+					<div class="demo-block__header">
+						<h3 class="demo-block__subheading">Not in this build</h3>
+					</div>
+					<p class="demo-block__desc">Optional integrations that need extra setup keys.</p>
+					<div class="demo-note" style="margin: 0;">
+						<strong>GoogleMap</strong> — register with a Maps API key; set <code>data-key</code>, <code>data-lat</code>, <code>data-lng</code> on the host.
+					</div>
+				</div>
+			</div>
+		</section>
 	</main>
+
+	<div
+		data-base-cookies
+		class="cookies demo-cookies"
+		role="dialog"
+		tabindex="-1"
+		data-storage-key="cookies_consent"
+		aria-label="BaseCookies consent"
+	>
+		<div class="cookies__dialog cookies__dialog--basic" data-cookies-dialog="basic">
+			<div class="cookies__content">
+				<h3 class="cookies__heading">BaseCookies — toolkit consent</h3>
+				<p class="cookies__text">
+					Native <code>CookiesConsent</code> module demo. Required cookies are always enabled;
+					analytics and ads groups are optional.
+				</p>
+			</div>
+			<div class="cookies__buttons">
+				<button class="cookies__button cookies__button--ghost" data-button="manage" type="button">
+					Manage (BaseCookies)
+				</button>
+				<button class="cookies__button cookies__button--ghost" data-button="reject-all" type="button">
+					Reject all
+				</button>
+				<button class="cookies__button" data-button="accept-all" type="button">
+					Accept all
+				</button>
+			</div>
+		</div>
+
+		<div class="cookies__dialog cookies__dialog--manage" data-cookies-dialog="manage" hidden>
+			<div class="cookies__content">
+				<h3 class="cookies__heading">BaseCookies — manage settings</h3>
+				<p class="cookies__text">
+					Reopen anytime via the bottom-right <strong>BaseCookies settings</strong> button.
+				</p>
+			</div>
+
+			<form class="cookies__form">
+				<label class="cookies__row">
+					<span class="cookies__label">Required</span>
+					<input class="cookies__input" type="checkbox" name="required" data-cookies-group checked disabled />
+				</label>
+				<label class="cookies__row">
+					<span class="cookies__label">Analytics</span>
+					<input class="cookies__input" type="checkbox" name="analytics_storage" data-cookies-group />
+				</label>
+				<label class="cookies__row">
+					<span class="cookies__label">Ad storage</span>
+					<input class="cookies__input" type="checkbox" name="ad_storage" data-cookies-group />
+				</label>
+				<label class="cookies__row">
+					<span class="cookies__label">Ad user data</span>
+					<input class="cookies__input" type="checkbox" name="ad_user_data" data-cookies-group />
+				</label>
+				<label class="cookies__row">
+					<span class="cookies__label">Ad personalization</span>
+					<input class="cookies__input" type="checkbox" name="ad_personalization" data-cookies-group />
+				</label>
+			</form>
+
+			<div class="cookies__buttons">
+				<button class="cookies__button cookies__button--ghost" data-button="back-banner" type="button">
+					Back
+				</button>
+				<button class="cookies__button cookies__button--ghost" data-button="reject-all" type="button">
+					Reject all
+				</button>
+				<button class="cookies__button" data-button="save-selected" type="button">
+					Save selected
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<button
+		type="button"
+		data-base-cookies-edit
+		class="cookies-edit demo-cookies-edit"
+		aria-hidden="true"
+		aria-expanded="false"
+	>
+		BaseCookies settings
+	</button>
+
+	<div
+		data-c15t-consent
+		class="c15t-consent demo-c15t-consent"
+		role="dialog"
+		aria-label="C15tConsent consent"
+		tabindex="-1"
+	>
+		<div class="c15t-consent__dialog" data-c15t-dialog="banner">
+			<div class="c15t-consent__content">
+				<h3 class="c15t-consent__heading">C15tConsent — c15t offline</h3>
+				<p class="c15t-consent__text">
+					Integration demo powered by <code>c15t</code> (offline mode). Categories:
+					necessary, measurement, marketing.
+				</p>
+			</div>
+			<div class="c15t-consent__buttons">
+				<button
+					class="c15t-consent__button c15t-consent__button--ghost"
+					data-button="manage"
+					type="button"
+				>
+					Manage (c15t)
+				</button>
+				<button
+					class="c15t-consent__button c15t-consent__button--ghost"
+					data-button="reject-all"
+					type="button"
+				>
+					Reject all
+				</button>
+				<button class="c15t-consent__button" data-button="accept-all" type="button">
+					Accept all
+				</button>
+			</div>
+		</div>
+
+		<div class="c15t-consent__dialog" data-c15t-dialog="dialog" hidden>
+			<div class="c15t-consent__content">
+				<h3 class="c15t-consent__heading">C15tConsent — preferences</h3>
+				<p class="c15t-consent__text">
+					Reopen anytime via the bottom-left <strong>c15t settings</strong> button.
+				</p>
+			</div>
+			<form class="c15t-consent__form">
+				<label class="c15t-consent__row">
+					<span class="c15t-consent__label">Required</span>
+					<input
+						class="c15t-consent__input"
+						type="checkbox"
+						name="necessary"
+						data-c15t-group
+						checked
+						disabled
+					/>
+				</label>
+				<label class="c15t-consent__row">
+					<span class="c15t-consent__label">Analytics</span>
+					<input
+						class="c15t-consent__input"
+						type="checkbox"
+						name="measurement"
+						data-c15t-group
+					/>
+				</label>
+				<label class="c15t-consent__row">
+					<span class="c15t-consent__label">Marketing</span>
+					<input
+						class="c15t-consent__input"
+						type="checkbox"
+						name="marketing"
+						data-c15t-group
+					/>
+				</label>
+			</form>
+			<div class="c15t-consent__buttons">
+				<button
+					class="c15t-consent__button c15t-consent__button--ghost"
+					data-button="back-banner"
+					type="button"
+				>
+					Back
+				</button>
+				<button
+					class="c15t-consent__button c15t-consent__button--ghost"
+					data-button="reject-all"
+					type="button"
+				>
+					Reject all
+				</button>
+				<button class="c15t-consent__button" data-button="save-selected" type="button">
+					Save preferences
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<button
+		type="button"
+		data-c15t-consent-edit
+		class="c15t-consent-edit demo-c15t-consent-edit"
+		aria-hidden="true"
+		aria-expanded="false"
+	>
+		c15t settings
+	</button>
+
+	<nav
+		id="demo-fullscreen-nav"
+		class="nav-fullscreen"
+		aria-label="Fullscreen menu"
+		aria-hidden="true"
+	>
+		<div class="nav-fullscreen__inner">
+			<div class="nav-fullscreen__top">
+				<span class="nav-fullscreen__mark" aria-hidden="true"></span>
+				<div class="nav-fullscreen__actions">
+					<a class="nav-fullscreen__pill" href="#demo-more">Modules &amp; tools</a>
+					<button
+						type="button"
+						class="nav-fullscreen__pill nav-fullscreen__pill--close"
+						data-fullscreen-nav-close
+					>
+						Close
+						<span class="nav-fullscreen__pill-x" aria-hidden="true">×</span>
+					</button>
+				</div>
+			</div>
+
+			<ul class="nav-fullscreen__links">
+				<li class="nav-fullscreen__link-item"><a class="nav-fullscreen__link" href="#demo-overview">Overview</a></li>
+				<li class="nav-fullscreen__link-item"><a class="nav-fullscreen__link" href="#demo-core">Components</a></li>
+				<li class="nav-fullscreen__link-item"><a class="nav-fullscreen__link" href="#demo-integrations">Integrations</a></li>
+				<li class="nav-fullscreen__link-item"><a class="nav-fullscreen__link" href="#demo-motion">Motion</a></li>
+				<li class="nav-fullscreen__link-item"><a class="nav-fullscreen__link" href="#demo-more">Modules &amp; tools</a></li>
+			</ul>
+
+			<footer class="nav-fullscreen__foot">
+				<a class="nav-fullscreen__foot-link" href="mailto:hello@example.com">hello@example.com</a>
+				<div class="nav-fullscreen__foot-col">
+					<a class="nav-fullscreen__foot-muted" href="#">Terms</a>
+					<a class="nav-fullscreen__foot-muted" href="#">Privacy</a>
+				</div>
+				<div class="nav-fullscreen__foot-col nav-fullscreen__foot-col--right">
+					<span class="nav-fullscreen__foot-muted">© Owls UI demo 2026</span>
+				</div>
+			</footer>
+		</div>
+	</nav>
 
 	<script type="module" src="/src/main.ts"></script>
 </body>

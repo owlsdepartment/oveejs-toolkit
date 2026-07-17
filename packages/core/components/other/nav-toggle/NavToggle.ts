@@ -10,6 +10,7 @@ export const NavToggle = defineComponent((element, { on, emit }) => {
 
 	const isOpen = ref(false);
 	const animStarted = ref(false);
+	const transitionRequested = ref(false);
 
 	const _navSelector = useDataAttr('nav');
 	const _navName = useDataAttr('navToggle');
@@ -51,8 +52,20 @@ export const NavToggle = defineComponent((element, { on, emit }) => {
 			return;
 		}
 
+		syncInitialState();
 		bind();
 	});
+
+	function syncInitialState() {
+		const visibleClass = `${navName.value}-visible`;
+		const isInitiallyOpen = html.classList.contains(visibleClass);
+
+		isOpen.value = isInitiallyOpen;
+		element.setAttribute('aria-expanded', isInitiallyOpen ? 'true' : 'false');
+
+		html.classList.remove(`${navName.value}-anim`);
+		html.classList.remove(`${navName.value}-hide-anim`);
+	}
 
 	function bind() {
 		on('click', clickHandler);
@@ -86,6 +99,10 @@ export const NavToggle = defineComponent((element, { on, emit }) => {
 			return;
 		}
 
+		if (!transitionRequested.value) {
+			return;
+		}
+
 		if (animStarted.value) {
 			return;
 		}
@@ -105,10 +122,12 @@ export const NavToggle = defineComponent((element, { on, emit }) => {
 		}
 
 		if (!animStarted.value) {
+			transitionRequested.value = false;
 			return;
 		}
 
 		animStarted.value = false;
+		transitionRequested.value = false;
 
 		if (isOpen.value) {
 			html.classList.remove(`${navName.value}-anim`);
@@ -118,6 +137,7 @@ export const NavToggle = defineComponent((element, { on, emit }) => {
 	}
 
 	function show(immediately = false) {
+		transitionRequested.value = !immediately;
 		isOpen.value = true;
 
 		if (immediately) {
@@ -139,6 +159,7 @@ export const NavToggle = defineComponent((element, { on, emit }) => {
 	}
 
 	function hide(immediately = false) {
+		transitionRequested.value = !immediately;
 		isOpen.value = false;
 
 		if (immediately) {

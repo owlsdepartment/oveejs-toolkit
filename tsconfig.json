@@ -11,19 +11,28 @@
 		"resolveJsonModule": true,
 		"noImplicitAny": true,
 		"strictNullChecks": true,
+		"skipLibCheck": true,
 		"lib": ["dom", "es6", "ESNext"],
+		"jsx": "react-jsx",
+		"jsxImportSource": "ovee.js",
+		"types": ["node", "google.maps"],
 		"baseUrl": ".",
 		"paths": {
             "@ovee.js/toolkit": ["packages/core"],
 			"@ovee.js/toolkit/*": ["packages/core/*"],
-			"@ovee.js/toolkit-integrations": ["packages/integrations"]
+			"@ovee.js/toolkit-integrations": ["packages/integrations"],
+			"@ovee.js/toolkit-integrations/*": ["packages/integrations/*"]
         }
 	},
 	"exclude": [
-		"node_modules"
+		"node_modules",
+		"scripts/mcp-ovee",
+		"scripts/templates",
+		".cache"
 	],
 	"include": [
 		"**/*.ts",
+		"**/*.tsx",
 		"**/*.json"
 	]
 }

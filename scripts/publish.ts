@@ -6,12 +6,14 @@ import { ROOT_DIR } from './generate/constants';
 
 const packages = ['core', 'integrations'];
 
-execSync('yarn version_sync', { stdio: 'inherit' });
-execSync('yarn build', { stdio: 'inherit' });
+execSync('pnpm version_sync', { stdio: 'inherit' });
+execSync('pnpm build', { stdio: 'inherit' });
 
 let command = 'npm publish --access public';
 
-if (version.includes('beta')) {
+if (version.includes('alpha')) {
+	command += ' --tag alpha';
+} else if (version.includes('beta')) {
 	command += ' --tag beta';
 }
 

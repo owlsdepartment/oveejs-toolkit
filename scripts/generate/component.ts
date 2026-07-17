@@ -11,14 +11,14 @@ import {
 	getPackageDir,
 	trimPath,
 } from './helpers';
-import { WithIntegrations, WithStyles } from './options';
+import { WithIntegrations, WithJsx, WithStyles } from './options';
 
 export async function generateComponent(
 	path: string,
 	name: string,
-	options: WithStyles & WithIntegrations
+	options: WithStyles & WithIntegrations & WithJsx
 ) {
-	const { styles: withStyles, integrations: toIntegrations } = options;
+	const { styles: withStyles, integrations: toIntegrations, jsx: withJsx } = options;
 	const { directoryPath: dirPath, outputName: componentName } = getGeneratedElementParams({
 		name,
 		path,
@@ -59,24 +59,41 @@ export async function generateComponent(
 
 	writeFileSync(_path.resolve(fullPath, 'index.ts'), `export * from './${pascalCaseName}';\n`);
 
-	writeFileSync(
-		_path.resolve(fullPath, `${pascalCaseName}.ts`),
-		`import { defineComponent } from 'ovee.js';
+	const ext = withJsx ? 'tsx' : 'ts';
+	const body = withJsx
+		? `import { defineComponent, useTemplate } from 'ovee.js';
 
-export const ${pascalCaseName} = defineComponent((element, {
-	app, on, off, emit, name, options
-}) => {
-	console.log('hi from component!')
-});
+export interface ${pascalCaseName}Options {}
+
+export const ${pascalCaseName} = defineComponent<HTMLElement, ${pascalCaseName}Options>(
+	(element, { options }) => {
+		void element;
+		void options;
+
+		useTemplate(() => <div />);
+	}
+);
 `
-	);
+		: `import { defineComponent } from 'ovee.js';
+
+export interface ${pascalCaseName}Options {}
+
+export const ${pascalCaseName} = defineComponent<HTMLElement, ${pascalCaseName}Options>(
+	(element, { options }) => {
+		void element;
+		void options;
+	}
+);
+`;
+
+	writeFileSync(_path.resolve(fullPath, `${pascalCaseName}.${ext}`), body);
 
 	generateReadme(fullPath, pascalCaseName);
 
 	if (withStyles) {
 		writeFileSync(
 			_path.resolve(fullPath, 'styles.scss'),
-			`// write and import all your styles here';
+			`// write and import all your styles here
 `
 		);
 

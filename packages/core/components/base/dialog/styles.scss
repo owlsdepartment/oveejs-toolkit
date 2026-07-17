@@ -1,35 +1,100 @@
 $base_dialog_z_index: 10000 !default;
 
-.base-dialog {
-	display: flex;
-	justify-content: center;
-	height: calc(100% + 4px);
-	padding: 0;
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: $base_dialog_z_index;
-	visibility: hidden;
+@layer ovee-toolkit {
+	.base-dialog {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		padding: 2rem;
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: $base_dialog_z_index;
+		visibility: hidden;
+		transition: opacity 0.2s ease;
+		pointer-events: none;
+		opacity: 0;
+		background: rgb(0 0 0 / 45%);
 
-	&--is-open {
-		visibility: visible;
-	}
+		&--is-open {
+			visibility: visible;
+			pointer-events: auto;
+			opacity: 1;
+		}
 
-	&__content {
-		max-width: 87rem;
-	}
+		&__container {
+			width: min(100%, 87rem);
+			max-height: 100%;
+			position: relative;
+			overflow: auto;
+		}
 
-	&__close {
-		position: absolute;
-		top: 6rem;
-		right: 10rem;
-	}
+		&__content {
+			padding: 2.4rem;
+			color: #111;
+			border-radius: 1.2rem;
+			background: #fff;
+			box-shadow: 0 2rem 6rem rgb(0 0 0 / 25%);
+		}
 
-	&__close-icon {
-		display: block;
-		width: 2.3rem;
-		height: 2.3rem;
+		&__close {
+			display: grid;
+			place-items: center;
+			width: 3.6rem;
+			height: 3.6rem;
+			position: absolute;
+			top: 1.6rem;
+			right: 1.6rem;
+			cursor: pointer;
+			transition:
+				background-color 0.2s ease,
+				border-color 0.2s ease,
+				box-shadow 0.2s ease;
+			border: 0.1rem solid rgb(17 17 17 / 16%);
+			border-radius: 50%;
+			background: rgb(255 255 255 / 92%);
+			box-shadow: 0 0.8rem 2rem rgb(0 0 0 / 16%);
+
+			&:hover {
+				border-color: rgb(17 17 17 / 28%);
+				background: #fff;
+			}
+
+			&:focus-visible {
+				outline: 0.2rem solid rgb(17 17 17 / 30%);
+				outline-offset: 0.2rem;
+			}
+		}
+
+		&__close-icon {
+			display: block;
+			width: 1.6rem;
+			height: 1.6rem;
+			position: relative;
+
+			&::before,
+			&::after {
+				content: '';
+				width: 100%;
+				height: 0.2rem;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform-origin: center;
+				border-radius: 999px;
+				background: #111;
+			}
+
+			&::before {
+				transform: translate(-50%, -50%) rotate(45deg);
+			}
+
+			&::after {
+				transform: translate(-50%, -50%) rotate(-45deg);
+			}
+		}
 	}
 }

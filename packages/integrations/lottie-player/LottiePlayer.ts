@@ -7,7 +7,7 @@ const ALLOWED_RENDERERS = ['svg', 'canvas', 'html'];
 const logger = new Logger('LottiePlayer');
 
 export const LottiePlayer = defineComponent<HTMLElement, LottiePlayerConfig>(
-	(element, { options, emit }) => {
+	(element, { emit }, options) => {
 		const player = shallowRef<AnimationItem>();
 
 		const path = useDataAttr('path');

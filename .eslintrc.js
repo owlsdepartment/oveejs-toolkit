@@ -9,16 +9,18 @@ module.exports = {
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		ecmaVersion: 2020,
+		ecmaFeatures: {
+			jsx: true,
+		},
 	},
 
-	plugins: ['@typescript-eslint', 'simple-import-sort', 'lit', 'html'],
+	plugins: ['@typescript-eslint', 'simple-import-sort', 'html'],
 
 	extends: [
 		'eslint:recommended',
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:prettier/recommended',
-		'plugin:lit/recommended',
 	],
 
 	ignorePatterns: ['**/dist/**/*'],

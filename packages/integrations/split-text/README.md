@@ -4,7 +4,7 @@
  - `gsap`
  - `ovee.js`
 
-This component uses GSAP's [SplitText plugin](https://greensock.com/docs/v3/Plugins/SplitText) that requires GSAP Business License.
+This component uses GSAP's [SplitText plugin](https://greensock.com/docs/v3/Plugins/SplitText).
 
 ## Registration and configuration
 

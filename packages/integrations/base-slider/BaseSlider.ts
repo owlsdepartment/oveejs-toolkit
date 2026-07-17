@@ -1,4 +1,4 @@
-import { defaultsDeep } from 'lodash';
+import defaultsDeep from 'lodash/defaultsDeep';
 import {
 	defineComponent,
 	Logger,
@@ -8,18 +8,17 @@ import {
 	useQuerySelectorAll,
 } from 'ovee.js';
 import Swiper from 'swiper';
-import { SwiperEvents } from 'swiper/types/swiper-events';
-import { SwiperOptions } from 'swiper/types/swiper-options';
+import type { Swiper as SwiperInstance, SwiperEvents, SwiperOptions } from 'swiper/types';
 
 interface SliderElement extends HTMLElement {
-	swiperInstance?: Swiper;
+	swiperInstance?: SwiperInstance;
 }
 
 const logger = new Logger('BaseSlider');
 
 export const BaseSlider = defineComponent<SliderElement, Partial<SwiperOptions>>(
-	(element, { options, emit }) => {
-		const swiperInstance = shallowRef<Swiper>();
+	(element, { emit }, options) => {
+		const swiperInstance = shallowRef<SwiperInstance>();
 		const swiperOptions = ref<SwiperOptions>();
 		const swiperContainer = shallowRef(element.querySelector<HTMLElement>('.swiper-container'));
 		const swiperSlides = useQuerySelectorAll<HTMLElement>('.slider__slide');

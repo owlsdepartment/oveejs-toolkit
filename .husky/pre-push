@@ -6,12 +6,12 @@ RESET='\033[0m'
 
 echo "${YELLOW}[HUSKY]${RESET} Running linters..."
 
-PACKAGE_MANAGER=yarn
-if ! command -v $PACKAGE_MANAGER &> /dev/null
-then
-	PACKAGE_MANAGER=npm
+if command -v pnpm >/dev/null 2>&1; then
+	pnpm run lint:no-fix
+elif command -v yarn >/dev/null 2>&1; then
+	yarn run lint:no-fix
+else
+	npm run lint:no-fix
 fi
-
-$PACKAGE_MANAGER run lint:no-fix
 
 echo "${YELLOW}[HUSKY]${RESET} Finished project linting."

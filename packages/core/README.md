@@ -8,6 +8,8 @@ It's a package with components, modules, tools, and many more, for `Ovee.js` fra
 npm install --save @ovee.js/toolkit
 # for yarn
 yarn add @ovee.js/toolkit
+# for pnpm
+pnpm add @ovee.js/toolkit
 ```
 
 Additionally, it is required to install these packages if you don't have them already:
@@ -16,6 +18,8 @@ Additionally, it is required to install these packages if you don't have them al
 npm install --save ovee.js gsap lodash
 # for yarn
 yarn add ovee.js gsap lodash
+# for pnpm
+pnpm add ovee.js gsap lodash
 ```
 
 They are included as peer dependencies, as they are pretty common and we want to avoid multiplying packages instances and versions.

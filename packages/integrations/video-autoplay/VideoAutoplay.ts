@@ -1,7 +1,8 @@
 import { useInViewport } from '@ovee.js/toolkit';
-import { useLazyLoad } from '@ovee.js/toolkit-integrations/lazy-load';
 import { defineComponent, ref } from 'ovee.js';
-import { ILazyLoadOptions } from 'vanilla-lazyload';
+import type { ILazyLoadInstance, ILazyLoadOptions } from 'vanilla-lazyload';
+
+import { useLazyLoad } from '../lazy-load';
 
 interface VideoAutoplayOptions extends ILazyLoadOptions {
 	shouldRemoveInViewportClass?: boolean;
@@ -10,7 +11,7 @@ interface VideoAutoplayOptions extends ILazyLoadOptions {
 }
 
 export const VideoAutoplay = defineComponent<HTMLVideoElement, VideoAutoplayOptions>(
-	(element, { options }) => {
+	(element, _ctx, options) => {
 		const isPlaying = ref(false);
 
 		let playPromise: Promise<void> = Promise.resolve();
@@ -30,7 +31,7 @@ export const VideoAutoplay = defineComponent<HTMLVideoElement, VideoAutoplayOpti
 			unobserve_entered: true,
 			...(options ?? {}),
 			threshold: 0,
-			callback_loaded: (el, instance) => {
+			callback_loaded: (el: HTMLElement, instance: ILazyLoadInstance) => {
 				loadPromiseResolve?.();
 				options?.callback_loaded?.(el, instance);
 			},

@@ -1,7 +1,8 @@
 import { MaybeElement } from '@ovee.js/toolkit/shared/types';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger.js';
-import { defaults, omit } from 'lodash';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import defaults from 'lodash/defaults';
+import omit from 'lodash/omit';
 import {
 	computed,
 	isDefined,
@@ -142,9 +143,14 @@ export function useParallaxEffect(
 			to[prop] = value;
 		}
 
-		const matchMedia = gsap.matchMedia();
-
-		matchMedia.add(breakpoint, () => {
+		const gsapWithMatchMedia = gsap as typeof gsap & {
+			matchMedia?: () => {
+				add: (query: string, callback: () => (() => void) | void) => void;
+				kill: () => void;
+			};
+		};
+		const matchMedia = gsapWithMatchMedia.matchMedia?.();
+		const runAnimation = () => {
 			const timeline = gsap.timeline({
 				paused: true,
 			});
@@ -175,9 +181,14 @@ export function useParallaxEffect(
 			return () => {
 				cleanup();
 			};
-		});
+		};
 
-		mm.value.push(matchMedia);
+		if (matchMedia) {
+			matchMedia.add(breakpoint, runAnimation);
+			mm.value.push(matchMedia as any);
+		} else {
+			runAnimation();
+		}
 	}
 
 	function cleanup() {

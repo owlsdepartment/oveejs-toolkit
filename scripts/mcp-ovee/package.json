@@ -1,0 +1,16 @@
+{
+	"name": "ovee-mcp",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "./node_modules/.bin/esbuild server.ts --bundle --platform=node --target=node20 --outfile=dist/server.js --format=esm --external:zod --external:@modelcontextprotocol/sdk",
+		"dev": "node server.ts"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "1.29.0",
+		"zod": "3.23.8"
+	},
+	"devDependencies": {
+		"esbuild": "0.25.0"
+	}
+}

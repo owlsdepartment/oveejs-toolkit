@@ -1,5 +1,6 @@
-import { cloneDeep, isFunction } from 'lodash';
-import { AnyObject, makeComputed, makeReactive, readonly } from 'ovee.js';
+import cloneDeep from 'lodash/cloneDeep';
+import isFunction from 'lodash/isFunction';
+import { AnyObject, computed, reactive, readonly } from 'ovee.js';
 
 import { OveeStore } from './OveeStore';
 
@@ -8,9 +9,9 @@ export type StateDef = AnyObject | (() => AnyObject);
 export type GetState<S extends StateDef> = S extends (...args: any[]) => infer R ? R : S;
 
 export function createStore<S extends StateDef>(name: string, stateDef: S) {
-	type State = GetState<S>;
+	type State = GetState<S> & AnyObject;
 
-	const state = makeReactive(isFunction(stateDef) ? stateDef() : cloneDeep(stateDef)) as State;
+	const state = reactive(isFunction(stateDef) ? stateDef() : cloneDeep(stateDef)) as State;
 	const readonlyState = readonly(state) as State;
 
 	OveeStore.getInstance().registerStore(name, state);
@@ -24,7 +25,7 @@ export function createStore<S extends StateDef>(name: string, stateDef: S) {
 
 function createGetter<State extends AnyObject>(state: State) {
 	return <RetVal>(getter: (state: State) => RetVal) => {
-		return makeComputed(() => getter(state));
+		return computed(() => getter(state));
 	};
 }
 

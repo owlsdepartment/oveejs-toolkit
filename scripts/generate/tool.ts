@@ -42,7 +42,7 @@ export async function generateTool(path: string, options: WithIntegrations) {
 	// {toolName}.ts
 	writeFileSync(
 		_path.resolve(fullPath, `${toolName}.ts`),
-		`// TODO: write your tool\nexport {};\n`
+		`export type ${pascalCaseName} = Record<string, never>;\n`
 	);
 
 	generateReadme(fullPath, pascalCaseName);

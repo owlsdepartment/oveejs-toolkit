@@ -1,6 +1,8 @@
 import fs, { existsSync } from 'fs';
 import { kebabCase } from 'lodash';
 import path from 'path';
+
+import { version } from '../package.json';
 import { createInterface } from 'readline';
 import { ExternalOption, rollup } from 'rollup';
 import dts from 'rollup-plugin-dts';
@@ -45,7 +47,7 @@ const packages: PackageEntry[] = [
 		files: [
 			...fs
 				.readdirSync(INTEGRATIONS_PATH, { withFileTypes: true })
-				.filter(dir => dir.isDirectory() && dir.name !== DIST_FOLDER)
+				.filter(dir => dir.isDirectory() && dir.name !== DIST_FOLDER && dir.name !== 'node_modules')
 				.map(dir => ({ name: dir.name, path: `${dir.name}/index.ts` })),
 
 			{ name: 'index', path: 'index.ts' },
@@ -89,7 +91,8 @@ async function bundle(entry: PackageEntry) {
 					typescriptPaths({
 						tsConfigPath: TSCONFIG,
 						preserveExtensions: true,
-					}),
+						extensions: ['.ts', '.tsx'],
+					} as any),
 					esbuild({ target: 'es2020' }),
 				],
 			});
@@ -135,7 +138,8 @@ async function generateDTS(input: string, output: string, external: ExternalOpti
 			typescriptPaths({
 				tsConfigPath: TSCONFIG,
 				preserveExtensions: true,
-			}),
+				extensions: ['.ts', '.tsx'],
+			} as any),
 			dts(),
 		],
 	});
@@ -207,7 +211,18 @@ async function copyStaticFiles(packageFolder: string) {
 	}
 
 	for (const file of FILES_TO_COPY_LOCAL) {
-		fs.copyFileSync(path.resolve(packageFolder, file), path.resolve(dist, file));
+		const src = path.resolve(packageFolder, file);
+		const dest = path.resolve(dist, file);
+
+		if (file === 'package.json') {
+			// Replace workspace:* with the real version so published packages
+			// don't ship unresolvable workspace protocol references
+			const content = fs.readFileSync(src, 'utf-8').replace(/"workspace:\*"/g, `"${version}"`);
+
+			fs.writeFileSync(dest, content);
+		} else {
+			fs.copyFileSync(src, dest);
+		}
 	}
 }
 

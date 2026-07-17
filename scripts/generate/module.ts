@@ -53,8 +53,10 @@ export async function generateModule(
 		_path.resolve(fullPath, `${pascalCaseName}.ts`),
 		`import { defineModule } from 'ovee.js';
 
-export const ${pascalCaseName} = defineModule(({ app, options }) => {
-	console.log("I'm inside the module!");
+export interface ${pascalCaseName}Options {}
+
+export const ${pascalCaseName} = defineModule<${pascalCaseName}Options>(({ options }) => {
+	void options;
 });
 `
 	);
@@ -64,7 +66,7 @@ export const ${pascalCaseName} = defineModule(({ app, options }) => {
 	if (withStyles) {
 		writeFileSync(
 			_path.resolve(fullPath, 'styles.scss'),
-			`// write and import all your styles here';
+			`// write and import all your styles here
 `
 		);
 

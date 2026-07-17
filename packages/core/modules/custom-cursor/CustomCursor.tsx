@@ -1,7 +1,10 @@
 import { isAndroid, isIOS, isIOSChrome, isIOSFirefox } from '@ovee.js/toolkit/tools';
 import { gsap } from 'gsap';
-import { debounce, defaults } from 'lodash';
-import { defineModule, onInit, Reactive, reactive, Ref, ref, watch } from 'ovee.js';
+import debounce from 'lodash/debounce';
+import defaults from 'lodash/defaults';
+import { defineModule, onDestroy, onInit, Reactive, reactive, Ref, ref, watch } from 'ovee.js';
+
+import { useTemplatePortal } from '../../composables/useTemplatePortal';
 
 type Setter = (val: number) => void;
 
@@ -49,9 +52,19 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 		const isSupported = !isIOS() && !isIOSChrome() && !isIOSFirefox() && !isAndroid();
 
 		let cursor: HTMLDivElement;
-		let shadow: HTMLDivElement;
-		let ripple: HTMLDivElement;
+		let shadow: HTMLDivElement | null = null;
+		let ripple: HTMLDivElement | null = null;
 		let currentModifier: HTMLElement | null;
+
+		const disposePortals: (() => void)[] = [];
+
+		onDestroy(() => {
+			destroyInjectedElements();
+
+			for (const d of disposePortals) {
+				d();
+			}
+		});
 
 		const mouse = reactive(new Point());
 		const shadowPos = reactive(new Point());
@@ -78,17 +91,17 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 		let setY: Setter;
 		let setX: Setter;
 
-		let setShadowY: Setter;
-		let setShadowX: Setter;
+		let setShadowY: Setter | null = null;
+		let setShadowX: Setter | null = null;
 
-		let setRippleY: Setter;
-		let setRippleX: Setter;
+		let setRippleY: Setter | null = null;
+		let setRippleX: Setter | null = null;
 
 		const cursorOptions = defaults(options, {
 			hideDefault: false,
 			cursorLerp: true,
 			cursorDuration: 0.4,
-			shadow: true,
+			shadow: false,
 			shadowDuration: 1,
 			ripple: false,
 			rippleThreshold: 50,
@@ -130,6 +143,10 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 		watch(
 			text,
 			newText => {
+				if (!cursor) {
+					return;
+				}
+
 				const textEl = cursor.querySelector('.cursor__text');
 
 				if (textEl) {
@@ -146,43 +163,30 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 		);
 
 		function initTemplates() {
-			cursor = document.createElement('div');
-			cursor.classList.add('cursor');
-			cursor.innerHTML = `
-			<div class="cursor__content">
-				<div class="cursor__background"></div>
-				<p class="cursor__text"></p>
-			</div>
-		`;
+			cursor = createCursorElement({ withText: true });
 
-			shadow = document.createElement('div');
-			shadow.classList.add('cursor');
-			shadow.classList.add('cursor--shadow');
-			shadow.innerHTML = `
-			<div class="cursor__content">
-				<div class="cursor__background"></div>
-			</div>
-		`;
+			if (cursorOptions.shadow) {
+				shadow = createCursorElement({ modifier: 'cursor--shadow' });
+			}
 
-			ripple = document.createElement('div');
-			ripple.classList.add('cursor');
-			ripple.classList.add('cursor--ripple');
-			ripple.innerHTML = `
-			<div class="cursor__content">
-				<div class="cursor__background"></div>
-			</div>
-		`;
+			if (cursorOptions.ripple) {
+				ripple = createCursorElement({ modifier: 'cursor--ripple' });
+			}
 		}
 
 		function initSetters() {
 			setY = gsap.quickSetter(cursor, 'y', 'px') as Setter;
 			setX = gsap.quickSetter(cursor, 'x', 'px') as Setter;
 
-			setShadowY = gsap.quickSetter(shadow, 'y', 'px') as Setter;
-			setShadowX = gsap.quickSetter(shadow, 'x', 'px') as Setter;
+			if (shadow) {
+				setShadowY = gsap.quickSetter(shadow, 'y', 'px') as Setter;
+				setShadowX = gsap.quickSetter(shadow, 'x', 'px') as Setter;
+			}
 
-			setRippleY = gsap.quickSetter(ripple, 'y', 'px') as Setter;
-			setRippleX = gsap.quickSetter(ripple, 'x', 'px') as Setter;
+			if (ripple) {
+				setRippleY = gsap.quickSetter(ripple, 'y', 'px') as Setter;
+				setRippleX = gsap.quickSetter(ripple, 'x', 'px') as Setter;
+			}
 		}
 
 		function injectCursor() {
@@ -191,7 +195,7 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 			isInjected.value = true;
 			document.body.appendChild(cursor);
 
-			if (cursorOptions.shadow) {
+			if (shadow) {
 				document.body.appendChild(shadow);
 			}
 
@@ -207,7 +211,7 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 			app.$on(
 				'mousemove',
 				({ clientX, clientY, target }: MouseEvent) => {
-					if (isMobile) return;
+					if (isMobile.value) return;
 
 					updateCursorPosition(clientX, clientY);
 
@@ -244,7 +248,7 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 			app.$on(
 				'mousedown',
 				() => {
-					if (isMobile) return;
+					if (isMobile.value) return;
 
 					down();
 				},
@@ -254,7 +258,7 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 			app.$on(
 				'mouseup',
 				() => {
-					if (isMobile) return;
+					if (isMobile.value) return;
 					if (cursorOptions.ripple) createRipple();
 
 					up();
@@ -313,13 +317,13 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 		function detectIsOverLink(target?: HTMLElement | null) {
 			if (isOverLink(target)) {
 				cursor.classList.add('is-over-link');
-				if (cursorOptions.shadow) shadow.classList.add('is-over-link');
+				if (shadow) shadow.classList.add('is-over-link');
 			} else if (target?.dataset.cursorMode === 'drag') {
 				cursor.classList.remove('is-over-link');
-				if (cursorOptions.shadow) shadow.classList.remove('is-over-link');
+				if (shadow) shadow.classList.remove('is-over-link');
 			} else {
 				cursor.classList.remove('is-over-link');
-				if (cursorOptions.shadow) shadow.classList.remove('is-over-link');
+				if (shadow) shadow.classList.remove('is-over-link');
 			}
 		}
 
@@ -330,8 +334,8 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 
 				shadowPos.x += (mouse.x - shadowPos.x) * dt;
 				shadowPos.y += (mouse.y - shadowPos.y) * dt;
-				setShadowX(shadowPos.x);
-				setShadowY(shadowPos.y);
+				setShadowX?.(shadowPos.x);
+				setShadowY?.(shadowPos.y);
 			}
 			if (cursorOptions.cursorLerp) {
 				const dt =
@@ -347,7 +351,7 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 		function down() {
 			if (!isPressed.value) {
 				cursor.classList.add('is-pressed');
-				if (cursorOptions.shadow) shadow.classList.add('is-pressed');
+				if (shadow) shadow.classList.add('is-pressed');
 				isPressed.value = true;
 				if (cursorOptions.ripple) updateDragPosition();
 			}
@@ -356,7 +360,7 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 		function up() {
 			if (isPressed.value) {
 				cursor.classList.remove('is-pressed');
-				if (cursorOptions.shadow) shadow.classList.remove('is-pressed');
+				if (shadow) shadow.classList.remove('is-pressed');
 				isPressed.value = false;
 				if (cursorOptions.ripple) updateDragPosition();
 			}
@@ -387,21 +391,42 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 			const diffY = Math.abs(mouse.y - dragPos.y);
 
 			if (diffX <= cursorOptions.rippleThreshold && diffY <= cursorOptions.rippleThreshold) {
-				setRippleX(mouse.x);
-				setRippleY(mouse.y);
+				setRippleX?.(mouse.x);
+				setRippleY?.(mouse.y);
+
+				if (!ripple) {
+					return;
+				}
 
 				const _ripple = ripple.cloneNode(true);
+				const rippleElement = _ripple as HTMLElement;
+				const cleanup = () => {
+					if (rippleElement.parentNode === document.body) {
+						document.body.removeChild(rippleElement);
+					}
+				};
 
-				_ripple.addEventListener(
-					'animationend',
-					() => {
-						document.body.removeChild(_ripple);
-					},
-					{ once: true }
-				);
+				rippleElement.addEventListener('animationend', cleanup, { once: true });
+				window.setTimeout(cleanup, 1200);
 
-				document.body.appendChild(_ripple);
+				document.body.appendChild(rippleElement);
 			}
+		}
+
+		function destroyInjectedElements() {
+			if (cursor.parentNode === document.body) {
+				document.body.removeChild(cursor);
+			}
+
+			if (shadow?.parentNode === document.body) {
+				document.body.removeChild(shadow);
+			}
+
+			document.body.querySelectorAll('.cursor--ripple').forEach(node => {
+				if (node.parentNode === document.body) {
+					document.body.removeChild(node);
+				}
+			});
 		}
 
 		function unifyPos() {
@@ -412,8 +437,8 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 
 			setX(mouse.x);
 			setY(mouse.y);
-			setShadowX(mouse.x);
-			setShadowY(mouse.y);
+			setShadowX?.(mouse.x);
+			setShadowY?.(mouse.y);
 		}
 
 		function moveHander() {
@@ -433,7 +458,7 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 			if (isEnabled.value) {
 				cursor.classList.add('is-visible');
 
-				if (cursorOptions.shadow) {
+				if (shadow) {
 					shadow.classList.add('is-visible');
 				}
 			}
@@ -445,7 +470,7 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 			if (isInjected.value) {
 				cursor.classList.remove('is-visible');
 
-				if (cursorOptions.shadow) {
+				if (shadow) {
 					shadow.classList.remove('is-visible');
 				}
 			}
@@ -459,7 +484,7 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 				cursor.classList.add(`is-${side}`);
 				cursor.classList.remove(`is-${oppositeSide}`);
 
-				if (cursorOptions.shadow) {
+				if (shadow) {
 					shadow.classList.add(`is-${side}`);
 					shadow.classList.remove(`is-${oppositeSide}`);
 				}
@@ -471,7 +496,7 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 				cursor.classList.remove('is-right');
 				cursor.classList.remove('is-left');
 
-				if (cursorOptions.shadow) {
+				if (shadow) {
 					shadow.classList.remove('is-right');
 					shadow.classList.remove('is-left');
 				}
@@ -481,25 +506,56 @@ export const CustomCursor = defineModule<CustomCursorOptions, CustomCursorReturn
 		function setMode(value: string) {
 			if (mode.value !== value) {
 				cursor.dataset.mode = value;
-				if (cursorOptions.shadow) shadow.dataset.mode = value;
+				if (shadow) shadow.dataset.mode = value;
 			}
 		}
 
 		function resetMode() {
 			cursor.dataset.mode = '';
-			if (cursorOptions.shadow) shadow.dataset.mode = '';
+			if (shadow) shadow.dataset.mode = '';
 		}
 
 		function setTheme(value: string) {
 			if (theme.value !== value) {
 				cursor.dataset.theme = value;
-				if (cursorOptions.shadow) shadow.dataset.theme = value;
+				if (shadow) shadow.dataset.theme = value;
 			}
 		}
 
 		function resetTheme() {
 			cursor.dataset.theme = '';
-			if (cursorOptions.shadow) shadow.dataset.theme = '';
+			if (shadow) shadow.dataset.theme = '';
+		}
+
+		function createCursorElement({
+			modifier,
+			withText = false,
+		}: {
+			modifier?: string;
+			withText?: boolean;
+		}) {
+			const element = document.createElement('div');
+			element.role = 'presentation';
+			element.classList.add('cursor');
+
+			if (modifier) {
+				element.classList.add(modifier);
+			}
+
+			disposePortals.push(
+				useTemplatePortal({
+					target: element,
+					flush: 'sync',
+					template: () => (
+						<div class="cursor__content">
+							<div class="cursor__background" />
+							{withText ? <p class="cursor__text" /> : null}
+						</div>
+					),
+				}).dispose
+			);
+
+			return element;
 		}
 
 		function setText(v: string) {

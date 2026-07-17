@@ -4,7 +4,11 @@
  - [lottie-web](https://www.npmjs.com/package/lottie-web)
 
 ```bash
+npm install --save lottie-web
+# or with yarn
 yarn add lottie-web
+# or with pnpm
+pnpm add lottie-web
 ```
 
 ## Registration and configuration

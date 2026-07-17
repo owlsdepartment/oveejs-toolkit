@@ -13,7 +13,11 @@ git clone git@github.com:owlsdepartment/owlsdepartment-components.git
 2. Install dependencies
 
 ```bash
+# with yarn
 yarn
+
+# or with pnpm
+pnpm install
 ```
 
 3. Done!
@@ -36,7 +40,7 @@ Folder can contain other script or style files, but they need to be imported ins
 
 Other tools can either go to: `modules`, `mixins` or `tools`. Structure and rules are the same as for components, with exception of `styles.scss`. Only modules can contain styles.
 
-There is a tool included for generating boilerplate code. To run it, just type in root `yarn generate` and you will get all possible commands with instructions on how to use them.
+There is a tool included for generating boilerplate code. To run it, just type in root `yarn generate` or `pnpm generate` and you will get all possible commands with instructions on how to use them.
 
 ### Good practices
 
@@ -49,7 +53,7 @@ You should always work with your components on seperate branch, forked from `mas
 Commits has to meet [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification with [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional) specification. It's similar to [Angular](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format) format. Read those links for in depth information.
 
 possible types of commits:
- - __build__: Changes that affect the build system or external dependencies (f.ex.: `yarn`, `npm`)
+ - __build__: Changes that affect the build system or external dependencies (f.ex.: `yarn`, `npm`, `pnpm`)
  - __chore__: Changes, that don't affect source code, but repository configuration and development expierience (f.ex: adding new linter or new IDE config)
  - __ci__: Changes to our CI configuration files and scripts (f.ex.: `Gihub Actions`)
  - __docs__: Documentation only changes

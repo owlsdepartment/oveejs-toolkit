@@ -9,6 +9,12 @@ $base_accordion_default_collapsed_class: '.is-collapsed' !default;
 
 	[data-accordion-trigger] {
 		cursor: pointer;
+		overflow-anchor: auto;
+	}
+
+	[data-accordion-item],
+	[data-accordion-content] {
+		overflow-anchor: none;
 	}
 
 	[data-accordion-item]:not(#{$openClass}):not(#{$collapsedClass}) {
@@ -18,7 +24,9 @@ $base_accordion_default_collapsed_class: '.is-collapsed' !default;
 	}
 }
 
-base-accordion,
-[data-base-accordion] {
-	@include base-accordion;
+@layer ovee-toolkit {
+	base-accordion,
+	[data-base-accordion] {
+		@include base-accordion;
+	}
 }

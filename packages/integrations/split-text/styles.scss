@@ -1,0 +1,44 @@
+@property --lineIndex {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0;
+}
+
+@property --lineRelIndex {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0;
+}
+
+@property --wordIndex {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0;
+}
+
+@property --wordRelIndex {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0;
+}
+
+@property --charIndex {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0;
+}
+
+@property --charRelIndex {
+	syntax: '<number>';
+	inherits: false;
+	initial-value: 0;
+}
+
+.split-text__line {
+	display: block;
+}
+
+.split-text__word,
+.split-text__char {
+	display: inline-block;
+}

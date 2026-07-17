@@ -6,6 +6,6 @@ export const ParallaxEffect = defineComponent<
 	HTMLElement,
 	UseParallaxEffectOptions,
 	UseParallaxEffectReturn
->((element, { options }) => {
+>((element, _ctx, options) => {
 	return useParallaxEffect(element, options);
 });

@@ -1,5 +1,5 @@
 import { useIntersectionObserver } from '@ovee.js/toolkit';
-import { isNumber } from 'lodash';
+import isNumber from 'lodash/isNumber';
 import { computed, onUnmounted, Ref, ref, useComponentContext, useDataAttr } from 'ovee.js';
 
 export type UseInViewportOptions = IntersectionObserverInit & {
@@ -26,9 +26,19 @@ export function useInViewport(
 	const isIntersecting = ref(false);
 
 	const threshold = computed<number | number[]>(() => {
-		const parsed = JSON.parse(dataThreshold.value ?? `${options?.threshold ?? '0'}`);
+		if (dataThreshold.value == null) {
+			return options.threshold ?? 0;
+		}
 
-		return Array.isArray(parsed) || isNumber(parsed) ? parsed : options.threshold ?? 0;
+		try {
+			const parsed = JSON.parse(dataThreshold.value);
+
+			return Array.isArray(parsed) || isNumber(parsed) ? parsed : options.threshold ?? 0;
+		} catch {
+			const numeric = Number(dataThreshold.value);
+
+			return Number.isNaN(numeric) ? options.threshold ?? 0 : numeric;
+		}
 	});
 
 	const target = computed(() => {

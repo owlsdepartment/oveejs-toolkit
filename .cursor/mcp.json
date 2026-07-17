@@ -1,0 +1,9 @@
+{
+	"mcpServers": {
+		"ovee-docs": {
+			"command": "node",
+			"args": ["scripts/mcp-ovee/dist/server.js"],
+			"cwd": "${workspaceFolder}"
+		}
+	}
+}

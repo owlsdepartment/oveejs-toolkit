@@ -1,57 +1,13 @@
-# Ovee UI Playground
+# Owls UI playground (demo app)
 
-All commands are run from root folder.
+The playground is a **local demo** of toolkit + integrations + modules + tools. It is git-ignored by default; the canonical copy of the demo sources lives in `scripts/templates/playground/` (`_*` files). Run `pnpm playground reset` to replace local files with those templates.
 
-To first time initialize a playground, make sure all dependencies are installed with:
-
-```bash
-yarn
-```
-
-Then run this command:
+From the monorepo root (with dependencies installed):
 
 ```bash
-yarn playground
-# or
-yarn playground init
+pnpm playground init   # create missing playground files from templates
+pnpm playground reset  # delete then recreate playground files (destructive)
+pnpm dev               # Vite dev server for the demo
 ```
 
-To start a playground:
-
-```bash
-yarn dev
-# or
-yarn serve
-```
-
-## Available commands
-
-```bash
-# clear playground environment
-yarn playground clear
-
-# reset playground environment
-yarn playground reset
-```
-
-## Usage
-
-Import component you would like to test in `src/components.ts` from `@`. Example:
-
-```ts
-import { TestComponent } from '@';
-import { Class, Component } from 'ovee.js';
-
-const components: Class<Component, typeof Component>[] = [TestComponent];
-
-export default components;
-```
-
-Use it then in `index.html` like this:
-```html
-<!-- some code ... -->
-<test-component></test-component>
-<!-- some code ... -->
-```
-
-__IMPORTANT NOTES__: Never commit any changes from `playground` folder to repository. You can change `index.html` and `src/components.ts` freely as they are git-ignored and won't be included in the changes.
+Register or extend behavior in `playground/src/components.ts` and `playground/src/modules.ts`. The demo `index.html` uses `data-*` hooks expected by Ovee v3 (`data-base-accordion`, `data-nav-toggle`, etc.).

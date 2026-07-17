@@ -9,6 +9,8 @@ To install swiper
 npm install --save swiper
 # or with yarn
 yarn add swiper
+# or with pnpm
+pnpm add swiper
 ```
 
 ## Registration and configuration

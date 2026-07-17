@@ -8,6 +8,8 @@ This package adds components and modules for `Ovee.js`, that heavily rely on ext
 npm install --save @ovee.js/toolkit-integrations
 # for yarn
 yarn add @ovee.js/toolkit-integrations
+# for pnpm
+pnpm add @ovee.js/toolkit-integrations
 ```
 
 This package requires `@ovee.js/toolkit`. If you didn't installed it already, follow [this link](/packages/core/README.md#installation) for installation instructions.
@@ -31,6 +33,7 @@ You can do it, but it requires all optional libraries to be installed tho.
 ## Available submodules
 
  - [BaseSlider](./base-slider/README.md), using `swiper`
+ - [C15tConsent](./c15t/README.md), using `c15t`
  - [GoogleMap](./google-map/README.md), using `@googlemaps/js-api-loader`
  - [LazyLoad](./lazy-load/README.md), using `vanilla-lazyload`
  - [LottiePlayer](./lottie-player/README.md), using `lottie-web`

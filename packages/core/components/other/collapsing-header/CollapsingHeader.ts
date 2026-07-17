@@ -1,4 +1,6 @@
-import { defaults, isNumber, throttle } from 'lodash';
+import defaults from 'lodash/defaults';
+import isNumber from 'lodash/isNumber';
+import throttle from 'lodash/throttle';
 import { computed, defineComponent, onMounted, ref, useDataAttr } from 'ovee.js';
 
 export interface CollapsingHeaderOptions {
@@ -42,7 +44,7 @@ const calcOffsetMap: Record<
 };
 
 export const CollapsingHeader = defineComponent<HTMLElement, CollapsingHeaderOptions>(
-	(element, { options, on }) => {
+	(element, { on }, options) => {
 		const html = document.documentElement;
 		const headerOptions = defaults(options, {
 			throttle: 100,

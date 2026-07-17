@@ -1,0 +1,20 @@
+---
+description: Ovee v3 migration and generation guardrails
+globs: "{packages,scripts}/**/*.ts"
+alwaysApply: false
+---
+
+# Ovee v3 Toolkit Rules
+
+- Use Ovee v3 APIs for new or migrated code: `defineComponent` and `defineModule`.
+- Do not introduce new class decorator components (`@register`, `extends Component`) in `packages/`.
+- Do not introduce new `lit-html` / `TemplateComponent` usage.
+- For base components, keep behavior parity with existing event contracts while migrating internals to v3 patterns.
+- Keep `packages/core/components/base/index.ts` and `packages/core/components/index.ts` exports consistent with migration state.
+- Prefer existing v3 files as references:
+  - `packages/core/components/other/nav-toggle/NavToggle.ts`
+  - `packages/core/components/utils/in-viewport/InViewport.ts`
+  - `packages/core/modules/viewport-units/ViewportUnits.ts`
+- For script templates in `scripts/`, emit v3-oriented boilerplate and avoid stale v2 docs links.
+- Use official docs for API checks:
+  - https://owlsdepartment.github.io/ovee/v3/

@@ -1,4 +1,4 @@
-import { Loader } from '@googlemaps/js-api-loader';
+import { importLibrary, setOptions } from '@googlemaps/js-api-loader';
 import {
 	computed,
 	defineComponent,
@@ -18,33 +18,34 @@ export interface GoogleMapOptions extends google.maps.MapOptions {
 	) => void;
 }
 
-let loader: Loader | undefined;
+let isConfigured = false;
 const logger = new Logger('GoogleMap');
 const mapsLibrary = shallowRef<google.maps.MapsLibrary>();
 const markerLibrary = shallowRef<google.maps.MarkerLibrary>();
 
 export function useMapLoader(key: string) {
-	if (!loader) {
-		loader = new Loader({
-			apiKey: key,
-			version: 'weekly',
+	if (!isConfigured) {
+		setOptions({
+			key,
+			v: 'weekly',
 		});
+		isConfigured = true;
 	}
 
 	return {
-		loader,
+		importLibrary,
 	};
 }
 
 export const GoogleMap = defineComponent<HTMLElement, GoogleMapOptions>(
-	async (element, { options }) => {
+	async (element, _ctx, options) => {
 		const _lat = useDataAttr('lat');
 		const _lng = useDataAttr('lng');
 		const _key = useDataAttr('key');
 		const pin = useDataAttr('pin');
 		const map = shallowRef<google.maps.Map | null>(null);
 		const marker = shallowRef<google.maps.Marker | null>(null);
-		const { loader } = useMapLoader(_key.value || options.gmapsKey || '');
+		const { importLibrary: loadLibrary } = useMapLoader(_key.value || options?.gmapsKey || '');
 		const isMapLoaded = ref(false);
 
 		const lat = computed(() => {
@@ -72,20 +73,21 @@ export const GoogleMap = defineComponent<HTMLElement, GoogleMapOptions>(
 		});
 
 		async function initMap() {
-			if (map.value || !loader) {
+			if (map.value) {
 				return;
 			}
 
 			try {
 				if (!mapsLibrary.value) {
-					mapsLibrary.value = await loader.importLibrary('maps');
+					mapsLibrary.value = await loadLibrary('maps');
 				}
 
 				if (!markerLibrary.value) {
-					markerLibrary.value = await loader.importLibrary('marker');
+					markerLibrary.value = await loadLibrary('marker');
 				}
 
-				map.value = new mapsLibrary.value.Map(element, getMapOptions(lat.value, lng.value));
+				const MapClass = mapsLibrary.value.Map;
+				map.value = new MapClass(element, getMapOptions(lat.value, lng.value));
 
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				onMapInitialized();
@@ -102,10 +104,12 @@ export const GoogleMap = defineComponent<HTMLElement, GoogleMapOptions>(
 				return;
 			}
 
-			if (markerLibrary.value) {
-				marker.value = new markerLibrary.value.Marker({
+			const MarkerClass = markerLibrary.value?.Marker;
+
+			if (MarkerClass) {
+				marker.value = new MarkerClass({
 					position: { lat: lat.value, lng: lng.value },
-					map: map.value,
+					map: map.value ?? undefined,
 					...(pin.value && {
 						icon: {
 							url: pin.value,
@@ -126,7 +130,7 @@ export const GoogleMap = defineComponent<HTMLElement, GoogleMapOptions>(
 		}
 
 		return {
-			loader,
+			importLibrary: loadLibrary,
 			mapsLibrary,
 			markerLibrary,
 			map,

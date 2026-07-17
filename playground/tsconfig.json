@@ -19,6 +19,6 @@
             "~/*": ["playground/*"],
         },
         "jsx": "react-jsx",
-        "jsxImportSource": "ovee.js",
+        "jsxImportSource": "ovee.js"
     },
 }

@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"module": "ESNext",
+		"target": "ESNext",
+		"moduleResolution": "node",
+		"noImplicitAny": true,
+		"lib": ["ES2017", "ES7", "ES6", "DOM"],
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"resolveJsonModule": true,
+		"strictNullChecks": true,
+		"baseUrl": "..",
+		"experimentalDecorators": true,
+		"paths": {
+			"@ovee.js/toolkit": ["packages/core"],
+			"@ovee.js/toolkit-integrations": ["packages/integrations"],
+			"@playground/*": ["demo/src/*"],
+			"~/*": ["demo/*"]
+		},
+		"jsx": "react-jsx",
+		"jsxImportSource": "ovee.js"
+	}
+}

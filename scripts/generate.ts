@@ -2,7 +2,7 @@ import { Command } from 'commander';
 
 import { generateComponent } from './generate/component';
 import { generateModule } from './generate/module';
-import { WithIntegrations, WithStyles } from './generate/options';
+import { WithIntegrations, WithJsx, WithStyles } from './generate/options';
 import { generateTool } from './generate/tool';
 
 const program = new Command();
@@ -15,8 +15,13 @@ program
 	.argument('[name]', 'component name')
 	.option('-s, --styles', 'generate styles file', false)
 	.option('-i, --integrations', `output component to 'integrations' package`, false)
+	.option('-j, --jsx', 'emit .tsx with useTemplate + JSX placeholder', false)
 	.action(
-		async (path: string, name: string | undefined, options: WithStyles & WithIntegrations) => {
+		async (
+			path: string,
+			name: string | undefined,
+			options: WithStyles & WithIntegrations & WithJsx
+		) => {
 			await generateComponent(path, name ?? '', options);
 		}
 	);

@@ -5,3 +5,7 @@ export interface WithIntegrations {
 export interface WithStyles {
 	styles: boolean;
 }
+
+export interface WithJsx {
+	jsx: boolean;
+}

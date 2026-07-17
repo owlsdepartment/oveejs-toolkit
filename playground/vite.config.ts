@@ -1,16 +1,53 @@
 import path from 'path';
-import { defineConfig } from 'vite';
 
-export default defineConfig({
+export default {
 	root: __dirname,
+	server: {
+		port: 5173,
+	},
+	preview: {
+		port: 4173,
+	},
+
+	esbuild: {
+		jsx: 'automatic',
+		jsxImportSource: 'ovee.js',
+	} as any,
+
+	optimizeDeps: {
+		exclude: ['ovee.js', '@ovee.js/toolkit', '@ovee.js/toolkit-integrations'],
+	},
 
 	resolve: {
-		alias: {
-			// pre-configured aliases, change them freely!
-			'~': __dirname,
-			'@playground': path.resolve(__dirname, 'src'),
-			'@ovee.js/toolkit': path.resolve(__dirname, '../packages/core'),
-			'@ovee.js/toolkit-integrations': path.resolve(__dirname, '../packages/integrations'),
-		},
+		alias: [
+			{
+				find: /^@ovee\.js\/toolkit$/,
+				replacement: path.resolve(__dirname, '../packages/core/index.ts'),
+			},
+			{
+				find: /^@ovee\.js\/toolkit\/(.*)$/,
+				replacement: path.resolve(__dirname, '../packages/core/$1'),
+			},
+			{
+				find: /^@ovee\.js\/toolkit-integrations$/,
+				replacement: path.resolve(__dirname, '../packages/integrations/index.ts'),
+			},
+			{
+				find: /^@ovee\.js\/toolkit-integrations\/(.*)$/,
+				replacement: path.resolve(__dirname, '../packages/integrations/$1'),
+			},
+			{
+				find: /^@playground$/,
+				replacement: path.resolve(__dirname, 'src'),
+			},
+			{
+				find: /^~$/,
+				replacement: __dirname,
+			},
+			{
+				find: /^~\/(.*)$/,
+				replacement: `${__dirname}/$1`,
+			},
+		],
 	},
-});
+};

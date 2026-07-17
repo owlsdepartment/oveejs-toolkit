@@ -13,6 +13,7 @@ const FILES: FileEntry[] = [
 	{ folder: 'src', fileName: 'components.ts' },
 	{ folder: 'src', fileName: 'modules.ts' },
 	{ folder: 'src', fileName: 'main.ts' },
+	{ folder: 'src', fileName: 'ovee-jsx.ts' },
 	{ folder: 'styles', fileName: 'main.scss' },
 	{ folder: '', fileName: 'index.html' },
 ];

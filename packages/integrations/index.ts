@@ -1,4 +1,5 @@
 export * from './base-slider';
+export * from './c15t';
 export * from './google-map';
 export * from './lazy-load';
 export * from './lottie-player';
